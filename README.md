@@ -1,2 +1,2 @@
 # FriendlyNeighborAndroid
-* Design
+* App Design
