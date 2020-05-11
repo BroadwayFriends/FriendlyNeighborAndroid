@@ -1,4 +1,4 @@
-package com.example.friendlyNeighbour;
+package me.twodee.friendlyneighbor;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.friendlyneighbour", appContext.getPackageName());
+        assertEquals("me.twodee.friendlyneighbor", appContext.getPackageName());
     }
 }

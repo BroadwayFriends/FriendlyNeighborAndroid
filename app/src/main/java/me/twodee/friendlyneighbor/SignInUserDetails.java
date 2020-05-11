@@ -1,4 +1,4 @@
-package com.example.friendlyNeighbour;
+package me.twodee.friendlyneighbor;
 
 import android.content.Intent;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package com.example.friendlyNeighbour;
+package me.twodee.friendlyneighbor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
