@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">FriendlyNeighbour</string>
     <string name="signup">SignUp</string>
+    <string name="post_location">Post Location</string>
+    <string name="send_location">Send location</string>
+    <string name="next">Next</string>
 </resources>
