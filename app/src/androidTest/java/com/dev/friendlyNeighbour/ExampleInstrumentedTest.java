@@ -1,4 +1,4 @@
-package com.dev.friendlyneighbour;
+package com.dev.friendlyNeighbour;
 
 import android.content.Context;
 
