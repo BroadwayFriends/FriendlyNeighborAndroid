@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, sendLocation.class );
+                Intent intent = new Intent(MainActivity.this, SendLocationActivity.class );
                 startActivity(intent);
             }
         } );

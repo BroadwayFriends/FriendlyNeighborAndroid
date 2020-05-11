@@ -43,7 +43,7 @@ import com.google.android.gms.tasks.Task;
 import java.util.HashMap;
 import java.util.Map;
 
-public class sendLocation extends AppCompatActivity {
+public class SendLocationActivity extends AppCompatActivity {
 
     FusedLocationProviderClient mFusedLocationClient;
     TextView latTextView, lonTextView;
@@ -54,7 +54,7 @@ public class sendLocation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_location);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(sendLocation.this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(SendLocationActivity.this);
         latTextView = findViewById(R.id.latTextView);
         lonTextView = findViewById(R.id.lonTextView);
         send = findViewById(R.id.send);
@@ -65,7 +65,7 @@ public class sendLocation extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestQueue queue = Volley.newRequestQueue(sendLocation.this);
+                RequestQueue queue = Volley.newRequestQueue(SendLocationActivity.this);
                 final String url = "https://httpbin.org/post";
                 StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>()
@@ -85,15 +85,15 @@ public class sendLocation extends AppCompatActivity {
 //                                Log.d("Error.Response", error.getCause().getMessage());
 //                                Toast.makeText(getApplicationContext(),"Response: " +error ,Toast.LENGTH_SHORT).show();
                                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                                    Toast.makeText(sendLocation.this,"Network error",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SendLocationActivity.this,"Network error",Toast.LENGTH_LONG).show();
                                 } else if (error instanceof AuthFailureError) {
-                                    Toast.makeText(sendLocation.this," AuthFailureError",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SendLocationActivity.this," AuthFailureError",Toast.LENGTH_LONG).show();
                                 } else if (error instanceof ServerError) {
-                                    Toast.makeText(sendLocation.this,"ServerError ",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SendLocationActivity.this,"ServerError ",Toast.LENGTH_LONG).show();
                                 } else if (error instanceof NetworkError) {
-                                    Toast.makeText(sendLocation.this," NetworkError",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SendLocationActivity.this," NetworkError",Toast.LENGTH_LONG).show();
                                 } else if (error instanceof ParseError) {
-                                    Toast.makeText(sendLocation.this," ParseError",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SendLocationActivity.this," ParseError",Toast.LENGTH_LONG).show();
                                 }
                             }
                         }
