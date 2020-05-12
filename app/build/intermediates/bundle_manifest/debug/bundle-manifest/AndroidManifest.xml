@@ -24,6 +24,7 @@
         android:testOnly="true"
         android:theme="@style/AppTheme" >
         <activity android:name="com.dev.friendlyNeighbour.LoginSignUpUI" />
+
         <activity android:name="com.dev.friendlyNeighbour.sendLocation" />
         <activity android:name="com.dev.friendlyNeighbour.MainActivity" >
             <intent-filter>
