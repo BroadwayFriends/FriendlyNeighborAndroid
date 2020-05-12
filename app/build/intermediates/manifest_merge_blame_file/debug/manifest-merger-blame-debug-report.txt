@@ -6,71 +6,75 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="22"
-8-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml
+8-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="29" />
-9-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml
+9-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml
 10
 11    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-11-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:5:5-81
-11-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:5:22-78
+11-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:5:5-81
+11-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:5:22-78
 12    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-12-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:6:5-79
-12-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:6:22-76
+12-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:6:5-79
+12-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:6:22-76
 13    <uses-permission android:name="android.permission.INTERNET" />
-13-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:7:5-66
-13-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:7:22-64
+13-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:7:5-67
+13-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:7:22-64
 14
 15    <application
-15-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:9:5-27:19
+15-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:9:5-26:19
 16        android:allowBackup="true"
-16-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:10:9-35
+16-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:10:9-35
 17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.1.0] C:\Users\agniv\.gradle\caches\transforms-2\files-2.1\34b4ab0d8b65ac74ddd00d45b26dd963\core-1.1.0\AndroidManifest.xml:24:18-86
+17-->[androidx.core:core:1.1.0] C:\Users\Akhil\.gradle\caches\transforms-2\files-2.1\34b4ab0d8b65ac74ddd00d45b26dd963\core-1.1.0\AndroidManifest.xml:24:18-86
 18        android:debuggable="true"
 19        android:fullBackupContent="true"
-19-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:11:9-41
+19-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:11:9-41
 20        android:icon="@mipmap/ic_launcher"
-20-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:12:9-43
+20-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:12:9-43
 21        android:label="@string/app_name"
-21-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:13:9-41
+21-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:13:9-41
 22        android:roundIcon="@mipmap/ic_launcher_round"
-22-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:14:9-54
+22-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:14:9-54
 23        android:supportsRtl="true"
-23-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:15:9-35
-24        android:theme="@style/AppTheme" >
-24-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:16:9-40
-25        <activity android:name="com.dev.friendlyNeighbour.sendLocation" />
-25-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:17:9-59
-25-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:17:19-47
-26        <activity android:name="com.dev.friendlyNeighbour.MainActivity" >
-26-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:20:9-26:20
-26-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:20:19-47
-27            <intent-filter>
-27-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:21:13-25:29
-28                <action android:name="android.intent.action.MAIN" />
-28-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:22:17-69
-28-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:22:25-66
-29
-30                <category android:name="android.intent.category.LAUNCHER" />
-30-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:24:17-77
-30-->P:\android\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:24:27-74
-31            </intent-filter>
-32        </activity>
-33        <activity
-33-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\agniv\.gradle\caches\transforms-2\files-2.1\d810550874c071a7f5afc391a91fdc61\jetified-play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
-34            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-34-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\agniv\.gradle\caches\transforms-2\files-2.1\d810550874c071a7f5afc391a91fdc61\jetified-play-services-base-17.0.0\AndroidManifest.xml:24:13-79
-35            android:exported="false"
-35-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\agniv\.gradle\caches\transforms-2\files-2.1\d810550874c071a7f5afc391a91fdc61\jetified-play-services-base-17.0.0\AndroidManifest.xml:25:13-37
-36            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-36-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\agniv\.gradle\caches\transforms-2\files-2.1\d810550874c071a7f5afc391a91fdc61\jetified-play-services-base-17.0.0\AndroidManifest.xml:26:13-72
-37
-38        <meta-data
-38-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\agniv\.gradle\caches\transforms-2\files-2.1\5feaec8abf5f0f657ccb7d51c61164e6\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
-39            android:name="com.google.android.gms.version"
-39-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\agniv\.gradle\caches\transforms-2\files-2.1\5feaec8abf5f0f657ccb7d51c61164e6\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
-40            android:value="@integer/google_play_services_version" />
-40-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\agniv\.gradle\caches\transforms-2\files-2.1\5feaec8abf5f0f657ccb7d51c61164e6\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
-41    </application>
-42
-43</manifest>
+23-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:15:9-35
+24        android:testOnly="true"
+25        android:theme="@style/AppTheme" >
+25-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:16:9-40
+26        <activity android:name="com.dev.friendlyNeighbour.LoginSignUpUI" />
+26-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:17:9-60
+26-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:17:19-48
+27        <activity android:name="com.dev.friendlyNeighbour.sendLocation" />
+27-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:18:9-50
+27-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:18:19-47
+28        <activity android:name="com.dev.friendlyNeighbour.MainActivity" >
+28-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:19:9-25:20
+28-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:19:19-47
+29            <intent-filter>
+29-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:20:13-24:29
+30                <action android:name="android.intent.action.MAIN" />
+30-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:21:17-69
+30-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:21:25-66
+31
+32                <category android:name="android.intent.category.LAUNCHER" />
+32-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:23:17-77
+32-->D:\Akhil\AndroidStudioProjects\FriendlyNeighborAndroid\app\src\main\AndroidManifest.xml:23:27-74
+33            </intent-filter>
+34        </activity>
+35        <activity
+35-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\Akhil\.gradle\caches\transforms-2\files-2.1\d810550874c071a7f5afc391a91fdc61\jetified-play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
+36            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+36-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\Akhil\.gradle\caches\transforms-2\files-2.1\d810550874c071a7f5afc391a91fdc61\jetified-play-services-base-17.0.0\AndroidManifest.xml:24:13-79
+37            android:exported="false"
+37-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\Akhil\.gradle\caches\transforms-2\files-2.1\d810550874c071a7f5afc391a91fdc61\jetified-play-services-base-17.0.0\AndroidManifest.xml:25:13-37
+38            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+38-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\Akhil\.gradle\caches\transforms-2\files-2.1\d810550874c071a7f5afc391a91fdc61\jetified-play-services-base-17.0.0\AndroidManifest.xml:26:13-72
+39
+40        <meta-data
+40-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\Akhil\.gradle\caches\transforms-2\files-2.1\5feaec8abf5f0f657ccb7d51c61164e6\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
+41            android:name="com.google.android.gms.version"
+41-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\Akhil\.gradle\caches\transforms-2\files-2.1\5feaec8abf5f0f657ccb7d51c61164e6\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
+42            android:value="@integer/google_play_services_version" />
+42-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\Akhil\.gradle\caches\transforms-2\files-2.1\5feaec8abf5f0f657ccb7d51c61164e6\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
+43    </application>
+44
+45</manifest>
