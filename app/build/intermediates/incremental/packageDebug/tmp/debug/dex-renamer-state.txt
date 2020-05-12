@@ -1,0 +1,7 @@
+#Tue May 12 12:02:35 IST 2020
+base.0=D\:\\Akhil\\AndroidStudioProjects\\FriendlyNeighborAndroid\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex
+path.1=classes.dex
+renamed.1=classes2.dex
+path.0=classes.dex
+renamed.0=classes.dex
+base.1=D\:\\Akhil\\AndroidStudioProjects\\FriendlyNeighborAndroid\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out\\classes.dex
