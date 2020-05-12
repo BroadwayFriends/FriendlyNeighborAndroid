@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity
 {
     Button next;
-    Button signInWalaaPage;
+    Button signInPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -22,13 +22,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(MainActivity.this, sendLocation.class);
+                Intent intent = new Intent(MainActivity.this, SendLocationActivity.class);
                 startActivity(intent);
             }
         });
 
-        signInWalaaPage = findViewById(R.id.sign_in_waala_page);
-        signInWalaaPage.setOnClickListener(new View.OnClickListener()
+        signInPage = findViewById(R.id.sign_in_page);
+        signInPage.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
