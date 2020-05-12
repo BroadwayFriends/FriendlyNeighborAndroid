@@ -5,6 +5,7 @@ import android.net.Uri;
 //import android.support.annotation.NonNull;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 //import com.bumptech.glide.Glide;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -23,6 +36,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignInUserDetails extends AppCompatActivity {
 
@@ -31,6 +46,13 @@ public class SignInUserDetails extends AppCompatActivity {
     TextView nameTV;
     TextView emailTV;
     TextView idTV;
+
+    String personName;
+    String personGivenName;
+    String personFamilyName;
+    String personEmail;
+    String personId;
+    Uri personPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +67,7 @@ public class SignInUserDetails extends AppCompatActivity {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
 
@@ -64,7 +87,10 @@ public class SignInUserDetails extends AppCompatActivity {
             emailTV.setText("Email: "+personEmail);
             idTV.setText("ID: "+personId);
             //Glide.with(this).load(personPhoto).into(photoIV);
-        }
+
+            }
+
+
 
         sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +99,7 @@ public class SignInUserDetails extends AppCompatActivity {
             }
         });
     }
+
 
     private void signOut() {
         mGoogleSignInClient.signOut()
