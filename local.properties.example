@@ -1,0 +1,5 @@
+## This is an example file. Create your own local.properties file
+## Use this as a reference, but DO NOT commit your local.properties file
+## into git or source control.
+ndk.dir=C\:\\Users\\Akhil\\AppData\\Local\\Android\\Sdk\\ndk-bundle
+sdk.dir=C\:\\Users\\Akhil\\AppData\\Local\\Android\\Sdk
