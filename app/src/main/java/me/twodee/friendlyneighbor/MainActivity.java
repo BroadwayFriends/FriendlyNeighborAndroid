@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity
     Button next;
     Button signInPage;
     Button dashboard;
+    Button register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,6 +52,17 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        register = findViewById(R.id.register);
+        register.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
                 startActivity(intent);
             }
         });
