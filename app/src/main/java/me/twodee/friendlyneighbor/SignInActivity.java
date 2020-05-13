@@ -108,12 +108,25 @@ public class SignInActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         // Enter the correct url for your api service site
-        String url = "https://1e25fe3d.ngrok.io/api/users/login";
+        String url = "https://3dbe635e.ngrok.io/api/users/login";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.w("ServerResponse", response.toString());
+
+                        try {
+                            boolean userStatus = response.getBoolean("newUser");
+
+                            if (userStatus) {
+                                startActivity(new Intent(SignInActivity.this, RegistrationActivity.class));
+                            } else {
+                                startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -145,7 +158,6 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
 
-
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -158,6 +170,7 @@ public class SignInActivity extends AppCompatActivity {
 
             Toast.makeText(SignInActivity.this, "Already Signed In !!!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(SignInActivity.this, SignInUserDetails.class));
+            startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
         }
 
         super.onStart();
