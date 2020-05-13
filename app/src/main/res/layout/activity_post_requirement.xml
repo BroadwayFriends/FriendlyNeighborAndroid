@@ -1,9 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".postRequirementActivity">
+    android:orientation="vertical"
+    tools:context="me.twodee.friendlyneighbor.postRequirementActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+
+        android:hint="Add a title to your request."
+        android:inputType="textEmailSubject" />
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:lines="4"
+        android:scrollbars="vertical"
+        android:hint="Describe why you need you need this article"
+        android:inputType="text" />
+
+
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter your phone number"
+        android:inputType= "text" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/editTextDate"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="100dp"-->
+<!--        android:layout_marginTop="150dp"-->
+<!--        android:ems="10"-->
+<!--        android:hint="Select an expiration date for the request."  />-->
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextDate"
+        android:hint="Set expiration date for your request"
+
+        android:layout_weight="0.0"
+
+        />
+
+
+
+
+    <EditText
+        android:id="@+id/editTextDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:tag="+"
+        android:hint="Enter the maximum distance in kms "
+
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+
+<!--    <com.appyvet.materialrangebar.RangeBar-->
+<!--        android:id="@+id/rangebar1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="40dp"-->
+<!--        android:layout_marginEnd="40dp"-->
+<!--        app:mrb_barWeight="2dp"-->
+<!--        app:mrb_connectingLineColors="blue"-->
+<!--        app:mrb_connectingLineWeight="4dp"-->
+<!--        app:mrb_leftThumbColor="#FFB300"-->
+<!--        app:mrb_minThumbDistance="-1"-->
+<!--        app:mrb_pinColor="#6c3f6a"-->
+<!--        app:mrb_pinMaxFont="15sp"-->
+<!--        app:mrb_pinMinFont="12sp"-->
+<!--        app:mrb_pinRadius="14dp"-->
+<!--        app:mrb_pinTextColor="white"-->
+<!--        app:mrb_rangeBar="false"-->
+<!--        app:mrb_rangeBarPaddingBottom="30dp"-->
+<!--        app:mrb_rangeBar_rounded="true"-->
+<!--        app:mrb_rightThumbColor="#1E88E5"-->
+<!--        app:mrb_temporaryPins="true"-->
+<!--        app:mrb_thumbBoundarySize="2dp"-->
+<!--        app:mrb_thumbSize="10dp"-->
+<!--        app:mrb_tickDefaultLabel="label"-->
+<!--        app:mrb_tickEnd="10"-->
+<!--        app:mrb_tickHeight="4dp"-->
+<!--        app:mrb_tickInterval="1"-->
+<!--        app:mrb_tickLabelSize="4sp"-->
+<!--        app:mrb_tickStart="1" />-->
+
+</LinearLayout>
