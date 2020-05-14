@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+   >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,18 +20,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="560dp"
+
+
+            android:paddingBottom="20dp"
             tools:context=".MapsActivity"
 
 
             >
+
             <ImageView
                 android:id="@+id/pin"
                 android:layout_width="80dp"
@@ -39,7 +45,60 @@
                 android:contentDescription="@null"
                 android:src="@drawable/ic_geolocate" />
 
+
+
+
+            <!--            android:layout_marginStart="40dp"-->
+            <!--            android:layout_marginTop="200dp"-->
+
+
         </fragment>
+        <TextView
+            android:id="@+id/textViewSeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:textSize="17sp"
+            android:background="#07000000"
+            android:textColor="@color/customBlue"
+            android:textStyle="bold"
+            android:paddingBottom="2dp"
+            />
+            <SeekBar
+                android:id="@+id/seekBar1"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="#0071a4"
+                android:indeterminate="false"
+                android:layout_gravity="bottom"
+                android:max="20"
+                android:theme="@style/SeekBarTheme"
+                android:padding="10dp"
+                android:progress="1" />
+
+
+
+<!--        <com.warkiz.widget.IndicatorSeekBar-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/customBlue"-->
+<!--            app:isb_max="20"-->
+<!--            app:isb_min="1"-->
+<!--            app:isb_progress="0"-->
+<!--            app:isb_seek_smoothly="false"-->
+<!--            app:isb_thumb_color="@color/customYellow"-->
+<!--            app:isb_thumb_size="17dp"-->
+<!--            app:isb_show_indicator="rounded_rectangle"-->
+<!--            app:isb_indicator_color="@color/customYellow"-->
+<!--            app:isb_indicator_text_color="@color/customPurple"-->
+<!--            app:isb_indicator_text_size="18sp"-->
+<!--            app:isb_track_background_color="@color/customGray"-->
+<!--            app:isb_track_background_size="2dp"-->
+<!--            app:isb_track_progress_color="@color/customYellow"-->
+<!--            app:isb_track_progress_size="4dp"-->
+<!--            app:isb_only_thumb_draggable="false"/>-->
+
+
+
 
 <!--        <ListView-->
 <!--            android:id="@+id/listPlaces"-->

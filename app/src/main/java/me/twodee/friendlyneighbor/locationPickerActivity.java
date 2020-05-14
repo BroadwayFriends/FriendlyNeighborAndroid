@@ -1,16 +1,29 @@
 package me.twodee.friendlyneighbor;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -32,13 +45,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.IndicatorType;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
+import com.warkiz.widget.TickMarkType;
 
 public class locationPickerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private  Circle distanceCircle;
     private static final String TAG = "MapsActivity";
-    ListView lstPlaces;
 
     private PlacesClient mPlacesClient;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -46,6 +63,8 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private Location mLastKnownLocation;
+    SeekBar seekbar;
+    TextView textViewSeekBar;
 
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
@@ -53,6 +72,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
+    private int circleRadius = 1000;
 
 
     // Used for selecting the current place.
@@ -63,11 +83,14 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
     private LatLng[] mLikelyPlaceLatLngs;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_picker);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -81,10 +104,19 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 //        lstPlaces = (ListView) findViewById(R.id.listPlaces);
 
         // Initialize the Places client
-        String apiKey = getString(R.string.google_maps_api_key);
-        Places.initialize(getApplicationContext(), apiKey);
+
+        Places.initialize(getApplicationContext(),String.valueOf(R.string.google_maps_api_key));
         mPlacesClient = Places.createClient(this);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        seekbar =(SeekBar)findViewById(R.id.seekBar1);
+        textViewSeekBar = findViewById(R.id.textViewSeekBar);
+
+
+
+
+
+
+
     }
 
 
@@ -192,9 +224,10 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 //                            mMap.addMarker(
 //                                    new MarkerOptions().position(loc).title("Set marker here").draggable(true));
 
+
                              Circle distanceCircle =  mMap.addCircle(new CircleOptions()
                                     .center(loc)
-                                    .radius(1000)
+                                    .radius(circleRadius)
                                     .fillColor(0x404CAF50)
                                     .strokeColor(R.color.mapCircleStroke)
                                     .strokeWidth(8));
@@ -215,6 +248,39 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 
 // Get back the mutable Circle
 //                        Circle circle = mMap.addCircle(circleOptions);
+                        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            int pval = 0;
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                textViewSeekBar.setText(Integer.toString(progress));
+                                double percent = progress / (double) seekBar.getMax();
+                                int offset = seekBar.getThumbOffset();
+                                int seekWidth = seekBar.getWidth();
+                                int val = (int) Math.round(percent * (seekWidth - 2 * offset));
+                                int labelWidth = textViewSeekBar.getWidth();
+                                textViewSeekBar.setX(offset + seekBar.getX() + val
+                                        - Math.round(percent * offset)
+                                        - Math.round(percent * labelWidth/2));
+                            }
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+                                mMap.clear();
+
+                            }
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+                                 circleRadius = 1000 * seekBar.getProgress();
+                                LatLng center = mMap.getCameraPosition().target;
+                                Circle resizedCircle =  mMap.addCircle(new CircleOptions()
+                                        .center(center)
+                                        .radius(circleRadius)
+                                        .fillColor(0x404CAF50)
+                                        .strokeColor(R.color.mapCircleStroke)
+                                        .strokeWidth(8));
+
+
+                            }
+                        });
 
 
 
@@ -232,7 +298,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 
                                     Circle newCircle =  mMap.addCircle(new CircleOptions()
                                             .center(center)
-                                            .radius(1000)
+                                            .radius(circleRadius)
                                             .fillColor(0x404CAF50)
                                             .strokeColor(R.color.mapCircleStroke)
                                             .strokeWidth(8));
@@ -322,6 +388,8 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 //    {
 //
 //    }
+
+
 
 
     @Override

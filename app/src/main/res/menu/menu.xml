@@ -9,4 +9,5 @@
         android:title="@string/action_geolocate"
         app:showAsAction="always|withText" />
 
+
 </menu>

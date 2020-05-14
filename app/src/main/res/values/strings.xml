@@ -3,7 +3,7 @@
     <string name="signup">SignUp</string>
     <string name="post_location">Post Location</string>
     <string name="send_location">Send location</string>
-    <string name="action_geolocate">Use this Location</string>
+    <string name="action_geolocate"> Use home / Choose new location </string>
     <string name="next">Next</string>
 
     <string name="sign_in_page">Sign In Page</string>
