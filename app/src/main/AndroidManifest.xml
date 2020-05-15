@@ -16,7 +16,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".RegistrationActivity"></activity>
         <activity android:name=".DashboardActivity" />
-        <activity android:name=".SignInUserDetails" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".SendLocationActivity" />
         <activity android:name=".MainActivity">

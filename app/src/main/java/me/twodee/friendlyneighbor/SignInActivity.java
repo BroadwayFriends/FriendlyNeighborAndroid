@@ -107,6 +107,9 @@ public class SignInActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.w("Sign In Data", object.toString());
+
         // Enter the correct url for your api service site
         String url = "https://3dbe635e.ngrok.io/api/users/login";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
@@ -118,7 +121,7 @@ public class SignInActivity extends AppCompatActivity {
                         try {
                             boolean userStatus = response.getBoolean("newUser");
 
-                            if (userStatus) {
+                            if (userStatus == true) {
                                 startActivity(new Intent(SignInActivity.this, RegistrationActivity.class));
                             } else {
                                 startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
@@ -143,10 +146,12 @@ public class SignInActivity extends AppCompatActivity {
             idToken = account.getIdToken();
             Log.w("ID_TOKEN", idToken);
 
+            Log.w("Sign In Data", idToken.toString());
+
             postData();
 
             // Signed in successfully, show authenticated UI.
-            startActivity(new Intent(SignInActivity.this, SignInUserDetails.class));
+            startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -169,7 +174,6 @@ public class SignInActivity extends AppCompatActivity {
             postData();
 
             Toast.makeText(SignInActivity.this, "Already Signed In !!!", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(SignInActivity.this, SignInUserDetails.class));
             startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
         }
 
