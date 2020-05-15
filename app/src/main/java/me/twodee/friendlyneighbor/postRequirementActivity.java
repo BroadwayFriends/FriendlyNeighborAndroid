@@ -43,7 +43,7 @@ public class postRequirementActivity extends AppCompatActivity {
     private EditText editTextTitle, editTextDescription, editTextPhone,
             editTextDate, editTextDistance;
 
-    private Button buttonSubmit;
+    private Button buttonSubmit,buttonImageUpload;
     private AwesomeValidation awesomeValidation;
     String title,description,distance,expirationDate,phoneNumber;
     private int mYear, mMonth, mDay;
@@ -62,6 +62,7 @@ public class postRequirementActivity extends AppCompatActivity {
 //        rangebar = findViewById(R.id.rangebar1);
 
         buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
+        buttonImageUpload = (Button) findViewById(R.id.btnUploadImage);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
@@ -71,6 +72,15 @@ public class postRequirementActivity extends AppCompatActivity {
         awesomeValidation.addValidation(this, R.id.editTextDistance, Range.closed(1, 20), R.string.errorInDistance);
 //        awesomeValidation.addValidation(this, R.id.editTextDob, "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$", R.string.nameerror);
 
+        buttonImageUpload.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(postRequirementActivity.this, imageUploadActivity.class);
+                startActivity(intent);
+            }
+        });
 
         buttonSubmit.setOnClickListener(new View.OnClickListener()
         {

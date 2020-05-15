@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(MainActivity.this, locationPickerActivity.class);
+                Intent intent = new Intent(MainActivity.this, postRequirementActivity.class);
                 startActivity(intent);
             }
         });
