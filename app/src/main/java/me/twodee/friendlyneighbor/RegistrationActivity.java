@@ -97,8 +97,8 @@ public class RegistrationActivity extends AppCompatActivity {
         try {
             //input your API parameters
             object.put("id", "5ebc27d7e6fe7a77013ecd2a");  // hardcoded for the time being
-            object.put("addressLineOne", addr1);
-            object.put("addressLineTwo", addr2);
+            object.put("address1", addr1);
+            object.put("address2", addr2);
             object.put("city", cty);
             object.put("state", st);
             object.put("country", cntry);
@@ -111,7 +111,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.w("Regi Data", object.toString());
 
         // Enter the correct url for your api service site
-        String url = "https://0cfe35a5.ngrok.io/api/users/register";
+        String url = "https://1687298c.ngrok.io/api/users/register";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
