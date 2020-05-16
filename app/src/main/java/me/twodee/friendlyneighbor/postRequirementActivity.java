@@ -3,8 +3,12 @@ package me.twodee.friendlyneighbor;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
@@ -35,8 +39,12 @@ import com.google.common.collect.Range;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class postRequirementActivity extends AppCompatActivity {
@@ -45,9 +53,14 @@ public class postRequirementActivity extends AppCompatActivity {
 
     private Button buttonSubmit,buttonImageUpload;
     private AwesomeValidation awesomeValidation;
-    String title,description,distance,expirationDate,phoneNumber;
+    String title,description,distance,expirationDate,phoneNumber,imageEncoded;
     private int mYear, mMonth, mDay;
-//    private RangeBar rangebar;
+    int PICK_IMAGE_MULTIPLE = 1;
+    List<String> imagesEncodedList;
+    private final String TAG = "request" ;
+    private boolean IMAGE_FLAG = false;
+    ArrayList<String> imageUriArray = new ArrayList<>();
+    //    private RangeBar rangebar;
 
 
     @Override
@@ -77,8 +90,16 @@ public class postRequirementActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(postRequirementActivity.this, imageUploadActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(postRequirementActivity.this, imageUploadActivity.class);
+//                startActivity(intent);
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Select Pictures"), PICK_IMAGE_MULTIPLE);
+
+
             }
         });
 
@@ -139,14 +160,76 @@ public class postRequirementActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            // When an Image is picked
+            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
+                    && null != data) {
+                // Get the Image from data
+
+                String[] filePathColumn = { MediaStore.Images.Media._ID };
+                imagesEncodedList = new ArrayList<String>();
+                if(data.getData()!=null){
+
+                    Uri mImageUri=data.getData();
+
+                    // Get the cursor
+                    Cursor cursor = getContentResolver().query(mImageUri,
+                            filePathColumn, null, null, null);
+                    // Move to first row
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imageEncoded  = cursor.getString(columnIndex);
+                    cursor.close();
+
+                } else {
+                    if (data.getClipData() != null) {
+
+                        ClipData mClipData = data.getClipData();
+//                        ArrayList<Uri> imageUriArray = new ArrayList<Uri>();
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+
+                            ClipData.Item item = mClipData.getItemAt(i);
+                            Uri uri = item.getUri();
+                            imageUriArray.add(uri.toString());
+                            // Get the cursor
+                            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                            // Move to first row
+                            cursor.moveToFirst();
+
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            imageEncoded  = cursor.getString(columnIndex);
+                            imagesEncodedList.add(imageEncoded);
+                            cursor.close();
+
+                        }
+                        IMAGE_FLAG = true ;
+                        Log.v(TAG, "Selected Images" + imageUriArray.size()+"IMAGE_FLAG :"+ IMAGE_FLAG);
+
+//                        for (int i = 0; i < imageUriArray.size(); i++)
+//                        {
+//                            Log.v(TAG,"Grabbed Image: "+ imageUriArray.get(i) +" with number " +i);
+//                        }
+
+                    }
+                }
+            } else {
+                Toast.makeText(this, "You haven't picked Image",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
 
     private void submitForm() {
-        //first validate the form then move ahead
-        //if this becomes true that means validation is successfull
-
-
-
         // Title,Description maybe(Why I need it, specifications), Tag, Distance, Paisa(not compulsory)
 
 
@@ -157,46 +240,69 @@ public class postRequirementActivity extends AppCompatActivity {
 
              distance = editTextDistance.getText().toString();
              expirationDate = editTextDate.getText().toString();
+             if (IMAGE_FLAG){
+//                 String[] imageStringPaths = Arrays.copyOf(new ArrayList[]{imageUriArray}, imageUriArray.size(), String[].class);
 
+                 Intent i = new Intent(postRequirementActivity.this, imageUploadActivity.class);
+                 i.putExtra("title",title);
+                 i.putExtra("description",description);
+                 i.putExtra("phoneNumber",phoneNumber);
+                 i.putExtra("expirationDate",expirationDate);
+                 i.putExtra("distance",distance);
+                 i.putExtra("imageUriArray",imageUriArray);
+                 startActivity(i);
+             }
+             else {
+                 String[] imageStringPaths = {};
+                 Intent i = new Intent(postRequirementActivity.this, imageUploadActivity.class);
+                 i.putExtra("title",title);
+                 i.putExtra("description",description);
+                 i.putExtra("phoneNumber",phoneNumber);
+                 i.putExtra("expirationDate",expirationDate);
+                 i.putExtra("distance",distance);
+                 i.putExtra("imageStringPaths",imageStringPaths);
+                 startActivity(i);
+
+             }
 
 //            Toast.makeditTextDate(this, "Validation Successfull", Toast.LENGTH_LONG).show();
-            postData();
+//            postData();
 
         }
 
     }
 
 
-
-    public void postData() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        JSONObject object = new JSONObject();
-        try {
-            //input your API parameters
-            object.put("title",title);
-            object.put("description",description);
-            object.put("phoneNumber",phoneNumber);
-            object.put("expirationDate",expirationDate);
-            object.put("distance",distance);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        // Enter the correct url for your api service site
-        String url = "https://httpbin.org/post";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.w("ServerResponse", response.toString());
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.w("ServerError", error);;
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
+//
+//    public void postData() {
+//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+//        JSONObject object = new JSONObject();
+//        try {
+//            //input your API parameters
+//            object.put("title",title);
+//            object.put("description",description);
+//            object.put("phoneNumber",phoneNumber);
+//            object.put("expirationDate",expirationDate);
+//            object.put("distance",distance);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        // Enter the correct url for your api service site
+//        String url = "https://httpbin.org/post";
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        Log.w("ServerResponse", response.toString());
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.w("ServerError", error);;
+//            }
+//        });
+//        requestQueue.add(jsonObjectRequest);
+//    }
 
 
 
