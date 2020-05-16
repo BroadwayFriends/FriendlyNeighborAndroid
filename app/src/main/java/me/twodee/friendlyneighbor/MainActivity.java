@@ -10,11 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity
 {
-    Button next;
-    Button signInPage;
-    Button dashboard;
-    Button register;
-    Button discover;
+    Button next, signInPage, dashboard, register, discover, payment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,6 +71,17 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        payment = findViewById(R.id.payment);
+        payment.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
                 startActivity(intent);
             }
         });
