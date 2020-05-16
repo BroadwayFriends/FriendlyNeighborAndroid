@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import net.gotev.uploadservice.data.UploadInfo
@@ -13,6 +14,7 @@ import net.gotev.uploadservice.exceptions.UserCancelledUploadException
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
+import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,7 +27,7 @@ class imageUploadActivity : AppCompatActivity() {
         // Choose the number which is good for you, here I'll use a random one.
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
-        const val baseUrl = "https://0945c5be.ngrok.io/api/requests"
+        const val baseUrl = "https://670934a3.ngrok.io/api/requests"
         var filePath = ""
         private var context: Context? = null
         var PICK_IMAGE_MULTIPLE = 1
@@ -192,22 +194,25 @@ class imageUploadActivity : AppCompatActivity() {
 
 
 
-    private fun upload(context: Context, lifecycleOwner: LifecycleOwner, reqTitle: String, description :String , phoneNumber:String,distance:String,expirationDate:String,image1 :Uri,image2 :Uri,image3 :Uri) {
+    private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,distance:String,expirationDate:String,image1 :Uri,image2 :Uri,image3 :Uri) {
+        val data = HashMap<String, String>()
+        data.put("title",reqTitle)
+        data.put("description",description)
+        data.put("contactNumber", phoneNumber)
+        data.put("searchRadius", distance)
+        data.put("expiration", expirationDate)
+        data.put("requestedBy","5ebc27d7e6fe7a77013ecd2a")
+
         MultipartUploadRequest(this, baseUrl)
                 .setMethod("POST")
-                .addParameter("title", reqTitle)
-                .addParameter("description", description)
-                .addParameter("phoneNumber", phoneNumber)
-                .addParameter("searchRadius", distance)
-                .addParameter("expiration", expirationDate)
-//                .addFileToUpload(filePath = temp.toString(), parameterName = "images")
+                .addParameter("data", JSONObject(data as Map<*, *>).toString())
                 .addFileToUpload(filePath = image1.toString(), parameterName = "image1")
                 .addFileToUpload(filePath = image2.toString(), parameterName = "image2")
                 .addFileToUpload(filePath = image3.toString(), parameterName = "image3")
 
                 .subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object : RequestObserverDelegate {
                     override fun onProgress(context: Context, uploadInfo: UploadInfo) {
-                        // do your thing
+                        Toast.makeText(applicationContext,"Rukjaa kutte! We're creating a req.",Toast.LENGTH_SHORT)
                     }
 
                     override fun onSuccess(
@@ -216,7 +221,7 @@ class imageUploadActivity : AppCompatActivity() {
                             serverResponse: ServerResponse
                     ) {
                         // do your thing
-                        Log.e(TAG, "Success: ${serverResponse.bodyString}")
+                        Log.i(TAG, "Success: ${serverResponse.bodyString}")
 
 
                     }

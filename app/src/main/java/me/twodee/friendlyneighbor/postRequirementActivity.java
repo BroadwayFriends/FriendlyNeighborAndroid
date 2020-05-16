@@ -130,7 +130,7 @@ public class postRequirementActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                editTextDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                                editTextDate.setText(year  + "-"  +"0"+(monthOfYear + 1) + "-" + dayOfMonth);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -239,7 +239,7 @@ public class postRequirementActivity extends AppCompatActivity {
              phoneNumber = editTextPhone.getText().toString();
 
              distance = editTextDistance.getText().toString();
-             expirationDate = editTextDate.getText().toString();
+             expirationDate = editTextDate.getText().toString()+"T23:59:00.000Z";
              if (IMAGE_FLAG){
 //                 String[] imageStringPaths = Arrays.copyOf(new ArrayList[]{imageUriArray}, imageUriArray.size(), String[].class);
 
