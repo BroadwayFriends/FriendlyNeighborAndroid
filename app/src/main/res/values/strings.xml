@@ -13,6 +13,7 @@
     <string name="errorInDistance">Please enter a valid distance between 1 and 20 kms.</string>
     <string name="title_activity_pick_location">Map</string>
     <string name="upload_image">"Upload Images "</string>
+    <string name="locationNotPickedError">An error occurred while saving your location,Please try again</string>
     <!--    <string name="dateerror">Enter a valid date</string>-->
 
 </resources>

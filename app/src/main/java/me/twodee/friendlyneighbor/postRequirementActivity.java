@@ -2,6 +2,7 @@ package me.twodee.friendlyneighbor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.appyvet.materialrangebar.RangeBar;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.common.collect.Range;
 
 import org.json.JSONException;
@@ -46,20 +48,27 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class postRequirementActivity extends AppCompatActivity {
     private EditText editTextTitle, editTextDescription, editTextPhone,
-            editTextDate, editTextDistance;
+            editTextDate, editTextDistance,editTextAddress;
 
     private Button buttonSubmit,buttonImageUpload;
     private AwesomeValidation awesomeValidation;
-    String title,description,distance,expirationDate,phoneNumber,imageEncoded;
+    String title,description,radius,expirationDate,phoneNumber,imageEncoded,fullAddress;
     private int mYear, mMonth, mDay;
+    //Images
     int PICK_IMAGE_MULTIPLE = 1;
     List<String> imagesEncodedList;
     private final String TAG = "request" ;
     private boolean IMAGE_FLAG = false;
     ArrayList<String> imageUriArray = new ArrayList<>();
+    //Location
+    int LAUNCH_LOCATION_ACTIVITY = 42;
+    LatLng finalPosition;
+
+
     //    private RangeBar rangebar;
 
 
@@ -72,6 +81,7 @@ public class postRequirementActivity extends AppCompatActivity {
         editTextPhone = (EditText) findViewById(R.id.editTextPhone);
         editTextDistance = (EditText) findViewById(R.id.editTextDistance);
         editTextDate = (EditText) findViewById(R.id.editTextDate);
+        editTextAddress = (EditText) findViewById(R.id.editTextAddress);
 //        rangebar = findViewById(R.id.rangebar1);
 
         buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
@@ -82,7 +92,7 @@ public class postRequirementActivity extends AppCompatActivity {
         awesomeValidation.addValidation(this, R.id.editTextTitle, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.errorInTitle);
         awesomeValidation.addValidation(this, R.id.editTextDescription, "^(?!\\s*$).+", R.string.errorInDescription);
         awesomeValidation.addValidation(this, R.id.editTextPhone, "^[0-9]{10}$", R.string.errorInPhone);
-        awesomeValidation.addValidation(this, R.id.editTextDistance, Range.closed(1, 20), R.string.errorInDistance);
+//        awesomeValidation.addValidation(this, R.id.editTextDistance, Range.closed(1, 20), R.string.errorInDistance);
 //        awesomeValidation.addValidation(this, R.id.editTextDob, "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$", R.string.nameerror);
 
         buttonImageUpload.setOnClickListener(new View.OnClickListener()
@@ -112,6 +122,19 @@ public class postRequirementActivity extends AppCompatActivity {
             }
         });
 
+        editTextDistance.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(postRequirementActivity.this, locationPickerActivity.class);
+                startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
+            }
+        });
+
+
+
+
         editTextDate.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -134,6 +157,7 @@ public class postRequirementActivity extends AppCompatActivity {
 
                             }
                         }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
             }
         });
@@ -162,69 +186,97 @@ public class postRequirementActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        try {
-            // When an Image is picked
-            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
-                    && null != data) {
-                // Get the Image from data
 
-                String[] filePathColumn = { MediaStore.Images.Media._ID };
-                imagesEncodedList = new ArrayList<String>();
-                if(data.getData()!=null){
+        if (requestCode == PICK_IMAGE_MULTIPLE) {
+            try {
+                // When an Image is picked
+                if (resultCode == RESULT_OK
+                        && null != data) {
+                    // Get the Image from data
 
-                    Uri mImageUri=data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media._ID};
+                    imagesEncodedList = new ArrayList<String>();
+                    if (data.getData() != null) {
 
-                    // Get the cursor
-                    Cursor cursor = getContentResolver().query(mImageUri,
-                            filePathColumn, null, null, null);
-                    // Move to first row
-                    cursor.moveToFirst();
+                        Uri mImageUri = data.getData();
 
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    imageEncoded  = cursor.getString(columnIndex);
-                    cursor.close();
+                        // Get the cursor
+                        Cursor cursor = getContentResolver().query(mImageUri,
+                                filePathColumn, null, null, null);
+                        // Move to first row
+                        cursor.moveToFirst();
 
-                } else {
-                    if (data.getClipData() != null) {
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        imageEncoded = cursor.getString(columnIndex);
+                        cursor.close();
 
-                        ClipData mClipData = data.getClipData();
+                    } else {
+                        if (data.getClipData() != null) {
+
+                            ClipData mClipData = data.getClipData();
 //                        ArrayList<Uri> imageUriArray = new ArrayList<Uri>();
-                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+                            for (int i = 0; i < mClipData.getItemCount(); i++) {
 
-                            ClipData.Item item = mClipData.getItemAt(i);
-                            Uri uri = item.getUri();
-                            imageUriArray.add(uri.toString());
-                            // Get the cursor
-                            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
-                            // Move to first row
-                            cursor.moveToFirst();
+                                ClipData.Item item = mClipData.getItemAt(i);
+                                Uri uri = item.getUri();
+                                imageUriArray.add(uri.toString());
+                                // Get the cursor
+                                Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                                // Move to first row
+                                cursor.moveToFirst();
 
-                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                            imageEncoded  = cursor.getString(columnIndex);
-                            imagesEncodedList.add(imageEncoded);
-                            cursor.close();
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                imageEncoded = cursor.getString(columnIndex);
+                                imagesEncodedList.add(imageEncoded);
+                                cursor.close();
 
-                        }
-                        IMAGE_FLAG = true ;
-                        Log.v(TAG, "Selected Images" + imageUriArray.size()+"IMAGE_FLAG :"+ IMAGE_FLAG);
+                            }
+                            IMAGE_FLAG = true;
+                            Log.v(TAG, "Selected Images" + imageUriArray.size() + "IMAGE_FLAG :" + IMAGE_FLAG);
 
 //                        for (int i = 0; i < imageUriArray.size(); i++)
 //                        {
 //                            Log.v(TAG,"Grabbed Image: "+ imageUriArray.get(i) +" with number " +i);
 //                        }
 
+                        }
                     }
+                } else {
+                    Toast.makeText(this, "You haven't picked Image",
+                            Toast.LENGTH_LONG).show();
                 }
-            } else {
-                Toast.makeText(this, "You haven't picked Image",
-                        Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                        .show();
             }
-        } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-                    .show();
         }
+        if (requestCode ==  LAUNCH_LOCATION_ACTIVITY){
+            try {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    assert data != null;
+                    radius = data.getStringExtra("radius");
+                    fullAddress = data.getStringExtra("fullAddress");
+                    finalPosition = data.getExtras().getParcelable("finalPosition");
+//                    Toast.makeText(this, "Addr"+fullAddress, Toast.LENGTH_LONG).show();
+                    editTextAddress.setText(fullAddress);
+                    editTextDistance.setText(radius);
+
+
+
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    Toast.makeText(postRequirementActivity.this, R.string.locationNotPickedError, Toast.LENGTH_SHORT).show();
+                }
+            }
+            catch (Exception e) {
+                Log.v(TAG,e.getStackTrace().toString());
+//                Toast.makeText(this, "Something went wrong: "+ e.getStackTrace(), Toast.LENGTH_LONG)
+//                        .show();
+            }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
     }
 
 
@@ -238,7 +290,7 @@ public class postRequirementActivity extends AppCompatActivity {
              description = editTextDescription.getText().toString();
              phoneNumber = editTextPhone.getText().toString();
 
-             distance = editTextDistance.getText().toString();
+//             radius = editTextDistance.getText().toString();
              expirationDate = editTextDate.getText().toString()+"T23:59:00.000Z";
              if (IMAGE_FLAG){
 //                 String[] imageStringPaths = Arrays.copyOf(new ArrayList[]{imageUriArray}, imageUriArray.size(), String[].class);
@@ -248,7 +300,8 @@ public class postRequirementActivity extends AppCompatActivity {
                  i.putExtra("description",description);
                  i.putExtra("phoneNumber",phoneNumber);
                  i.putExtra("expirationDate",expirationDate);
-                 i.putExtra("distance",distance);
+                 i.putExtra("radius",radius);
+                 i.putExtra("finalPosition",finalPosition);
                  i.putExtra("imageUriArray",imageUriArray);
                  startActivity(i);
              }
@@ -259,7 +312,8 @@ public class postRequirementActivity extends AppCompatActivity {
                  i.putExtra("description",description);
                  i.putExtra("phoneNumber",phoneNumber);
                  i.putExtra("expirationDate",expirationDate);
-                 i.putExtra("distance",distance);
+                 i.putExtra("radius",radius);
+                 i.putExtra("finalPosition",finalPosition);
                  i.putExtra("imageStringPaths",imageStringPaths);
                  startActivity(i);
 

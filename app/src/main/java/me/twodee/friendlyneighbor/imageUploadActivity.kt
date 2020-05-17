@@ -27,7 +27,7 @@ class imageUploadActivity : AppCompatActivity() {
         // Choose the number which is good for you, here I'll use a random one.
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
-        const val baseUrl = "https://670934a3.ngrok.io/api/requests"
+        const val baseUrl = "https://ptsv2.com/t/zbb1v-1589712917/post"
         var filePath = ""
         private var context: Context? = null
         var PICK_IMAGE_MULTIPLE = 1
@@ -49,14 +49,16 @@ class imageUploadActivity : AppCompatActivity() {
             val reqTitle = extras.getString("title").toString()
             val description = extras.getString("description").toString()
             val phoneNumber = extras.getString("phoneNumber").toString()
-            val distance = extras.getString("distance").toString()
+            val radius = extras.getString("radius").toString()
             val expirationDate = extras.getString("expirationDate").toString()
+            val finalPosition = extras.getString("finalPosition").toString()
+
             val temp = extras.getStringArrayList("imageUriArray")
             val image1 = Uri.parse(temp?.get(0))
             val image2 = Uri.parse(temp?.get(1))
             val image3 = Uri.parse(temp?.get(2))
 
-            upload(context = this, lifecycleOwner = this,reqTitle = reqTitle,description = description,phoneNumber = phoneNumber,distance = distance,expirationDate = expirationDate,image1 =image1,image2=image2,image3 = image3)
+            upload(context = this, lifecycleOwner = this,reqTitle = reqTitle,description = description,phoneNumber = phoneNumber,radius = radius,finalPosition=finalPosition,expirationDate = expirationDate,image1 =image1,image2=image2,image3 = image3)
             Log.v(TAG, "title:${reqTitle},description:${description},imageStringPaths:${(image1)}")
         }
 //        pickFile()
@@ -194,14 +196,15 @@ class imageUploadActivity : AppCompatActivity() {
 
 
 
-    private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,distance:String,expirationDate:String,image1 :Uri,image2 :Uri,image3 :Uri) {
+    private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,radius:String,finalPosition:String,expirationDate:String,image1 :Uri,image2 :Uri,image3 :Uri) {
         val data = HashMap<String, String>()
-        data.put("title",reqTitle)
-        data.put("description",description)
-        data.put("contactNumber", phoneNumber)
-        data.put("searchRadius", distance)
-        data.put("expiration", expirationDate)
-        data.put("requestedBy","5ebc27d7e6fe7a77013ecd2a")
+        data["title"] = reqTitle
+        data["description"] = description
+        data["contactNumber"] = phoneNumber
+        data["searchRadius"] = radius
+        data["finalPosition"] = finalPosition
+        data["expiration"] = expirationDate
+        data["requestedBy"] = "5ebc27d7e6fe7a77013ecd2a"
 
         MultipartUploadRequest(this, baseUrl)
                 .setMethod("POST")
@@ -212,7 +215,7 @@ class imageUploadActivity : AppCompatActivity() {
 
                 .subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object : RequestObserverDelegate {
                     override fun onProgress(context: Context, uploadInfo: UploadInfo) {
-                        Toast.makeText(applicationContext,"Rukjaa kutte! We're creating a req.",Toast.LENGTH_SHORT)
+                        Toast.makeText(applicationContext,"Uploading !!",Toast.LENGTH_SHORT)
                     }
 
                     override fun onSuccess(

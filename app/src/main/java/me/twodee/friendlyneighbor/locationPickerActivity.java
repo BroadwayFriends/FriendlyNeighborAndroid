@@ -1,6 +1,10 @@
 package me.twodee.friendlyneighbor;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +34,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
+import java.util.List;
+import java.util.Locale;
+
 public class locationPickerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -52,15 +59,16 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
     private int circleRadius = 1000;
+    private LatLng finalPosition ;
 
-
-    // Used for selecting the current place.
-    private static final int M_MAX_ENTRIES = 5;
-    private String[] mLikelyPlaceNames;
-    private String[] mLikelyPlaceAddresses;
-    private String[] mLikelyPlaceAttributions;
-    private LatLng[] mLikelyPlaceLatLngs;
-
+//
+//    // Used for selecting the current place.
+//    private static final int M_MAX_ENTRIES = 5;
+//    private String[] mLikelyPlaceNames;
+//    private String[] mLikelyPlaceAddresses;
+//    private String[] mLikelyPlaceAttributions;
+//    private LatLng[] mLikelyPlaceLatLngs;
+//
 
 
 
@@ -97,6 +105,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 
 
     }
+
 
 
 
@@ -203,7 +212,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 //                            mMap.addMarker(
 //                                    new MarkerOptions().position(loc).title("Set marker here").draggable(true));
 
-
+                            finalPosition = loc;
                              Circle distanceCircle =  mMap.addCircle(new CircleOptions()
                                     .center(loc)
                                     .radius(circleRadius)
@@ -228,7 +237,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 // Get back the mutable Circle
 //                        Circle circle = mMap.addCircle(circleOptions);
                         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                            int pval = 0;
+
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                                 textViewSeekBar.setText(Integer.toString(progress));
@@ -250,6 +259,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
                             public void onStopTrackingTouch(SeekBar seekBar) {
                                  circleRadius = 1000 * seekBar.getProgress();
                                 LatLng center = mMap.getCameraPosition().target;
+                                finalPosition = center;
                                 Circle resizedCircle =  mMap.addCircle(new CircleOptions()
                                         .center(center)
                                         .radius(circleRadius)
@@ -274,7 +284,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
                             public void onCameraIdle() {
                                 LatLng center = mMap.getCameraPosition().target;
                                 Log.d(TAG, "Pinned at" + center);
-
+                                finalPosition = center;
                                     Circle newCircle =  mMap.addCircle(new CircleOptions()
                                             .center(center)
                                             .radius(circleRadius)
@@ -343,6 +353,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
      void moveDistanceCircle(LatLng newLatlng) {
         if(distanceCircle != null){
             distanceCircle.setCenter(newLatlng);
+            finalPosition =  newLatlng;
             distanceCircle.setVisible(true);
             Log.d(TAG, "Moved to : " + newLatlng);
         }
@@ -368,7 +379,29 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 //
 //    }
 
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
 
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.w(TAG, strReturnedAddress.toString());
+            } else {
+                Log.w(TAG, "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w(TAG, "Canont get Address!");
+        }
+        return strAdd;
+    }
 
 
     @Override
@@ -377,9 +410,28 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
         int id = item.getItemId();
 
         if (id == R.id.saveAsHome) {
+            double lat = finalPosition.latitude;
+            double lng = finalPosition.longitude;
+            String fullAddress =  getCompleteAddressString(lat,lng);
+            Log.v(TAG, "Distance"+ circleRadius +"Position"+finalPosition + "addr" + fullAddress );
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("radius",String.valueOf(circleRadius/1000));
+            returnIntent.putExtra("fullAddress",fullAddress);
+            returnIntent.putExtra("finalPosition",finalPosition);
+
+
+//            returnIntent.putExtra("lat",String.valueOf(lat));
+//            returnIntent.putExtra("lng",String.valueOf(lng));
+            setResult(Activity.RESULT_OK,returnIntent);
+            finish();
+
 
         }
         return super.onOptionsItemSelected(item);
 
     }
+
+
+
+
 }

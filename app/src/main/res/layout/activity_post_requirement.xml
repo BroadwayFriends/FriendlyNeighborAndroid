@@ -57,16 +57,20 @@
 
 
 
+    <EditText
+        android:id="@+id/editTextAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Default Distance"
 
+        />
     <EditText
         android:id="@+id/editTextDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:tag="+"
-        android:hint="Enter the maximum distance in kms "
+        android:hint="Click to Change Location "
 
-        android:inputType="number" />
+        />
 
     <Button
         android:id="@+id/btnUploadImage"
