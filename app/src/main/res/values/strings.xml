@@ -6,4 +6,11 @@
     <string name="next">Next</string>
     <string name="server_client_id">"859996773482-71ssp0dnqmlgt00mk4irumh65oiut7ec.apps.googleusercontent.com"</string>
     <string name="sign_in_page">Sign In Page</string>
+    <string name="invalid_address_1">Please enter valid address line 1</string>
+    <string name="invalid_city">Please enter valid city</string>
+    <string name="invalid_state">Please enter valid state</string>
+    <string name="invalid_country">Please enter valid country</string>
+    <string name="invalid_pincode">Please enter valid pincode</string>
+    <string name="invalid_contact_number">Please enter valid contact number</string>
+    <string name="invalid_address_2">Please enter valid address line 2</string>
 </resources>
