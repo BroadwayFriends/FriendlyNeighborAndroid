@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity
     Button signInPage;
     Button dashboard;
     Button register;
+    Button discover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,6 +24,17 @@ public class MainActivity extends AppCompatActivity
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_main);
+        discover = findViewById(R.id.discover);
+        discover.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, DiscoverActivity.class);
+                startActivity(intent);
+            }
+        });
+
         next = findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener()
         {

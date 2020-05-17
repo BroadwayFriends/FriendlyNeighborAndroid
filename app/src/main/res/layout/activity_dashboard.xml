@@ -123,8 +123,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
@@ -132,6 +130,7 @@
             android:layout_height="120dp"
             app:cardElevation="2dp"
             android:layout_weight="1"
+            android:layout_margin="8dp"
             app:cardCornerRadius="14dp"
             android:clickable="true"
             android:focusable="true">
@@ -163,6 +162,7 @@
             android:layout_height="120dp"
             app:cardElevation="2dp"
             android:layout_marginLeft="10dp"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
             android:clickable="true"
@@ -195,8 +195,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
@@ -204,6 +202,7 @@
             android:layout_height="120dp"
             app:cardElevation="2dp"
             android:layout_weight="1"
+            android:layout_margin="8dp"
             app:cardCornerRadius="14dp"
             android:clickable="true"
             android:focusable="true">
@@ -236,6 +235,7 @@
             app:cardElevation="2dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:layout_margin="8dp"
             app:cardCornerRadius="14dp"
             android:clickable="true"
             android:focusable="true">
@@ -267,8 +267,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
@@ -277,6 +275,7 @@
             app:cardElevation="2dp"
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
+            android:layout_margin="8dp"
             android:clickable="true"
             android:focusable="true">
 
@@ -306,7 +305,7 @@
             android:layout_width="180dp"
             android:layout_height="120dp"
             app:cardElevation="2dp"
-            android:layout_marginLeft="10dp"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
             android:clickable="true"
