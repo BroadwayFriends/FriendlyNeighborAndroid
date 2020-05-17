@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class MainActivity extends AppCompatActivity
 {
-    Button next, signInPage, dashboard, register, discover, payment, profile, testButton;
+    Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, testButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -103,14 +103,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        testButton = findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
+        postDetails = findViewById(R.id.postDetails);
+        postDetails.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.BottomSheet);
-                View bottomSheet = LayoutInflater.from(getApplicationContext()).inflate(R.layout.profile_bottom_sheet, (LinearLayout) findViewById(R.id.bottomSheetContent));
-                bottomSheetDialog.setContentView(bottomSheet);
-                bottomSheetDialog.show();
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, PostDetailsActivity.class);
+                startActivity(intent);
             }
         });
     }

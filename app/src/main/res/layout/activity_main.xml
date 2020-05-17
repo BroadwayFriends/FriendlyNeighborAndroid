@@ -99,4 +99,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile" />
+
+    <Button
+        android:id="@+id/postDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post Details"
+        app:layout_constraintBottom_toTopOf="@+id/next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dashoard" />
 </androidx.constraintlayout.widget.ConstraintLayout>
