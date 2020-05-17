@@ -3,6 +3,7 @@ package me.twodee.friendlyneighbor;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,6 +38,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     AwesomeValidation awesomeValidation;
 
+    SharedPreferences preferences;
+
     String addr1, addr2, cty, st, cntry, cno;
     int pc;
 
@@ -58,6 +61,8 @@ public class RegistrationActivity extends AppCompatActivity {
         submitButton = findViewById(R.id.submitButton);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
         //Validations
         awesomeValidation.addValidation(this, R.id.addressLine1, RegexTemplate.NOT_EMPTY, R.string.invalid_address_1);
@@ -94,9 +99,12 @@ public class RegistrationActivity extends AppCompatActivity {
     void sendRegistrationData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject object = new JSONObject();
+
+        String userId = preferences.getString("_id", null);
         try {
             //input your API parameters
-            object.put("id", "5ebc27d7e6fe7a77013ecd2a");  // hardcoded for the time being
+//            object.put("id", userId);  // hardcoded for the time being
+            object.put("id", userId);
             object.put("address1", addr1);
             object.put("address2", addr2);
             object.put("city", cty);
@@ -111,7 +119,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.w("Regi Data", object.toString());
 
         // Enter the correct url for your api service site
-        String url = "https://1687298c.ngrok.io/api/users/register";
+        String url = "https://a50cf689.ngrok.io/api/users/register";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override

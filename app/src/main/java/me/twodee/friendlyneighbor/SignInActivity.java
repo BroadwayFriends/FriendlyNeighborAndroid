@@ -3,6 +3,7 @@ package me.twodee.friendlyneighbor;
 import android.app.ProgressDialog;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +45,8 @@ public class SignInActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     String idToken;
 
-
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
 
     // RequestQueue For Handle Network Request
@@ -57,6 +59,9 @@ public class SignInActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_sign_in);
+
+        preferences = getApplicationContext().getSharedPreferences("UserDetails", MODE_PRIVATE);
+        editor = preferences.edit();
 
 
         //Initializing Views
@@ -111,7 +116,7 @@ public class SignInActivity extends AppCompatActivity {
         Log.w("Sign In Data", object.toString());
 
         // Enter the correct url for your api service site
-        String url = "https://3dbe635e.ngrok.io/api/users/login";
+        String url = "https://a50cf689.ngrok.io/api/users/login";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -119,6 +124,10 @@ public class SignInActivity extends AppCompatActivity {
                         Log.w("ServerResponse", response.toString());
 
                         try {
+
+                            editor.putString("_id", response.getJSONObject("user").getString("_id"));
+//                            editor.apply();
+                            boolean committed = editor.commit();
                             boolean userStatus = response.getBoolean("newUser");
 
                             if (userStatus == true) {
@@ -126,6 +135,10 @@ public class SignInActivity extends AppCompatActivity {
                             } else {
                                 startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
                             }
+
+                            String idREceived = preferences.getString("_id", null);
+                            Log.w("SP Status", String.valueOf(committed));
+                            Log.w("Shared Preferences Data", idREceived);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -138,6 +151,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(jsonObjectRequest);
+
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
