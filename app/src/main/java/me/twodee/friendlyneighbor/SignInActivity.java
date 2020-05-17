@@ -129,7 +129,6 @@ public class SignInActivity extends AppCompatActivity {
                             editor.putString("_id", response.getJSONObject("user").getString("_id"));
                             editor.putString("email", response.getJSONObject("user").getString("email"));
                             editor.putString("name", response.getJSONObject("user").getString("name"));
-                            editor.putString("contactNumber", response.getJSONObject("user").getString("contactNumber"));
 //                            editor.apply();
                             boolean committed = editor.commit();
                             boolean userStatus = response.getBoolean("newUser");
@@ -144,13 +143,11 @@ public class SignInActivity extends AppCompatActivity {
                             String uidReceived = preferences.getString("uid", null);
                             String emailReceived = preferences.getString("email", null);
                             String nameReceived = preferences.getString("name", null);
-                            String contactNumberReceived = preferences.getString("contactNumber", null);
                             Log.w("SP Status", String.valueOf(committed));
                             Log.w("Shared Preferences Data", idReceived);
                             Log.w("Shared Preferences Data", uidReceived);
                             Log.w("Shared Preferences Data", emailReceived);
                             Log.w("Shared Preferences Data", nameReceived);
-                            Log.w("Shared Preferences Data", contactNumberReceived);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -177,7 +174,7 @@ public class SignInActivity extends AppCompatActivity {
             postData();
 
             // Signed in successfully, show authenticated UI.
-            startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
+//            startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
