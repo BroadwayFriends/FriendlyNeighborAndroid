@@ -116,7 +116,7 @@ public class SignInActivity extends AppCompatActivity {
         Log.w("Sign In Data", object.toString());
 
         // Enter the correct url for your api service site
-        String url = "https://a50cf689.ngrok.io/api/users/login";
+        String url = "https://7a4d6a44.ngrok.io/api/users/login";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -125,7 +125,11 @@ public class SignInActivity extends AppCompatActivity {
 
                         try {
 
+                            editor.putString("uid", response.getJSONObject("user").getString("uid"));
                             editor.putString("_id", response.getJSONObject("user").getString("_id"));
+                            editor.putString("email", response.getJSONObject("user").getString("email"));
+                            editor.putString("name", response.getJSONObject("user").getString("name"));
+                            editor.putString("contactNumber", response.getJSONObject("user").getString("contactNumber"));
 //                            editor.apply();
                             boolean committed = editor.commit();
                             boolean userStatus = response.getBoolean("newUser");
@@ -136,9 +140,17 @@ public class SignInActivity extends AppCompatActivity {
                                 startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
                             }
 
-                            String idREceived = preferences.getString("_id", null);
+                            String idReceived = preferences.getString("_id", null);
+                            String uidReceived = preferences.getString("uid", null);
+                            String emailReceived = preferences.getString("email", null);
+                            String nameReceived = preferences.getString("name", null);
+                            String contactNumberReceived = preferences.getString("contactNumber", null);
                             Log.w("SP Status", String.valueOf(committed));
-                            Log.w("Shared Preferences Data", idREceived);
+                            Log.w("Shared Preferences Data", idReceived);
+                            Log.w("Shared Preferences Data", uidReceived);
+                            Log.w("Shared Preferences Data", emailReceived);
+                            Log.w("Shared Preferences Data", nameReceived);
+                            Log.w("Shared Preferences Data", contactNumberReceived);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
