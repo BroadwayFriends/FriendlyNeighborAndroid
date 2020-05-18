@@ -234,7 +234,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <ToggleButton
-                            android:id="@+id/button_favorite1"
+                            android:id="@+id/button_favorite2"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:background="@drawable/button_favorite"
@@ -243,7 +243,7 @@
                             android:textOff=""
                             android:textOn=""/>
                         <CheckBox
-                            android:id="@+id/icon"
+                            android:id="@+id/icon2"
                             android:layout_marginLeft="8dp"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
