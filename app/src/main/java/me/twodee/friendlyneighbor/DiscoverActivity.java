@@ -146,32 +146,8 @@ public class DiscoverActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         final String id = preferences.getString("_id", null);
         String userId = preferences.getString("uid", null);
-//
+
         String url = "https://4112a99e.ngrok.io/api/requests/" + userId;
-////                GET REQUEST to https://4112a99e.ngrok.io/api/requests/<uid_comes_here>
-//
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-//                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-//
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.w("Discover Response", response.toString());
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.w("ServerError", error);
-//                    }
-//                }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String>  params = new HashMap<String, String>();
-//                params.put("_id", id);
-//
-//                return params;
-//            }
-//        };
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
