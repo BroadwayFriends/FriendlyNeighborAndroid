@@ -16,6 +16,7 @@ import net.gotev.uploadservice.observer.request.RequestObserverDelegate
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class imageUploadActivity : AppCompatActivity() {
@@ -26,7 +27,7 @@ class imageUploadActivity : AppCompatActivity() {
         // Choose the number which is good for you, here I'll use a random one.
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
-        const val baseUrl = "https://4112a99e.ngrok.io/api/requests"
+        const val baseUrl = "https://c7e610f7.ngrok.io/api/requests"
         var image1: Uri = Uri.EMPTY
         var image2: Uri = Uri.EMPTY
         var image3: Uri = Uri.EMPTY
@@ -75,7 +76,7 @@ class imageUploadActivity : AppCompatActivity() {
 
     private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,radius:String,lat:String,lng:String,expirationDate:String, priceQuote:String,imageUriArray :ArrayList<String>) {
         val data = HashMap<String, String>()
-
+        val location = HashMap<String,String>()
 //        data.put("requestedBy","5ebc27d7e6fe7a77013ecd2a")
 //        data.put("title",reqTitle)
 //        data.put("description",description)
@@ -85,42 +86,44 @@ class imageUploadActivity : AppCompatActivity() {
 //        data.put("priceQuote",priceQuote)
 //        data.put("expiration",expirationDate)
 
+
         data["title"] = reqTitle
         data["description"] = description
         data["contactNumber"] = phoneNumber
         data["searchRadius"] = radius
-        data["finalPosition"] = "{lat:$lat,lng:$lng}"
+        data["location"] = "{\"latitude\":$lat,\"longitude\":$lng}"
         data["expiration"] = expirationDate
-        data["priceQuote"] = priceQuote
+        data["cost"] = priceQuote
         data["requestedBy"] = "5ebc27d7e6fe7a77013ecd2a"
 
-        var imageCount = imageUriArray?.size
+        val imageCount = imageUriArray.size
         Log.v(TAG, "Size$imageCount")
 
 
         val reqObj = MultipartUploadRequest(this, baseUrl)
                 .setMethod("POST")
                 .addParameter("data", JSONObject(data as Map<*, *>).toString())
+                .addParameter("uid", "d8586cbd")
                 .addHeader("_id","5ec166d582bc531c24eba282")
 
 
                 when (imageCount) {
                         1 -> {
-                            image1 = Uri.parse(imageUriArray?.get(0))
+                            image1 = Uri.parse(imageUriArray.get(0))
                             reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
                             Log.v(TAG,"Only 1 image selected")
                         }
                         2 -> {
-                            image1 = Uri.parse(imageUriArray?.get(0))
-                            image2 = Uri.parse(imageUriArray?.get(1))
+                            image1 = Uri.parse(imageUriArray.get(0))
+                            image2 = Uri.parse(imageUriArray.get(1))
                             reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
                             reqObj.addFileToUpload(filePath = image2.toString(), parameterName = "image2")
                             Log.v(TAG,"Only 2 images selected")
                         }
                         3 -> {
-                            image1 = Uri.parse(imageUriArray?.get(0))
-                            image2 = Uri.parse(imageUriArray?.get(1))
-                            image3 = Uri.parse(imageUriArray?.get(2))
+                            image1 = Uri.parse(imageUriArray.get(0))
+                            image2 = Uri.parse(imageUriArray.get(1))
+                            image3 = Uri.parse(imageUriArray.get(2))
                             reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
                             reqObj.addFileToUpload(filePath = image2.toString(), parameterName = "image2")
                             reqObj.addFileToUpload(filePath = image3.toString(), parameterName = "image3")

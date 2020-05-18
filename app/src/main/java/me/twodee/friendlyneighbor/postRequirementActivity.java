@@ -377,7 +377,7 @@ public class postRequirementActivity extends AppCompatActivity {
             i.putExtra("radius",radius);
             i.putExtra("lat",String.valueOf( finalPosition.latitude));
             i.putExtra("lng",String.valueOf( finalPosition.longitude));
-            i.putExtra("priceQuote",priceQuote);
+            i.putExtra("priceQuote",priceQuote.substring(1));
              if (IMAGE_FLAG){
 //                 String[] imageStringPaths = Arrays.copyOf(new ArrayList[]{imageUriArray}, imageUriArray.size(), String[].class);
                  i.putExtra("imageUriArray",imageUriArray);
