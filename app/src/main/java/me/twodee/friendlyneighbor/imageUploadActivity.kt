@@ -35,7 +35,8 @@ class imageUploadActivity : AppCompatActivity() {
         lateinit var imagePath: String
         var imagesPathList: MutableList<String> = arrayListOf()
 
-// https://ptsv2.com/t/bp3of-1589775457/post
+// "https://ptsv2.com/t/pt68f-1589802042/post"
+// "https://4112a99e.ngrok.io/api/requests"
 
     }
 
@@ -51,15 +52,16 @@ class imageUploadActivity : AppCompatActivity() {
             val phoneNumber = extras.getString("phoneNumber").toString()
             val radius = extras.getString("radius").toString()
             val expirationDate = extras.getString("expirationDate").toString()
-            val finalPosition = extras.getString("finalPosition").toString()
+            val lat = extras.getString("lat").toString()
+            val lng = extras.getString("lng").toString()
             val priceQuote = extras.getString("priceQuote").toString()
 
             val imageUriArray = extras.getStringArrayList("imageUriArray")
 
             Log.v(TAG, "Size : ${imageUriArray}")
             if (imageUriArray != null) {
-                upload(context = this, lifecycleOwner = this,reqTitle = reqTitle,description = description,phoneNumber = phoneNumber,radius = radius,finalPosition=finalPosition,expirationDate = expirationDate,priceQuote= priceQuote,imageUriArray = imageUriArray )
-                Log.v(TAG, "title:${reqTitle},description:${description},finalPosition:${(finalPosition)}")
+                upload(context = this, lifecycleOwner = this,reqTitle = reqTitle,description = description,phoneNumber = phoneNumber,radius = radius,lat=lat,lng=lng,expirationDate = expirationDate,priceQuote= priceQuote,imageUriArray = imageUriArray )
+                Log.v(TAG, "title:${reqTitle},description:${description},finalPosition:${(lat)}")
             }
 
         }
@@ -71,13 +73,23 @@ class imageUploadActivity : AppCompatActivity() {
 
 
 
-    private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,radius:String,finalPosition:String,expirationDate:String, priceQuote:String,imageUriArray :ArrayList<String>) {
+    private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,radius:String,lat:String,lng:String,expirationDate:String, priceQuote:String,imageUriArray :ArrayList<String>) {
         val data = HashMap<String, String>()
+
+//        data.put("requestedBy","5ebc27d7e6fe7a77013ecd2a")
+//        data.put("title",reqTitle)
+//        data.put("description",description)
+//        data.put("contactNumber",phoneNumber)
+//        data.put("searchRadius",radius)
+//        data.put("finalPosition","{lat:$lat,lng:$lng}")
+//        data.put("priceQuote",priceQuote)
+//        data.put("expiration",expirationDate)
+
         data["title"] = reqTitle
         data["description"] = description
         data["contactNumber"] = phoneNumber
         data["searchRadius"] = radius
-        data["finalPosition"] = finalPosition
+        data["finalPosition"] = "{lat:$lat,lng:$lng}"
         data["expiration"] = expirationDate
         data["priceQuote"] = priceQuote
         data["requestedBy"] = "5ebc27d7e6fe7a77013ecd2a"
@@ -86,39 +98,39 @@ class imageUploadActivity : AppCompatActivity() {
         Log.v(TAG, "Size$imageCount")
 
 
-        var reqObj = MultipartUploadRequest(this, baseUrl)
+        val reqObj = MultipartUploadRequest(this, baseUrl)
                 .setMethod("POST")
                 .addParameter("data", JSONObject(data as Map<*, *>).toString())
                 .addHeader("_id","5ec166d582bc531c24eba282")
 
+
+                when (imageCount) {
+                        1 -> {
+                            image1 = Uri.parse(imageUriArray?.get(0))
+                            reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
+                            Log.v(TAG,"Only 1 image selected")
+                        }
+                        2 -> {
+                            image1 = Uri.parse(imageUriArray?.get(0))
+                            image2 = Uri.parse(imageUriArray?.get(1))
+                            reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
+                            reqObj.addFileToUpload(filePath = image2.toString(), parameterName = "image2")
+                            Log.v(TAG,"Only 2 images selected")
+                        }
+                        3 -> {
+                            image1 = Uri.parse(imageUriArray?.get(0))
+                            image2 = Uri.parse(imageUriArray?.get(1))
+                            image3 = Uri.parse(imageUriArray?.get(2))
+                            reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
+                            reqObj.addFileToUpload(filePath = image2.toString(), parameterName = "image2")
+                            reqObj.addFileToUpload(filePath = image3.toString(), parameterName = "image3")
+                            Log.v(TAG,"All 3 selected")
+                        }
+                    else -> {
 //
-//                when (imageCount) {
-//                        1 -> {
-//                            image1 = Uri.parse(imageUriArray?.get(0))
-//                            reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
-//                            Log.v(TAG,"Only 1 image selected")
-//                        }
-//                        2 -> {
-//                            image1 = Uri.parse(imageUriArray?.get(0))
-//                            image2 = Uri.parse(imageUriArray?.get(1))
-//                            reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
-//                            reqObj.addFileToUpload(filePath = image2.toString(), parameterName = "image2")
-//                            Log.v(TAG,"Only 2 images selected")
-//                        }
-//                        3 -> {
-//                            image1 = Uri.parse(imageUriArray?.get(0))
-//                            image2 = Uri.parse(imageUriArray?.get(1))
-//                            image3 = Uri.parse(imageUriArray?.get(2))
-//                            reqObj.addFileToUpload(filePath = image1.toString(), parameterName = "image1")
-//                            reqObj.addFileToUpload(filePath = image2.toString(), parameterName = "image2")
-//                            reqObj.addFileToUpload(filePath = image3.toString(), parameterName = "image3")
-//                            Log.v(TAG,"All 3 selected")
-//                        }
-//                    else -> {
-////
-//                    }
-//                 }
-            .subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object : RequestObserverDelegate {
+                    }
+                 }
+            reqObj.subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object : RequestObserverDelegate {
                             override fun onProgress(context: Context, uploadInfo: UploadInfo) {
                                 Toast.makeText(applicationContext,"Uploading !!",Toast.LENGTH_SHORT)
                             }
@@ -163,7 +175,7 @@ class imageUploadActivity : AppCompatActivity() {
                                 // do your thing
                             }
                         })
-
+                reqObj.setUploadID("request")
 
 
 
