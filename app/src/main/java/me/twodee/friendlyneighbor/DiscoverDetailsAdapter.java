@@ -37,7 +37,7 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
         DiscoverDetails discoverDetails = discoverDetailsList.get(position);
         holder.typeTV.setText(discoverDetails.getDiscoverType());
         holder.personTV.setText(discoverDetails.getDiscoverPerson());
-        holder.distanceTV.setText(String.valueOf(discoverDetails.getDiscoverDistance()));
+        holder.distanceTV.setText(String.valueOf(discoverDetails.getDiscoverPrice()));
         holder.timeTV.setText(discoverDetails.getDiscoverTime());
 
     }
@@ -56,7 +56,7 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
 
             typeTV = (TextView) itemView.findViewById(R.id.discover_type);
             personTV = (TextView) itemView.findViewById(R.id.discover_person);
-            distanceTV = (TextView) itemView.findViewById(R.id.discover_distance);
+            distanceTV = (TextView) itemView.findViewById(R.id.discover_price);
             timeTV = (TextView) itemView.findViewById(R.id.discover_time);
 
         }

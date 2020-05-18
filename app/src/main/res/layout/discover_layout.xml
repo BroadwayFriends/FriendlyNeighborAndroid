@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
                             <TextView
-                                android:id="@+id/discover_distance"
+                                android:id="@+id/discover_price"
                                 android:layout_gravity="left"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
                                 android:fontFamily="@font/product_sans_regular"
-                                android:text="meters away"/>
+                                android:text="is the cost"/>
 
                         </LinearLayout>
                         <LinearLayout
