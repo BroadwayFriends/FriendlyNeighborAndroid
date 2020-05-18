@@ -3,9 +3,12 @@ package me.twodee.friendlyneighbor;
 import android.app.ProgressDialog;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +45,8 @@ public class SignInActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     String idToken;
 
-
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
 
     // RequestQueue For Handle Network Request
@@ -51,7 +55,14 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_sign_in);
+
+        preferences = getApplicationContext().getSharedPreferences("UserDetails", MODE_PRIVATE);
+        editor = preferences.edit();
+
 
         //Initializing Views
         signInButton = findViewById(R.id.sign_in_button);
@@ -101,13 +112,37 @@ public class SignInActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.w("Sign In Data", object.toString());
+
         // Enter the correct url for your api service site
-        String url = "https://1e25fe3d.ngrok.io/api/users/login";
+        String url = "https://a50cf689.ngrok.io/api/users/login";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.w("ServerResponse", response.toString());
+
+                        try {
+
+                            editor.putString("_id", response.getJSONObject("user").getString("_id"));
+//                            editor.apply();
+                            boolean committed = editor.commit();
+                            boolean userStatus = response.getBoolean("newUser");
+
+                            if (userStatus == true) {
+                                startActivity(new Intent(SignInActivity.this, RegistrationActivity.class));
+                            } else {
+                                startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
+                            }
+
+                            String idREceived = preferences.getString("_id", null);
+                            Log.w("SP Status", String.valueOf(committed));
+                            Log.w("Shared Preferences Data", idREceived);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -116,6 +151,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(jsonObjectRequest);
+
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -124,10 +160,12 @@ public class SignInActivity extends AppCompatActivity {
             idToken = account.getIdToken();
             Log.w("ID_TOKEN", idToken);
 
+            Log.w("Sign In Data", idToken.toString());
+
             postData();
 
             // Signed in successfully, show authenticated UI.
-            startActivity(new Intent(SignInActivity.this, SignInUserDetails.class));
+            startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -138,7 +176,6 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
@@ -151,7 +188,7 @@ public class SignInActivity extends AppCompatActivity {
             postData();
 
             Toast.makeText(SignInActivity.this, "Already Signed In !!!", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(SignInActivity.this, SignInUserDetails.class));
+            startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
         }
 
         super.onStart();
