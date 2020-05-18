@@ -35,6 +35,7 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
     public void onBindViewHolder(@NonNull DiscoverDetailsViewHolder holder, int position) {
 
         DiscoverDetails discoverDetails = discoverDetailsList.get(position);
+        holder.titleTV.setText(discoverDetails.getDiscoverTitle());
         holder.typeTV.setText(discoverDetails.getDiscoverType());
         holder.personTV.setText(discoverDetails.getDiscoverPerson());
         holder.distanceTV.setText(String.valueOf(discoverDetails.getDiscoverPrice()));
@@ -49,11 +50,12 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
 
     class DiscoverDetailsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView typeTV, personTV, distanceTV, timeTV;
+        TextView titleTV, typeTV, personTV, distanceTV, timeTV;
 
         public DiscoverDetailsViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            titleTV = (TextView) itemView.findViewById(R.id.discover_title);
             typeTV = (TextView) itemView.findViewById(R.id.discover_type);
             personTV = (TextView) itemView.findViewById(R.id.discover_person);
             distanceTV = (TextView) itemView.findViewById(R.id.discover_price);

@@ -1,14 +1,19 @@
 package me.twodee.friendlyneighbor;
 
 public class DiscoverDetails {
-    private String discoverType, discoverPerson, discoverTime;
+    private String discoverTitle, discoverType, discoverPerson, discoverTime;
     private float discoverPrice;
 
-    public DiscoverDetails(String discoverType, String discoverPerson, String discoverTime, float discoverPrice) {
+    public DiscoverDetails(String discoverTitle, String discoverType, String discoverPerson, String discoverTime, float discoverPrice) {
+        this.discoverTitle = discoverTitle;
         this.discoverType = discoverType;
         this.discoverPerson = discoverPerson;
         this.discoverTime = discoverTime;
         this.discoverPrice = discoverPrice;
+    }
+
+    public String getDiscoverTitle() {
+        return discoverTitle;
     }
 
     public String getDiscoverType() {
