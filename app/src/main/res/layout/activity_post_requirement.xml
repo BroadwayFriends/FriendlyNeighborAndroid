@@ -1,42 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="me.twodee.friendlyneighbor.postRequirementActivity">
 
-    <EditText
-        android:id="@+id/editTextTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
 
-        android:hint="Add a title to your request."
-        android:inputType="textEmailSubject" />
-
-    <EditText
-        android:id="@+id/editTextDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:lines="4"
-        android:scrollbars="vertical"
-        android:hint="Describe why you need you need this article"
-        android:inputType="text" />
-
-
-    <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter your phone number"
-        android:inputType= "text" />
-
-<!--    <EditText-->
+    <!--    <EditText-->
 <!--        android:id="@+id/editTextDate"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
@@ -45,74 +16,166 @@
 <!--        android:ems="10"-->
 <!--        android:hint="Select an expiration date for the request."  />-->
 
+
     <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="417dp"
+        android:layout_height="88dp"
+
+        android:ems="10"
+        android:hint="Add a title to your request."
+        android:inputType="textEmailSubject"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="440dp"
+        android:layout_height="111dp"
+        android:ems="10"
+        android:hint="Describe why you need you need this article"
+        android:inputType="text"
+        android:lines="4"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.159" />
+
+    <EditText
+        android:id="@+id/editTextPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextDate"
-        android:hint="Set expiration date for your request"
+        android:ems="10"
+        android:hint="Enter your phone number"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.306" />
 
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="0.0"
 
-        />
+        android:hint="Set expiration date for your request"
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.371" />
 
+    <Spinner
+        android:id="@+id/spinnerChooseLocation"
+        android:layout_width="387dp"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.549" />
 
     <EditText
         android:id="@+id/editTextAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Default Distance"
+        android:layout_width="229dp"
+        android:layout_height="106dp"
+        android:hint="Click to Change Location "
+        android:importantForAutofill="no"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.675" />
 
-        />
     <EditText
         android:id="@+id/editTextDistance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Click to Change Location "
+        android:layout_width="158dp"
+        android:layout_height="41dp"
+        android:hint="Default Distance"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.611" />
 
-        />
+    <EditText
+        android:id="@+id/editTextPrice"
+        android:layout_width="95dp"
+        android:layout_height="45dp"
+        android:hint="Enter price in INR"
+
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.806"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.469" />
+
+    <Switch
+        android:id="@+id/switchPrice"
+        android:layout_width="96dp"
+        android:layout_height="39dp"
+        android:showText="true"
+        android:textOff="No"
+        android:textOn="Yes"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.019"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="398dp"
+        android:layout_height="75dp"
+        android:text="Do you want to add a price quote to your request?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.461" />
 
     <Button
         android:id="@+id/btnUploadImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="151dp"
+        android:layout_height="55dp"
         android:text="@string/upload_image"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.803" />
 
     <Button
         android:id="@+id/buttonSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:layout_width="182dp"
+        android:layout_height="75dp"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.955" />
 
-<!--    <com.appyvet.materialrangebar.RangeBar-->
-<!--        android:id="@+id/rangebar1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="40dp"-->
-<!--        android:layout_marginEnd="40dp"-->
-<!--        app:mrb_barWeight="2dp"-->
-<!--        app:mrb_connectingLineColors="blue"-->
-<!--        app:mrb_connectingLineWeight="4dp"-->
-<!--        app:mrb_leftThumbColor="#FFB300"-->
-<!--        app:mrb_minThumbDistance="-1"-->
-<!--        app:mrb_pinColor="#6c3f6a"-->
-<!--        app:mrb_pinMaxFont="15sp"-->
-<!--        app:mrb_pinMinFont="12sp"-->
-<!--        app:mrb_pinRadius="14dp"-->
-<!--        app:mrb_pinTextColor="white"-->
-<!--        app:mrb_rangeBar="false"-->
-<!--        app:mrb_rangeBarPaddingBottom="30dp"-->
-<!--        app:mrb_rangeBar_rounded="true"-->
-<!--        app:mrb_rightThumbColor="#1E88E5"-->
-<!--        app:mrb_temporaryPins="true"-->
-<!--        app:mrb_thumbBoundarySize="2dp"-->
-<!--        app:mrb_thumbSize="10dp"-->
-<!--        app:mrb_tickDefaultLabel="label"-->
-<!--        app:mrb_tickEnd="10"-->
-<!--        app:mrb_tickHeight="4dp"-->
-<!--        app:mrb_tickInterval="1"-->
-<!--        app:mrb_tickLabelSize="4sp"-->
-<!--        app:mrb_tickStart="1" />-->
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
