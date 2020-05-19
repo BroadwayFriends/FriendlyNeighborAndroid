@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class MainActivity extends AppCompatActivity
 {
-    Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, testButton;
+    Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, historyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -110,6 +110,17 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(MainActivity.this, PostDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        historyButton = findViewById(R.id.historyButton);
+        historyButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
             }
         });
