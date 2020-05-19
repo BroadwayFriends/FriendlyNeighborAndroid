@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class DashboardActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     Button sign_out;
     TextView nameTV, emailTV;
+    LinearLayout editProfileButton;
 
     String personName, personEmail;
 
@@ -39,6 +41,17 @@ public class DashboardActivity extends AppCompatActivity {
         sign_out = findViewById(R.id.sign_out_button);
         nameTV = findViewById(R.id.name);
         emailTV = findViewById(R.id.email);
+        editProfileButton = findViewById(R.id.editProfieButton);
+
+        editProfileButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
