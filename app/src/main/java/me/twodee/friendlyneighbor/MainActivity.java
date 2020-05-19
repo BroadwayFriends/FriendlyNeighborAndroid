@@ -3,18 +3,20 @@ package me.twodee.friendlyneighbor;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class MainActivity extends AppCompatActivity
 {
-    Button next;
-    Button signInPage;
-    Button dashboard;
-    Button register;
-    Button discover;
+    Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, testButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,6 +77,39 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        payment = findViewById(R.id.payment);
+        payment.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        profile = findViewById(R.id.profile);
+        profile.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        postDetails = findViewById(R.id.postDetails);
+        postDetails.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, PostDetailsActivity.class);
                 startActivity(intent);
             }
         });
