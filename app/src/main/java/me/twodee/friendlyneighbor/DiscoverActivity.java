@@ -1,6 +1,7 @@
 package me.twodee.friendlyneighbor;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -34,6 +36,8 @@ public class DiscoverActivity extends AppCompatActivity {
 
     List<DiscoverDetails> discoverDetailsList;
 
+    SearchView searchView;
+
     SharedPreferences preferences;
 
     @Override
@@ -50,95 +54,112 @@ public class DiscoverActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        searchView = (SearchView) findViewById(R.id.discover_search_view);
+
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
 
         //Adding dummy static data
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Maggi",
-//                        "Request",
-//                        "Akhil",
-//                        "10:00 PM",
-//                        100));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Saabun",
-//                        "Giveaway",
-//                        "Agni",
-//                        "09:00 PM",
-//                        270));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Kitaab",
-//                        "Giveaway",
-//                        "Dediyaman",
-//                        "07:00 AM",
-//                        100.5f));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Hathoda",
-//                        "Request",
-//                        "Ritwik",
-//                        "5:30 PM",
-//                        87.8f));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Torch",
-//                        "Giveaway",
-//                        "Priyam",
-//                        "10:10 AM",
-//                        700));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Banyaan",
-//                        "Request",
-//                        "Akhil",
-//                        "10:00 PM",
-//                        100));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Mouse",
-//                        "Giveaway",
-//                        "Agni",
-//                        "09:00 PM",
-//                        270));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Eldoper",
-//                        "Giveaway",
-//                        "Dediyaman",
-//                        "07:00 AM",
-//                        100.5f));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Ande",
-//                        "Request",
-//                        "Ritwik",
-//                        "5:30 PM",
-//                        87.8f));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Jumping wire",
-//                        "Giveaway",
-//                        "Priyam",
-//                        "10:10 AM",
-//                        700));
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Maggi",
+                        "Request",
+                        "Akhil",
+                        "10:00 PM",
+                        100));
 
-        loadDiscoverData();
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Saabun",
+                        "Giveaway",
+                        "Agni",
+                        "09:00 PM",
+                        270));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Kitaab",
+                        "Giveaway",
+                        "Dediyaman",
+                        "07:00 AM",
+                        100.5f));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Hathoda",
+                        "Request",
+                        "Ritwik",
+                        "5:30 PM",
+                        87.8f));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Torch",
+                        "Giveaway",
+                        "Priyam",
+                        "10:10 AM",
+                        700));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Banyaan",
+                        "Request",
+                        "Akhil",
+                        "10:00 PM",
+                        100));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Mouse",
+                        "Giveaway",
+                        "Agni",
+                        "09:00 PM",
+                        270));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Eldoper",
+                        "Giveaway",
+                        "Dediyaman",
+                        "07:00 AM",
+                        100.5f));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Ande",
+                        "Request",
+                        "Ritwik",
+                        "5:30 PM",
+                        87.8f));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Jumping wire",
+                        "Giveaway",
+                        "Priyam",
+                        "10:10 AM",
+                        700));
+
+//        loadDiscoverData();
 
 
         discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList);
         recyclerView.setAdapter(discoverDetailsAdapter);
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                discoverDetailsAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     private void loadDiscoverData() {

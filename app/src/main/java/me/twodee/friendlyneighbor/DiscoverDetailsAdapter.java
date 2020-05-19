@@ -4,21 +4,26 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetailsAdapter.DiscoverDetailsViewHolder> {
+public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetailsAdapter.DiscoverDetailsViewHolder> implements Filterable {
 
     private Context mCtx;
     private List<DiscoverDetails> discoverDetailsList;
+    private List<DiscoverDetails> discoverDetailsListFull;
 
     public DiscoverDetailsAdapter(Context mCtx, List<DiscoverDetails> discoverDetailsList) {
         this.mCtx = mCtx;
         this.discoverDetailsList = discoverDetailsList;
+        discoverDetailsListFull = new ArrayList<>(discoverDetailsList);
     }
 
     @NonNull
@@ -47,6 +52,44 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
     public int getItemCount() {
         return discoverDetailsList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return discoverFilter;
+    }
+
+    private Filter discoverFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<DiscoverDetails> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(discoverDetailsListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for(DiscoverDetails item : discoverDetailsListFull) {
+                    if (item.getDiscoverTitle().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            discoverDetailsList.clear();
+            discoverDetailsList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+
 
     class DiscoverDetailsViewHolder extends RecyclerView.ViewHolder {
 
