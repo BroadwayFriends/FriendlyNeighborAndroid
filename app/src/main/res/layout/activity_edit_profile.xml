@@ -59,6 +59,11 @@
                 android:layout_height="100dp"
                 android:src="@drawable/akhil"
                 android:scaleType="centerCrop"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
