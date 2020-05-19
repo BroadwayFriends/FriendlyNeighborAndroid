@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -140,11 +142,13 @@ public class DiscoverActivity extends AppCompatActivity {
 //                        "10:10 AM",
 //                        700));
 
+//        discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList);
+//        recyclerView.setAdapter(discoverDetailsAdapter);
+
+
+
         loadDiscoverData();
 
-
-        discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList);
-        recyclerView.setAdapter(discoverDetailsAdapter);
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
@@ -180,28 +184,43 @@ public class DiscoverActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         Log.w("Discover Response", response.toString());
 
-//                        // Do something with response
-//                        //mTextView.setText(response.toString());
-//
-//                        // Process the JSON
-//                        try{
-//                            // Loop through the array elements
-//                            for(int i=0;i<response.length();i++){
-//                                // Get current json object
-//                                JSONObject student = response.getJSONObject(i);
-//
-//                                // Get the current student (json object) data
-//                                String firstName = student.getString("firstname");
-//                                String lastName = student.getString("lastname");
-//                                String age = student.getString("age");
-//
-//                                // Display the formatted json data in text view
+                        // Do something with response
+                        // Process the JSON
+                        try{
+                            // Loop through the array elements
+                            JSONArray allItems = response;
+                            for(int i=0; i<allItems.length(); i++){
+
+                                // Get current json object
+                                JSONObject item = response.getJSONObject(i);
+
+                                // Get the current student (json object) data
+                                String title = item.getString("title");
+                                String person = item.getJSONObject("requestedBy").getString("name");
+                                String time = item.getString("createdAt");
+                                float cost = (float) item.getInt("cost");
+                                String type = (cost != 0.0f) ? "Request" : "Giveaway";
+
+                                Log.w("ITEMS: ", title);
+                                Log.w("ITEMS: ", person);
+                                Log.w("ITEMS: ", time);
+                                Log.w("ITEMS: ", String.valueOf(cost));
+                                Log.w("ITEMS: ", type);
+
+                                // Display the formatted json data in text view
 //                                mTextView.append(firstName +" " + lastName +"\nAge : " + age);
 //                                mTextView.append("\n\n");
-//                            }
-//                        }catch (JSONException e){
-//                            e.printStackTrace();
-//                        }
+
+                                DiscoverDetails discoverDetails = new DiscoverDetails(title, type, person, time, cost);
+                                discoverDetailsList.add(discoverDetails);
+                            }
+
+                            discoverDetailsAdapter = new DiscoverDetailsAdapter(DiscoverActivity.this, discoverDetailsList);
+                            recyclerView.setAdapter(discoverDetailsAdapter);
+
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener(){
@@ -209,6 +228,7 @@ public class DiscoverActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error){
                         Log.w("ServerError", error);
+                        Toast.makeText(DiscoverActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
