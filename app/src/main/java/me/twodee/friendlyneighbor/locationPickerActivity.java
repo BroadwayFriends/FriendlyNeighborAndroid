@@ -8,10 +8,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,6 +99,9 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         seekbar =(SeekBar)findViewById(R.id.seekBar1);
         textViewSeekBar = findViewById(R.id.textViewSeekBar);
+        Toast toast= Toast.makeText(locationPickerActivity.this,"You can change your search distance by seeking",Toast.LENGTH_SHORT) ;
+        toast.setGravity(Gravity.BOTTOM|Gravity.LEFT, 0, 100);
+        toast.show();
 
 
 
@@ -193,7 +198,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
             mMap = googleMap;
             mMap.getUiSettings().setZoomControlsEnabled(true);
             if (mLocationPermissionGranted) {
-                Task locationResult = mFusedLocationProviderClient.getLastLocation();
+                final Task locationResult = mFusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(this, new OnCompleteListener()
                 {
                     @Override
@@ -253,6 +258,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
                             @Override
                             public void onStartTrackingTouch(SeekBar seekBar) {
                                 mMap.clear();
+
 
                             }
                             @Override

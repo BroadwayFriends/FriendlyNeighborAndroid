@@ -2,6 +2,7 @@ package me.twodee.friendlyneighbor
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +22,7 @@ import kotlin.collections.HashMap
 
 class imageUploadActivity : AppCompatActivity() {
     private var imageEncoded: String? = null
-
+    var preferences: SharedPreferences? = null
     companion object {
         // Every intent for result needs a unique ID in your app.
         // Choose the number which is good for you, here I'll use a random one.
@@ -45,6 +46,7 @@ class imageUploadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_post_requirement)
 //        setContentView(R.layout.activity_main)
+        preferences = getSharedPreferences("UserDetails", Context.MODE_PRIVATE)
 
         val extras = intent.extras
         if (extras != null) {
@@ -77,6 +79,7 @@ class imageUploadActivity : AppCompatActivity() {
     private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,radius:String,lat:String,lng:String,expirationDate:String, priceQuote:String,imageUriArray :ArrayList<String>) {
         val data = HashMap<String, String>()
         val location = HashMap<String,String>()
+        val id = preferences?.getString("_id", null)
 //        data.put("requestedBy","5ebc27d7e6fe7a77013ecd2a")
 //        data.put("title",reqTitle)
 //        data.put("description",description)
@@ -104,7 +107,7 @@ class imageUploadActivity : AppCompatActivity() {
                 .setMethod("POST")
                 .addParameter("data", JSONObject(data as Map<*, *>).toString())
                 .addParameter("uid", "d8586cbd")
-                .addHeader("_id","5ec166d582bc531c24eba282")
+                .addHeader("_id", id.toString())
 
 
                 when (imageCount) {
