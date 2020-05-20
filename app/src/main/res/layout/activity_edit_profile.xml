@@ -230,7 +230,7 @@
 
         <!-- Update Details Button -->
         <com.google.android.material.button.MaterialButton
-            android:id = "@+id/editProfileButton"
+            android:id = "@+id/updateProfileButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"

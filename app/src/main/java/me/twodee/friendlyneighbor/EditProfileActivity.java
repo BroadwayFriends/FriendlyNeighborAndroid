@@ -52,13 +52,14 @@ import java.util.Locale;
 public class EditProfileActivity extends AppCompatActivity {
 
     int LAUNCH_LOCATION_ACTIVITY = 877;
-    private Button editProfileButton;
+    private Button updateProfileButton;
     private EditText editTextEmail ,editTextPhone,editTextUsername,editTextRadius, editTextLocation;
     private ImageView editPictureButton;
     private SharedPreferences preferences;
     private String TAG = "editProfilePage";
     String changedUri = "" ;
     private Geocoder geocoder ;
+    private Boolean UPDATE_FLAG = Boolean.FALSE;
     private LatLng finalPosition ;
     private List<Address> addresses;
     private String changedEmail, changedPhone, changedLocation,changedUsername,changedRadius;
@@ -81,17 +82,17 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-        editProfileButton = (Button) findViewById(R.id.editProfileButton);
+        updateProfileButton = (Button) findViewById(R.id.updateProfileButton);
         editPictureButton = (ImageView) findViewById(R.id.editPictureButton);
         editTextLocation = (EditText) findViewById(R.id.editTextLocation);
         editTextRadius = (EditText) findViewById(R.id.editTextRadius);
         editTextLocation.setFocusable(false);
         editTextLocation.setCursorVisible(false);
-
+        updateProfileButton.setClickable(false);
 //        fetchData();
 
-//        editProfileButton.setClickable(false);
-//        editProfileButton.setAlpha(.4f);
+//        updateProfileButton.setClickable(false);
+//        updateProfileButton.setAlpha(.4f);
 
 
 
@@ -177,10 +178,12 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
+        updateProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (UPDATE_FLAG){
                 updateData();
+                }
             }
         });
 
@@ -196,25 +199,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void onProfileEdit(){
 
-        editProfileButton.setClickable(true);
-        editProfileButton.setAlpha(1f);
-
-
-//        editTextEmail.getText();
-//        JSONObject userDetailsObj = new JSONObject();
-//        try {
-//            userDetailsObj.put("username", "3");
-//            userDetailsObj.put("phoneNumber", "NAME OF STUDENT");
-//            userDetailsObj.put("email", "3rd");
-//            userDetailsObj.put("location", "Arts");
-//
-//
-//
-//        } catch (JSONException e) {
-//            Log.v(TAG , String.format("%s", e.getMessage() )) ;
-//        }
-//
-
+        updateProfileButton.setClickable(true);
+        updateProfileButton.setAlpha(1f);
+        UPDATE_FLAG = Boolean.TRUE ;
 
     }
 
@@ -389,7 +376,7 @@ public class EditProfileActivity extends AppCompatActivity {
 //            object.put("id", userId);
             object.put("name", changedUsername);
             object.put("email", changedEmail);
-            object.put("changedPhone", changedPhone);
+            object.put("phoneNumber", changedPhone);
             object.put("defaultLocation", String.format("{lat:%s,lng:%s}", finalPosition.latitude, finalPosition.longitude));
             object.put("changedRadius", changedRadius);
 

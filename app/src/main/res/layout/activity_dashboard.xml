@@ -379,11 +379,11 @@
     </LinearLayout>
     </LinearLayout>
 
-    <me.ibrahimsn.lib.SmoothBottomBar
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:backgroundColor="@color/colorPrimary"
-        app:menu="@menu/menu_bottom"/>
+<!--    <me.ibrahimsn.lib.SmoothBottomBar-->
+<!--        android:id="@+id/bottomBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="70dp"-->
+<!--        app:backgroundColor="@color/colorPrimary"-->
+<!--        app:menu="@menu/menu_bottom"/>-->
 
 </LinearLayout>
