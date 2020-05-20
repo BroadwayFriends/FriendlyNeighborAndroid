@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/item1"
         android:title="@string/menu_dashboard"
@@ -17,10 +17,7 @@
         android:title="@string/menu_notifications"
         android:icon="@drawable/notifications"/>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <!-- "Locate me", should appear as action button if possible -->
+    !-- "Locate me", should appear as action button if possible -->
     <item
         android:id="@+id/saveAsHome"
         android:icon="@drawable/save_as_home"
