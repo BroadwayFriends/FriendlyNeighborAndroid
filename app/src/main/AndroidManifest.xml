@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -20,14 +19,11 @@
         <activity android:name=".OnboardingActivity"></activity>
         <activity android:name=".HistoryActivity" />
         <activity android:name=".PostDetailsActivity" />
-
-        <service
-            android:name=".getImages"
-            android:enabled="true"
-            android:exported="false"></service>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+                  android:theme="@style/Base.Theme.AppCompat"
+                    />
 
         <activity android:name=".imageUploadActivity" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_api_key" />
@@ -36,13 +32,11 @@
             android:name=".locationPickerActivity"
             android:label="@string/title_activity_pick_location" />
         <activity android:name=".postRequirementActivity" />
-        <activity android:name=".SignInUserDetails" />
-        <activity android:name=".DiscoverActivity"></activity>
+<!--        <activity android:name=".SignInUserDetails" />-->
+        <activity android:name=".DiscoverActivity" />
 
-        <activity android:name=".PostDetailsActivity"></activity>
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".PaymentActivity" />
-        <activity android:name=".DiscoverActivity" />
 
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".DashboardActivity" />

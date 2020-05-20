@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 
 }
 
@@ -53,4 +57,8 @@ dependencies {
     //ViewPager2
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    //Image  cropper
+//    implementation 'com.github.yalantis:ucrop:2.2.5-native'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.5.1'
 }

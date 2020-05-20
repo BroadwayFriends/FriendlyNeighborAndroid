@@ -242,6 +242,14 @@
             android:textAllCaps="false"
             app:rippleColor="@android:color/holo_blue_light"/>
     </LinearLayout>
+    <!-- Image Cropper fill the remaining available height -->
+<!--    <com.theartofdev.edmodo.cropper.CropImageView-->
+<!--        xmlns:custom="http://schemas.android.com/apk/res-auto"-->
+<!--        android:id="@+id/cropImageView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        custom:cropShape="oval"/>-->
 
 
 </LinearLayout>

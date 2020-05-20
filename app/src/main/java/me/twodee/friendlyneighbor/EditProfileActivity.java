@@ -1,11 +1,17 @@
 package me.twodee.friendlyneighbor;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,8 +20,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -25,27 +33,37 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import net.gotev.uploadservice.data.UploadInfo;
+import net.gotev.uploadservice.network.ServerResponse;
+import net.gotev.uploadservice.observer.request.RequestObserverDelegate;
+import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest;
+
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Locale;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     int LAUNCH_LOCATION_ACTIVITY = 877;
-    Button editProfileButton;
-    EditText editTextEmail ,editTextPhone,editTextUsername,editTextRadius, editTextLocation;
-    SharedPreferences preferences;
+    private Button editProfileButton;
+    private EditText editTextEmail ,editTextPhone,editTextUsername,editTextRadius, editTextLocation;
+    private ImageView editPictureButton;
+    private SharedPreferences preferences;
     private String TAG = "editProfilePage";
-    Geocoder geocoder ;
+    String changedUri = "" ;
+    private Geocoder geocoder ;
     private LatLng finalPosition ;
-    List<Address> addresses;
+    private List<Address> addresses;
     private String changedEmail, changedPhone, changedLocation,changedUsername,changedRadius;
-    private static final String baseUrl = "";
-    ArrayList<String> userData;
+    private static final String baseUrl = "https://ptsv2.com/t/m65jb-1589964055/post";
+    private Uri mCropImageUri;
 
 
 
@@ -64,6 +82,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPhone = (EditText) findViewById(R.id.editTextPhone);
         editProfileButton = (Button) findViewById(R.id.editProfileButton);
+        editPictureButton = (ImageView) findViewById(R.id.editPictureButton);
         editTextLocation = (EditText) findViewById(R.id.editTextLocation);
         editTextRadius = (EditText) findViewById(R.id.editTextRadius);
         editTextLocation.setFocusable(false);
@@ -161,10 +180,17 @@ public class EditProfileActivity extends AppCompatActivity {
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fetchData();
+                updateData();
             }
         });
 
+        editPictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onProfileEdit();
+                onSelectImageClick(findViewById(R.id.cropImageView));
+            }
+        });
 
     }
 
@@ -194,6 +220,51 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
 
+
+    private void startCropImageActivity(Uri imageUri) {
+
+        CropImage.activity(imageUri)
+//                .setCropShape(CropImageView.CropShape.OVAL)
+                .setGuidelines(CropImageView.Guidelines.OFF)
+
+
+                .start(this);
+
+    }
+
+
+    @SuppressLint("NewApi")
+    public void onSelectImageClick(View view) {
+        if (CropImage.isExplicitCameraPermissionRequired(this)) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
+        } else {
+            CropImage.startPickImageActivity(this);
+        }
+    }
+
+
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                CropImage.startPickImageActivity(this);
+            } else {
+                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+            }
+        }
+        if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
+            if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // required permissions granted, start crop image activity
+                startCropImageActivity(mCropImageUri);
+            } else {
+                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -224,9 +295,40 @@ public class EditProfileActivity extends AppCompatActivity {
 
             }
 
-            super.onActivityResult(requestCode, resultCode, data);
+
         }
+
+
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+            } else {
+                // no permissions required or already granted, can start crop image activity
+                startCropImageActivity(imageUri);
+            }
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                changedUri = result.getUri().toString().replace("file://","");
+                Log.v(TAG,  result.getUri().toString().replace("file://","")) ;
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                 Log.e(TAG, result.getError().toString()) ;
+            }
+        }
+
+
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     private void fetchData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -248,8 +350,8 @@ public class EditProfileActivity extends AppCompatActivity {
                         Log.w("ServerResponse", response.toString());
 
                         try {
-                            editTextUsername.setText(response.getString("changedUsername"));
-                            editTextEmail.setText(response.getString("changedEmail"));
+                            editTextUsername.setText(response.getString("name"));
+                            editTextEmail.setText(response.getString("email"));
                             editTextPhone.setText(response.getString("changedPhone"));
                             editTextLocation.setText(response.getString("changedLocation"));
                             editTextRadius.setText(response.getString("changedRadius"));
@@ -273,17 +375,22 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     private void updateData() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
         JSONObject object = new JSONObject();
 
         String userId = preferences.getString("_id", null);
+        changedUsername = editTextUsername.getText().toString();
+        changedEmail = editTextEmail.getText().toString();
+        changedPhone = editTextPhone.getText().toString();
+        changedRadius = editTextRadius.getText().toString();
+        changedLocation = editTextLocation.getText().toString();
         try {
 
-            object.put("id", userId);
-            object.put("changedUsername", changedUsername);
-            object.put("changedEmail", changedEmail);
+//            object.put("id", userId);
+            object.put("name", changedUsername);
+            object.put("email", changedEmail);
             object.put("changedPhone", changedPhone);
-            object.put("changedLocation", changedLocation);
+            object.put("defaultLocation", String.format("{lat:%s,lng:%s}", finalPosition.latitude, finalPosition.longitude));
             object.put("changedRadius", changedRadius);
 
 
@@ -291,26 +398,54 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = "https://httpbin.org/post";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
-                new Response.Listener<JSONObject>() {
+
+
+
+        MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
+                .setMethod("POST")
+                .addHeader("_id", "5ebc27d7e6fe7a77013ecd2a")
+                .addParameter("data", object.toString());
+        try {
+            reqObj.addFileToUpload(changedUri, "updatedPhoto");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+//                .addFileToUpload(changedUri, "updatedPhoto")
+
+                reqObj.subscribe( this, this, new RequestObserverDelegate() {
+
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Log.w("ServerResponse", response.toString());
-                        if(response.has("update_successful")) {
-                            Toast.makeText(EditProfileActivity.this,"Successfully Updated Profile",Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull ServerResponse serverResponse) {
+                        Log.i(TAG, "Success:"+serverResponse.getBodyString());
+                        Toast.makeText(EditProfileActivity.this,"Successfully Updated !!",Toast.LENGTH_SHORT).show();
+                    }
 
-
+                    @Override
+                    public void onProgress(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
 
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.w("ServerError", error);
-                ;
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
+
+                    @Override
+                    public void onError(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull Throwable throwable) {
+                        Log.e(TAG, "Error, upload error:");
+                    }
+
+                    @Override
+                    public void onCompletedWhileNotObserving() {
+
+                    }
+
+                    @Override
+                    public void onCompleted(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+
+                    }
+                } );
+
+        Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
+        startActivity(intent);
+
     }
+
+
+
 }
