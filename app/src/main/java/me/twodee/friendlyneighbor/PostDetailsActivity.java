@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -28,6 +29,8 @@ public class PostDetailsActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
 
+    TextView selectedTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,13 @@ public class PostDetailsActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_post_details);
+
+        selectedTitle = (TextView) findViewById(R.id.selected_title);
+        String value = getIntent().getStringExtra("title");
+        selectedTitle.setText(value);
+
+
+
 
         viewPager2 = findViewById(R.id.viewPagerImageSlider);
 

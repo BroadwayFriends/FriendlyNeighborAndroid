@@ -63,9 +63,10 @@
                 android:src="@drawable/request"/>
 
             <TextView
+                android:id="@+id/selected_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Maggi"
+                android:text="empty"
                 android:textSize="20dp"
                 android:layout_marginLeft="20px"
                 android:fontFamily="@font/product_sans_bold"

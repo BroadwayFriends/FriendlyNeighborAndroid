@@ -5,6 +5,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DiscoverActivity extends AppCompatActivity {
+public class DiscoverActivity extends AppCompatActivity implements DiscoverDetailsAdapter.OnDiscoverDetailsClickListener {
 
     RecyclerView recyclerView;
     DiscoverDetailsAdapter discoverDetailsAdapter;
@@ -118,36 +119,36 @@ public class DiscoverActivity extends AppCompatActivity {
 //                        "09:00 PM",
 //                        270));
 //
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Eldoper",
-//                        "Giveaway",
-//                        "Dediyaman",
-//                        "07:00 AM",
-//                        100.5f));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Ande",
-//                        "Request",
-//                        "Ritwik",
-//                        "5:30 PM",
-//                        87.8f));
-//
-//        discoverDetailsList.add(
-//                new DiscoverDetails(
-//                        "Jumping wire",
-//                        "Giveaway",
-//                        "Priyam",
-//                        "10:10 AM",
-//                        700));
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Eldoper",
+                        "Giveaway",
+                        "Dediyaman",
+                        "07:00 AM",
+                        100.5f));
 
-//        discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList);
-//        recyclerView.setAdapter(discoverDetailsAdapter);
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Ande",
+                        "Request",
+                        "Ritwik",
+                        "5:30 PM",
+                        87.8f));
+
+        discoverDetailsList.add(
+                new DiscoverDetails(
+                        "Jumping wire",
+                        "Giveaway",
+                        "Priyam",
+                        "10:10 AM",
+                        700));
+
+        discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList, this);
+        recyclerView.setAdapter(discoverDetailsAdapter);
 
 
 
-        loadDiscoverData();
+//        loadDiscoverData();
 
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -215,7 +216,7 @@ public class DiscoverActivity extends AppCompatActivity {
                                 discoverDetailsList.add(discoverDetails);
                             }
 
-                            discoverDetailsAdapter = new DiscoverDetailsAdapter(DiscoverActivity.this, discoverDetailsList);
+                            discoverDetailsAdapter = new DiscoverDetailsAdapter(DiscoverActivity.this, discoverDetailsList, DiscoverActivity.this);
                             recyclerView.setAdapter(discoverDetailsAdapter);
 
                         }catch (JSONException e){
@@ -241,5 +242,18 @@ public class DiscoverActivity extends AppCompatActivity {
         };
         requestQueue.add(jsonArrayRequest);
         Log.w("_id", id);
+    }
+
+    @Override
+    public void onDiscoverDetailsClick(int position) {
+
+        discoverDetailsList.get(position);
+        Intent intent = new Intent(this, PostDetailsActivity.class);
+        DiscoverDetails selectedDiscoverDetails = discoverDetailsList.get(position);
+        String selectedTitle = selectedDiscoverDetails.getDiscoverTitle();
+        intent.putExtra("title", selectedTitle);
+        startActivity(intent);
+
+        Log.w("Clicker Checker", String.valueOf(position));
     }
 }

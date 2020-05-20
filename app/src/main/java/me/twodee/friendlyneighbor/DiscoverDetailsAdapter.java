@@ -20,10 +20,14 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
     private List<DiscoverDetails> discoverDetailsList;
     private List<DiscoverDetails> discoverDetailsListFull;
 
-    public DiscoverDetailsAdapter(Context mCtx, List<DiscoverDetails> discoverDetailsList) {
+    private OnDiscoverDetailsClickListener onDiscoverDetailsClickListener;
+
+    public DiscoverDetailsAdapter(Context mCtx, List<DiscoverDetails> discoverDetailsList, OnDiscoverDetailsClickListener onDiscoverDetailsClickListener) {
         this.mCtx = mCtx;
+        this.onDiscoverDetailsClickListener = onDiscoverDetailsClickListener;
         this.discoverDetailsList = discoverDetailsList;
         discoverDetailsListFull = new ArrayList<>(discoverDetailsList);
+
     }
 
     @NonNull
@@ -31,7 +35,7 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
     public DiscoverDetailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mCtx);
         View view = layoutInflater.inflate(R.layout.discover_layout, parent, false);
-        DiscoverDetailsViewHolder discoverDetailsViewHolder = new DiscoverDetailsViewHolder(view);
+        DiscoverDetailsViewHolder discoverDetailsViewHolder = new DiscoverDetailsViewHolder(view, onDiscoverDetailsClickListener);
 
         return  discoverDetailsViewHolder;
     }
@@ -91,11 +95,13 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
 
 
 
-    class DiscoverDetailsViewHolder extends RecyclerView.ViewHolder {
+    public class DiscoverDetailsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView titleTV, typeTV, personTV, distanceTV, timeTV;
+        OnDiscoverDetailsClickListener onDiscoverDetailsClickListener;
 
-        public DiscoverDetailsViewHolder(@NonNull View itemView) {
+
+        public DiscoverDetailsViewHolder(@NonNull View itemView, OnDiscoverDetailsClickListener onDiscoverDetailsClickListener) {
             super(itemView);
 
             titleTV = (TextView) itemView.findViewById(R.id.discover_title);
@@ -103,8 +109,21 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
             personTV = (TextView) itemView.findViewById(R.id.discover_person);
             distanceTV = (TextView) itemView.findViewById(R.id.discover_price);
             timeTV = (TextView) itemView.findViewById(R.id.discover_time);
+            this.onDiscoverDetailsClickListener = onDiscoverDetailsClickListener;
+
+            itemView.setOnClickListener(this);
 
         }
+
+        @Override
+        public void onClick(View v) {
+            onDiscoverDetailsClickListener.onDiscoverDetailsClick(getAdapterPosition());
+
+        }
+    }
+
+    public interface OnDiscoverDetailsClickListener {
+        void onDiscoverDetailsClick (int position);
     }
 
 }
