@@ -45,7 +45,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
 
         SliderItem currentSliderItem = sliderItems.get(position);
         String imageUrl = currentSliderItem.getImageUrl();
-        Picasso.get().load(imageUrl).fit().centerInside().into(holder.imageView);
+        Picasso.get().load(imageUrl).error(R.drawable.imagenotavailable).fit().centerInside().into(holder.imageView);
 
         Log.w("Image string", sliderItems.get(position).getImageUrl());
         if(position == sliderItems.size() - 2){
