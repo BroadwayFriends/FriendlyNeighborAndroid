@@ -46,21 +46,24 @@ public class PostDetailsActivity extends AppCompatActivity {
         String title = null;
         String description = null;
         String postedBy = null;
+        String imageUrl = null;
+
         String strValue = getIntent().getStringExtra("jsonString");
         JSONObject value = null;
 
-        try {
-            value = new JSONObject(strValue);
-
-            Log.w("Selected JSON", value.toString());
-
-            title = value.getString("title");
-            description = value.getString("description");
-            postedBy = value.getJSONObject("requestedBy").getString("name");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            value = new JSONObject(strValue);
+//
+//            Log.w("Selected JSON", value.toString());
+//
+//            title = value.getString("title");
+//            description = value.getString("description");
+//            postedBy = value.getJSONObject("requestedBy").getString("name");
+//            imageUrl = value.getJSONArray("images").getJSONObject(0).getString("imageURL");
+//
+//        } catch (JSONException e) {
+//            Log.w("JSON_ERROR", e);
+//        }
 
         selectedTitle = (TextView) findViewById(R.id.selected_title);
         selectedDescription = (TextView) findViewById(R.id.selected_description);
@@ -71,17 +74,16 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedPostedBy.setText(postedBy);
 
 
-
-
-
         viewPager2 = findViewById(R.id.viewPagerImageSlider);
 
         List<SliderItem> sliderItems = new ArrayList<>();
-        sliderItems.add(new SliderItem(R.drawable.test1));
-        sliderItems.add(new SliderItem(R.drawable.test2));
-        sliderItems.add(new SliderItem(R.drawable.test3));
+        sliderItems.add(new SliderItem("https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980898/requests/ckafdkng60002akuqaq41epec.png"));
+        sliderItems.add(new SliderItem(	"https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980715/requests/ckafdgr2a0000akuq3tvaajqi.jpg"));
+        sliderItems.add(new SliderItem("https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980853/requests/ckafdjpda0001akuq2dq55rvk.jpg"));
+//        sliderItems.add(new SliderItem(R.drawable.test2));
+//        sliderItems.add(new SliderItem(R.drawable.test3));
 
-        viewPager2.setAdapter(new SliderAdapter(sliderItems, viewPager2));
+        viewPager2.setAdapter(new SliderAdapter(this, sliderItems, viewPager2));
 
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);

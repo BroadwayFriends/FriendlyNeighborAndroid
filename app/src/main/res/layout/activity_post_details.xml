@@ -77,13 +77,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPagerImageSlider"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp" />
+
         </LinearLayout>
         <!-- Post Description -->
         <com.google.android.material.card.MaterialCardView

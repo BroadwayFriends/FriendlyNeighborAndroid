@@ -45,4 +45,7 @@ dependencies {
 
     //LoadingDialog
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    //Image
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
