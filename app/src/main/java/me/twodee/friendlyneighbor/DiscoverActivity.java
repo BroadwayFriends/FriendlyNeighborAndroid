@@ -10,8 +10,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,6 +24,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
+import com.github.ybq.android.spinkit.style.CubeGrid;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
+import com.github.ybq.android.spinkit.style.Pulse;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
+import com.github.ybq.android.spinkit.style.WanderingCubes;
+import com.github.ybq.android.spinkit.style.Wave;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,36 +129,36 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 //                        "09:00 PM",
 //                        270));
 //
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Eldoper",
-                        "Giveaway",
-                        "Dediyaman",
-                        "07:00 AM",
-                        100.5f));
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Eldoper",
+//                        "Giveaway",
+//                        "Dediyaman",
+//                        "07:00 AM",
+//                        100.5f));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Ande",
+//                        "Request",
+//                        "Ritwik",
+//                        "5:30 PM",
+//                        87.8f));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Jumping wire",
+//                        "Giveaway",
+//                        "Priyam",
+//                        "10:10 AM",
+//                        700));
+//
+//        discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList, this);
+//        recyclerView.setAdapter(discoverDetailsAdapter);
 
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Ande",
-                        "Request",
-                        "Ritwik",
-                        "5:30 PM",
-                        87.8f));
-
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Jumping wire",
-                        "Giveaway",
-                        "Priyam",
-                        "10:10 AM",
-                        700));
-
-        discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList, this);
-        recyclerView.setAdapter(discoverDetailsAdapter);
 
 
-
-//        loadDiscoverData();
+        loadDiscoverData();
 
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -169,6 +179,11 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
     private void loadDiscoverData() {
 
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
+        ThreeBounce threeBounce = new ThreeBounce();
+        progressBar.setIndeterminateDrawable(threeBounce);
+        progressBar.setVisibility(View.VISIBLE);
+
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         final String id = preferences.getString("_id", null);
         String userId = preferences.getString("uid", null);
@@ -184,6 +199,8 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.w("Discover Response", response.toString());
+
+                        progressBar.setVisibility(View.GONE);
 
                         // Do something with response
                         // Process the JSON
@@ -228,6 +245,9 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
                     @Override
                     public void onErrorResponse(VolleyError error){
+
+//                        progressBar.setVisibility(View.GONE);
+
                         Log.w("ServerError", error);
                         Toast.makeText(DiscoverActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
                     }

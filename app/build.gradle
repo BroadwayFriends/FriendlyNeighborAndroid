@@ -42,4 +42,7 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    //LoadingDialog
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 }
