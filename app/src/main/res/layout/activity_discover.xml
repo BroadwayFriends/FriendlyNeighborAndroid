@@ -3,256 +3,310 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".RegistrationActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_width="412dp"
+        android:layout_height="667dp"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Discover"
-            android:textSize="40dp"
-            android:fontFamily="@font/product_sans_bold"
-            android:textColor="@android:color/black"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/product_sans_bold"
+                android:text="Discover"
+                android:textColor="@android:color/black"
+                android:textSize="40dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/bg_view1"></View>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:text="Request"
+                            android:textColor="@android:color/holo_blue_dark"
+                            android:textSize="24dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/product_sans_italic"
+                            android:text="by Akhil" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/star" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
+                                android:text="4.9"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="09:00 AM"
+                                android:textAlignment="viewEnd" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:fontFamily="@font/product_sans_bold"
+                                    android:text="10"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:fontFamily="@font/product_sans_regular"
+                                    android:text="minutes away"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="210dp"
+                                    android:layout_marginRight="0dp"
+                                    android:src="@drawable/discover" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ToggleButton
+                                android:id="@+id/button_favorite12"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/button_favorite"
+                                android:checked="false"
+                                android:text=""
+                                android:textOff=""
+                                android:textOn="" />
+
+                            <CheckBox
+                                android:id="@+id/icon2"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="8dp"
+                                android:button="@drawable/sl_notification_24dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:text="Giveaway"
+                            android:textColor="@android:color/holo_green_dark"
+                            android:textSize="24dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/product_sans_italic"
+                            android:text="by Dedipyaman" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/star" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
+                                android:text="3.6"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="04:30 PM"
+                                android:textAlignment="viewEnd" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:fontFamily="@font/product_sans_bold"
+                                    android:text="30"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:fontFamily="@font/product_sans_regular"
+                                    android:text="minutes away"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="210dp"
+                                    android:layout_marginRight="0dp"
+                                    android:src="@drawable/payment" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ToggleButton
+                                android:id="@+id/button_favorite1"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/button_favorite"
+                                android:checked="false"
+                                android:text=""
+                                android:textOff=""
+                                android:textOn="" />
+
+                            <CheckBox
+                                android:id="@+id/icon"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="8dp"
+                                android:button="@drawable/sl_notification_24dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
-
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginLeft="0dp"
-        android:background="@drawable/bg_view1"
-        android:layout_height="6dp"></View>
-
-    <androidx.cardview.widget.CardView
+        android:layout_height="wrap_content">
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        app:cardCornerRadius="8dp">
-
-        <LinearLayout
-            android:padding="12dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Request"
-                        android:textColor="@android:color/holo_blue_dark"
-                        android:textSize="24dp"
-                        android:fontFamily="@font/product_sans_regular"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/product_sans_italic"
-                        android:text="by Akhil"/>
-                    <LinearLayout
-                        android:layout_marginTop="4dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/star"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4.9"
-                            android:textSize="12dp"
-                            android:fontFamily="@font/product_sans_regular"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="viewEnd"
-                            android:text="09:00 AM"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_gravity="left"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="20dp"
-                                android:fontFamily="@font/product_sans_bold"
-                                android:text="10"/>
-                            <TextView
-                                android:layout_gravity="left"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="14dp"
-                                android:fontFamily="@font/product_sans_regular"
-                                android:text="minutes away"/>
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-                            <ImageView
-                                android:layout_marginLeft="210dp"
-                                android:layout_marginRight="0dp"
-                                android:layout_width="60dp"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/discover"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ToggleButton
-                            android:id="@+id/button_favorite1"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/button_favorite"
-                            android:checked="false"
-                            android:text=""
-                            android:textOff=""
-                            android:textOn=""/>
-                        <CheckBox
-                            android:id="@+id/icon"
-                            android:layout_marginLeft="8dp"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:button="@drawable/sl_notification_24dp"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        app:cardCornerRadius="8dp">
-
-        <LinearLayout
-            android:padding="12dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Giveaway"
-                        android:textColor="@android:color/holo_green_dark"
-                        android:textSize="24dp"
-                        android:fontFamily="@font/product_sans_regular"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/product_sans_italic"
-                        android:text="by Dedipyaman"/>
-                    <LinearLayout
-                        android:layout_marginTop="4dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/star"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3.6"
-                            android:textSize="12dp"
-                            android:fontFamily="@font/product_sans_regular"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="viewEnd"
-                            android:text="04:30 PM"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_gravity="left"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="20dp"
-                                android:fontFamily="@font/product_sans_bold"
-                                android:text="30"/>
-                            <TextView
-                                android:layout_gravity="left"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="14dp"
-                                android:fontFamily="@font/product_sans_regular"
-                                android:text="minutes away"/>
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-                            <ImageView
-                                android:layout_marginLeft="210dp"
-                                android:layout_marginRight="0dp"
-                                android:layout_width="60dp"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/payment"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ToggleButton
-                            android:id="@+id/button_favorite1"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/button_favorite"
-                            android:checked="false"
-                            android:text=""
-                            android:textOff=""
-                            android:textOn=""/>
-                        <CheckBox
-                            android:id="@+id/icon"
-                            android:layout_marginLeft="8dp"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:button="@drawable/sl_notification_24dp"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+        android:layout_height="70dp"
+        android:background="@drawable/rounded"
+        app:itemIconTint="@color/nav_color"
+        app:itemTextColor="@color/nav_color"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/menu" />
+    </RelativeLayout>
 </LinearLayout>
