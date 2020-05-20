@@ -50,6 +50,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
     SharedPreferences preferences;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,7 +153,6 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 //
 //        discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList, this);
 //        recyclerView.setAdapter(discoverDetailsAdapter);
-
 
 
         loadDiscoverData();
