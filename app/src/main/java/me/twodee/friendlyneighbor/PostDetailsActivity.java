@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,9 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +33,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
 
-    TextView selectedTitle;
+    TextView selectedTitle, selectedDescription, selectedPostedBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,33 @@ public class PostDetailsActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_post_details);
 
+        String title = null;
+        String description = null;
+        String postedBy = null;
+        String strValue = getIntent().getStringExtra("jsonString");
+        JSONObject value = null;
+
+        try {
+            value = new JSONObject(strValue);
+
+            Log.w("Selected JSON", value.toString());
+
+            title = value.getString("title");
+            description = value.getString("description");
+            postedBy = value.getJSONObject("requestedBy").getString("name");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         selectedTitle = (TextView) findViewById(R.id.selected_title);
-        String value = getIntent().getStringExtra("title");
-        selectedTitle.setText(value);
+        selectedDescription = (TextView) findViewById(R.id.selected_description);
+        selectedPostedBy = (TextView) findViewById(R.id.discover_posted_by);
+
+        selectedTitle.setText(title);
+        selectedDescription.setText(description);
+        selectedPostedBy.setText(postedBy);
+
 
 
 

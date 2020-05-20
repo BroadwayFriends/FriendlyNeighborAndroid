@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,22 +23,18 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.Circle;
-import com.github.ybq.android.spinkit.style.CubeGrid;
-import com.github.ybq.android.spinkit.style.DoubleBounce;
-import com.github.ybq.android.spinkit.style.Pulse;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
-import com.github.ybq.android.spinkit.style.WanderingCubes;
-import com.github.ybq.android.spinkit.style.Wave;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,6 +177,8 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
     private void loadDiscoverData() {
 
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
+        final RelativeLayout discoverLoadingLayout = (RelativeLayout) findViewById(R.id.discover_loading_layout);
+        discoverLoadingLayout.setVisibility(View.VISIBLE);
         ThreeBounce threeBounce = new ThreeBounce();
         progressBar.setIndeterminateDrawable(threeBounce);
         progressBar.setVisibility(View.VISIBLE);
@@ -201,6 +200,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                         Log.w("Discover Response", response.toString());
 
                         progressBar.setVisibility(View.GONE);
+                        discoverLoadingLayout.setVisibility(View.GONE);
 
                         // Do something with response
                         // Process the JSON
@@ -211,32 +211,36 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
                                 // Get current json object
                                 JSONObject item = response.getJSONObject(i);
+                                String jsonObjectString = item.toString();
 
                                 // Get the current student (json object) data
                                 String title = item.getString("title");
                                 String person = item.getJSONObject("requestedBy").getString("name");
-                                String time = item.getString("createdAt");
+                                String createdAt = item.getString("createdAt");
                                 float cost = (float) item.getInt("cost");
                                 String type = (cost != 0.0f) ? "Request" : "Giveaway";
 
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
+                                Date date = dateFormat.parse(createdAt);
+                                String time = timeExtract.format(date.getTime());
+
                                 Log.w("ITEMS: ", title);
                                 Log.w("ITEMS: ", person);
-                                Log.w("ITEMS: ", time);
+                                Log.w("ITEMS: ", createdAt);
                                 Log.w("ITEMS: ", String.valueOf(cost));
                                 Log.w("ITEMS: ", type);
+                                Log.w("ITEMS: ", time);
 
-                                // Display the formatted json data in text view
-//                                mTextView.append(firstName +" " + lastName +"\nAge : " + age);
-//                                mTextView.append("\n\n");
 
-                                DiscoverDetails discoverDetails = new DiscoverDetails(title, type, person, time, cost);
+                                DiscoverDetails discoverDetails = new DiscoverDetails(title, type, person, time, cost, jsonObjectString);
                                 discoverDetailsList.add(discoverDetails);
                             }
 
                             discoverDetailsAdapter = new DiscoverDetailsAdapter(DiscoverActivity.this, discoverDetailsList, DiscoverActivity.this);
                             recyclerView.setAdapter(discoverDetailsAdapter);
 
-                        }catch (JSONException e){
+                        }catch (JSONException | ParseException e){
                             e.printStackTrace();
                         }
                     }
@@ -247,6 +251,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                     public void onErrorResponse(VolleyError error){
 
 //                        progressBar.setVisibility(View.GONE);
+                        discoverLoadingLayout.setVisibility(View.GONE);
 
                         Log.w("ServerError", error);
                         Toast.makeText(DiscoverActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
@@ -270,8 +275,8 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         discoverDetailsList.get(position);
         Intent intent = new Intent(this, PostDetailsActivity.class);
         DiscoverDetails selectedDiscoverDetails = discoverDetailsList.get(position);
-        String selectedTitle = selectedDiscoverDetails.getDiscoverTitle();
-        intent.putExtra("title", selectedTitle);
+        String selectedJsonString = selectedDiscoverDetails.getDiscoverJsonResponse();
+        intent.putExtra("jsonString", selectedJsonString);
         startActivity(intent);
 
         Log.w("Clicker Checker", String.valueOf(position));
