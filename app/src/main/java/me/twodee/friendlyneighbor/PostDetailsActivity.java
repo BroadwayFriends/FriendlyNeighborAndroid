@@ -37,7 +37,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
 
-    TextView selectedTitle, selectedDescription, selectedPostedBy;
+    TextView selectedTitle, selectedDescription, selectedPostedBy, selectedMinutesAway;
     ImageView profilePictureView;
 
     TextView bottomSheetName;
@@ -56,23 +56,28 @@ public class PostDetailsActivity extends AppCompatActivity {
         String postedBy = null;
         JSONArray imageUrl = null;
         String profilePicture = null;
+        double time = 0;
 
         List<SliderItem> sliderItems = new ArrayList<>();
 
+        //JSON data from previous activity
         String strValue = getIntent().getStringExtra("jsonString");
         JSONObject value = null;
+        JSONObject value2 = null;
 
+        //Parsing JSON data
         try {
             value = new JSONObject(strValue);
-            value = value.getJSONObject("request");
+            value2 = value.getJSONObject("request");
 
             Log.w("Selected JSON", value.toString());
 
-            title = value.getString("title");
-            description = value.getString("description");
-            postedBy = value.getJSONObject("requestedBy").getString("name");
-            profilePicture = value.getJSONObject("requestedBy").getString("profilePicture");
-            imageUrl = value.getJSONArray("images");
+            title = value2.getString("title");
+            description = value2.getString("description");
+            postedBy = value2.getJSONObject("requestedBy").getString("name");
+            profilePicture = value2.getJSONObject("requestedBy").getString("profilePicture");
+            imageUrl = value2.getJSONArray("images");
+            time = value.getInt("distance") / 0.25;         //Since, average bicycle speed in 15kmph with is equal to 0.25 kmpmin
 
             int sizeImageArray = imageUrl.length();
 
@@ -94,11 +99,13 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedDescription = (TextView) findViewById(R.id.selected_description);
         selectedPostedBy = (TextView) findViewById(R.id.discover_posted_by);
         profilePictureView = (ImageView) findViewById(R.id.postDetails_profile_picture);
+        selectedMinutesAway = (TextView) findViewById(R.id.profile_minutes_away);
 
         selectedTitle.setText(title);
         selectedDescription.setText(description);
         selectedPostedBy.setText(postedBy);
         Picasso.get().load(profilePicture).fit().centerInside().into(profilePictureView);
+        selectedMinutesAway.setText(String.valueOf((int)time) + " minutes away");
 
 
         viewPager2 = findViewById(R.id.viewPagerImageSlider);
