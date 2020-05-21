@@ -110,7 +110,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                 }
             }
 
-        } catch (JSONException | ParseException e) {
+        } catch (JSONException | ParseException  | NullPointerException e) {
             Log.w("JSON_ERROR", e);
         }
 
