@@ -213,12 +213,17 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 JSONObject item = response.getJSONObject(i);
                                 String jsonObjectString = item.toString();
 
+                                JSONObject requestDets = item.getJSONObject("request");
+
+                                Log.w("REQDETS", requestDets.toString());
+
                                 // Get the current student (json object) data
-                                String title = item.getString("title");
-                                String person = item.getJSONObject("requestedBy").getString("name");
-                                String createdAt = item.getString("createdAt");
-                                float cost = (float) item.getInt("cost");
+                                String title = requestDets.getString("title");
+                                String person = requestDets.getJSONObject("requestedBy").getString("name");
+                                String createdAt = requestDets.getString("createdAt");
+                                float cost = (float) requestDets.getInt("cost");
                                 String type = (cost != 0.0f) ? "Request" : "Giveaway";
+                                float distance = (float) item.getInt("distance");
 
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                 SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
@@ -231,9 +236,10 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 Log.w("ITEMS: ", String.valueOf(cost));
                                 Log.w("ITEMS: ", type);
                                 Log.w("ITEMS: ", time);
+                                Log.w("ITEMS: ", String.valueOf(distance));
 
 
-                                DiscoverDetails discoverDetails = new DiscoverDetails(title, type, person, time, cost, jsonObjectString);
+                                DiscoverDetails discoverDetails = new DiscoverDetails(title, type, person, time, distance, jsonObjectString);
                                 discoverDetailsList.add(discoverDetails);
                             }
 

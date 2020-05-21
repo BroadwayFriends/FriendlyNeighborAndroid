@@ -100,7 +100,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
                                 android:fontFamily="@font/product_sans_regular"
-                                android:text="is the cost"/>
+                                android:text="kms away"/>
 
                         </LinearLayout>
                         <LinearLayout

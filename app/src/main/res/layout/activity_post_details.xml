@@ -178,6 +178,7 @@
                         android:layout_gravity="left"
                         android:layout_margin="5dp">
                         <ImageView
+                            android:id="@+id/postDetails_profile_picture"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/akhil"

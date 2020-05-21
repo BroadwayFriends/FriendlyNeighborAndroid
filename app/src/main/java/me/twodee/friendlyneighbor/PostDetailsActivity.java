@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,10 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +38,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private Handler sliderHandler = new Handler();
 
     TextView selectedTitle, selectedDescription, selectedPostedBy;
+    ImageView profilePictureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         String description = null;
         String postedBy = null;
         JSONArray imageUrl = null;
+        String profilePicture = null;
 
         List<SliderItem> sliderItems = new ArrayList<>();
 
@@ -56,12 +61,14 @@ public class PostDetailsActivity extends AppCompatActivity {
 
         try {
             value = new JSONObject(strValue);
+            value = value.getJSONObject("request");
 
             Log.w("Selected JSON", value.toString());
 
             title = value.getString("title");
             description = value.getString("description");
             postedBy = value.getJSONObject("requestedBy").getString("name");
+            profilePicture = value.getJSONObject("requestedBy").getString("profilePicture");
             imageUrl = value.getJSONArray("images");
 
             int sizeImageArray = imageUrl.length();
@@ -83,10 +90,12 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedTitle = (TextView) findViewById(R.id.selected_title);
         selectedDescription = (TextView) findViewById(R.id.selected_description);
         selectedPostedBy = (TextView) findViewById(R.id.discover_posted_by);
+        profilePictureView = (ImageView) findViewById(R.id.postDetails_profile_picture);
 
         selectedTitle.setText(title);
         selectedDescription.setText(description);
         selectedPostedBy.setText(postedBy);
+        Picasso.get().load(profilePicture).fit().centerInside().into(profilePictureView);
 
 
         viewPager2 = findViewById(R.id.viewPagerImageSlider);
