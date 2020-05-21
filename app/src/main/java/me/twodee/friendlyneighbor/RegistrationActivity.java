@@ -45,6 +45,7 @@ public class RegistrationActivity extends AppCompatActivity {
     int LAUNCH_LOCATION_ACTIVITY = 42;
     Geocoder geocoder;
     List<Address> addresses;
+    String locatedRadius;
 
     private final String TAG = "regForm" ;
     String addr1, addr2, cty, st, cntry, cno;
@@ -118,19 +119,25 @@ public class RegistrationActivity extends AppCompatActivity {
     void sendRegistrationData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject object = new JSONObject();
+        JSONObject defaultLocation = new JSONObject();
+        JSONObject address = new JSONObject();
 
         String userId = preferences.getString("_id", null);
         try {
             //input your API parameters
 //            object.put("id", userId);  // hardcoded for the time being
+            defaultLocation.put("latitude",finalPosition.latitude);
+            defaultLocation.put("longitude",finalPosition.longitude);
             object.put("id", userId);
-            object.put("address1", addr1);
-            object.put("searchRadius", addr2);
-            object.put("city", cty);
-            object.put("state", st);
-            object.put("country", cntry);
-            object.put("pincode", pc);
+            address.put("addr", addr1);
+            address.put("city", cty);
+            address.put("state", st);
+            address.put("country", cntry);
+            address.put("pincode", pc);
+            object.put("address",address);
             object.put("contactNumber", cno);
+            object.put("defaultLocation",defaultLocation);
+            object.put("defaultSearchRadius",Integer.parseInt(locatedRadius));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -138,7 +145,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.w("Regi Data", object.toString());
 
         // Enter the correct url for your api service site
-        String url = "https://a50cf689.ngrok.io/api/users/register";
+        String url = "https://6b6acf18.ngrok.io/api/users/register";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -174,7 +181,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     assert data != null;
                     geocoder = new Geocoder(RegistrationActivity.this,Locale.getDefault());
-                    String locatedRadius = data.getExtras().getString("radius");
+                    locatedRadius = data.getExtras().getString("radius");
                     Objects.requireNonNull(searchRadius.getEditText()).setText(locatedRadius);
                     finalPosition = data.getExtras().getParcelable("finalPosition");
                     addresses = geocoder.getFromLocation(finalPosition.latitude, finalPosition.longitude, 1);
