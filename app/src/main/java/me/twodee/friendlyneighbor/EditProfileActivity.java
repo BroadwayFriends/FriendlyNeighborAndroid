@@ -53,20 +53,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
     int LAUNCH_LOCATION_ACTIVITY = 877;
     private Button updateProfileButton;
-    private EditText editTextEmail ,editTextPhone,editTextUsername,editTextRadius, editTextLocation;
+    private EditText editTextEmail, editTextPhone, editTextUsername, editTextRadius, editTextLocation;
     private ImageView editPictureButton;
     private SharedPreferences preferences;
     private String TAG = "editProfilePage";
-    String changedUri = "" ;
-    private Geocoder geocoder ;
+    String changedUri = "";
+    private Geocoder geocoder;
     private Boolean UPDATE_FLAG = Boolean.FALSE;
-    private LatLng finalPosition ;
+    private LatLng finalPosition;
     private List<Address> addresses;
-    private String changedEmail, changedPhone, changedLocation,changedUsername,changedRadius;
-    private static final String baseUrl = "https://ptsv2.com/t/m65jb-1589964055/post";
+    private String changedEmail, changedPhone, changedLocation, changedUsername, changedRadius;
+    private static final String baseUrl = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
     private Uri mCropImageUri;
 
-
+    String locatedAddressLine1, locatedCity, locatedState, locatedCountry, locatedPostalCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,12 +95,10 @@ public class EditProfileActivity extends AppCompatActivity {
 //        updateProfileButton.setAlpha(.4f);
 
 
-
-
         editTextUsername.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                changedUsername = editTextUsername.getText().toString() ;
+                changedUsername = editTextUsername.getText().toString();
             }
 
             public void beforeTextChanged(CharSequence s, int start,
@@ -118,7 +116,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextEmail.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                changedEmail =editTextEmail.getText().toString() ;
+                changedEmail = editTextEmail.getText().toString();
 
             }
 
@@ -137,7 +135,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextPhone.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                changedPhone = editTextPhone.getText().toString() ;
+                changedPhone = editTextPhone.getText().toString();
             }
 
             public void beforeTextChanged(CharSequence s, int start,
@@ -154,7 +152,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextRadius.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                changedRadius = editTextRadius.getText().toString() ;
+                changedRadius = editTextRadius.getText().toString();
             }
 
             public void beforeTextChanged(CharSequence s, int start,
@@ -181,8 +179,8 @@ public class EditProfileActivity extends AppCompatActivity {
         updateProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (UPDATE_FLAG){
-                updateData();
+                if (UPDATE_FLAG) {
+                    updateData();
                 }
             }
         });
@@ -197,15 +195,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    private void onProfileEdit(){
+    private void onProfileEdit() {
 
         updateProfileButton.setClickable(true);
         updateProfileButton.setAlpha(1f);
-        UPDATE_FLAG = Boolean.TRUE ;
+        UPDATE_FLAG = Boolean.TRUE;
 
     }
-
-
 
 
     private void startCropImageActivity(Uri imageUri) {
@@ -230,7 +226,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
-
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -250,12 +245,11 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode ==  LAUNCH_LOCATION_ACTIVITY){
+        if (requestCode == LAUNCH_LOCATION_ACTIVITY) {
             try {
                 if (resultCode == Activity.RESULT_OK) {
 
@@ -265,8 +259,12 @@ public class EditProfileActivity extends AppCompatActivity {
                     editTextRadius.setText(locatedRadius);
                     finalPosition = data.getExtras().getParcelable("finalPosition");
                     addresses = geocoder.getFromLocation(finalPosition.latitude, finalPosition.longitude, 1);
-                    String locatedAddressLine1 = addresses.get(0).getAddressLine(0);
-                    Log.v(TAG,"Addr,"+locatedAddressLine1);
+                    locatedAddressLine1 = addresses.get(0).getAddressLine(0);
+                    locatedCity = addresses.get(0).getLocality();
+                    locatedState = addresses.get(0).getAdminArea();
+                    locatedCountry = addresses.get(0).getCountryName();
+                    locatedPostalCode = addresses.get(0).getPostalCode();
+                    Log.v(TAG, "Addr," + locatedAddressLine1);
                     editTextLocation.setText(locatedAddressLine1);
                     editTextRadius.setText(locatedRadius);
 
@@ -274,11 +272,10 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_CANCELED) {
                     Toast.makeText(EditProfileActivity.this, R.string.locationNotPickedError, Toast.LENGTH_SHORT).show();
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
 
 //                Toast.makeText(this, "Something went wrong: ", Toast.LENGTH_LONG).show();
-                Log.e(TAG,e.getMessage());
+                Log.e(TAG, e.getMessage());
 
             }
 
@@ -293,7 +290,7 @@ public class EditProfileActivity extends AppCompatActivity {
             if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
                 // request permissions and handle the result in onRequestPermissionsResult()
                 mCropImageUri = imageUri;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
             } else {
                 // no permissions required or already granted, can start crop image activity
                 startCropImageActivity(imageUri);
@@ -303,14 +300,13 @@ public class EditProfileActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                changedUri = result.getUri().toString().replace("file://","");
-                Log.v(TAG,  result.getUri().toString().replace("file://","")) ;
+                changedUri = result.getUri().toString().replace("file://", "");
+                Log.v(TAG, result.getUri().toString().replace("file://", ""));
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                 Log.e(TAG, result.getError().toString()) ;
+                Log.e(TAG, result.getError().toString());
             }
         }
-
 
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -329,8 +325,8 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = "https://httpbin.org/post";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
+        String url = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -348,7 +344,6 @@ public class EditProfileActivity extends AppCompatActivity {
                         }
 
 
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -364,6 +359,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private void updateData() {
 
         JSONObject object = new JSONObject();
+        JSONObject defaultLocation = new JSONObject();
+        JSONObject address = new JSONObject();
 
         String userId = preferences.getString("_id", null);
         changedUsername = editTextUsername.getText().toString();
@@ -373,12 +370,21 @@ public class EditProfileActivity extends AppCompatActivity {
         changedLocation = editTextLocation.getText().toString();
         try {
 
+            defaultLocation.put("latitude", finalPosition.latitude);
+            defaultLocation.put("longitude", finalPosition.longitude);
+            address.put("addr",locatedAddressLine1);
+            address.put("state",locatedState);
+            address.put("city",locatedCity);
+            address.put("pincode",locatedPostalCode);
+            address.put("country",locatedCountry);
+
 //            object.put("id", userId);
             object.put("name", changedUsername);
             object.put("email", changedEmail);
-            object.put("phoneNumber", changedPhone);
-            object.put("defaultLocation", String.format("{lat:%s,lng:%s}", finalPosition.latitude, finalPosition.longitude));
-            object.put("changedRadius", changedRadius);
+            object.put("contactNumber", changedPhone);
+            object.put("defaultLocation", defaultLocation);
+            object.put("address",address);
+            object.put("defaultSearchRadius", Integer.parseInt(changedRadius));
 
 
         } catch (JSONException e) {
@@ -386,53 +392,50 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
 
-
-
         MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
-                .setMethod("POST")
-                .addHeader("_id", "5ebc27d7e6fe7a77013ecd2a")
+                .setMethod("PUT")
+                .addHeader("_id", "5ec402f5e9071a16705469a4")
                 .addParameter("data", object.toString());
         try {
-            reqObj.addFileToUpload(changedUri, "updatedPhoto");
+           reqObj.addFileToUpload(changedUri, "image");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 //                .addFileToUpload(changedUri, "updatedPhoto")
 
-                reqObj.subscribe( this, this, new RequestObserverDelegate() {
+        reqObj.subscribe(this, this, new RequestObserverDelegate() {
 
-                    @Override
-                    public void onSuccess(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull ServerResponse serverResponse) {
-                        Log.i(TAG, "Success:"+serverResponse.getBodyString());
-                        Toast.makeText(EditProfileActivity.this,"Successfully Updated !!",Toast.LENGTH_SHORT).show();
-                    }
+            @Override
+            public void onSuccess(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull ServerResponse serverResponse) {
+                Log.i(TAG, "Success:" + serverResponse.getBodyString());
+                Toast.makeText(EditProfileActivity.this, "Successfully Updated !!", Toast.LENGTH_SHORT).show();
+            }
 
-                    @Override
-                    public void onProgress(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+            @Override
+            public void onProgress(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
 
-                    }
+            }
 
-                    @Override
-                    public void onError(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull Throwable throwable) {
-                        Log.e(TAG, "Error, upload error:");
-                    }
+            @Override
+            public void onError(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull Throwable throwable) {
+                Log.e(TAG, "Error, upload error:");
+            }
 
-                    @Override
-                    public void onCompletedWhileNotObserving() {
+            @Override
+            public void onCompletedWhileNotObserving() {
 
-                    }
+            }
 
-                    @Override
-                    public void onCompleted(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+            @Override
+            public void onCompleted(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
 
-                    }
-                } );
+            }
+        });
 
         Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
         startActivity(intent);
 
     }
-
 
 
 }
