@@ -20,6 +20,7 @@
             android:layout_gravity="center">
             <!-- Profile Picture -->
             <ImageView
+                android:id="@+id/profile_bottom_sheet_profile_picture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/akhil"
@@ -34,6 +35,7 @@
         android:orientation="vertical">
         <!-- Username -->
         <TextView
+            android:id="@+id/profile_bottom_sheet_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Akhil Surendran"

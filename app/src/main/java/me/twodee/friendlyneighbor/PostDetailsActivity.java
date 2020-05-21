@@ -40,6 +40,9 @@ public class PostDetailsActivity extends AppCompatActivity {
     TextView selectedTitle, selectedDescription, selectedPostedBy;
     ImageView profilePictureView;
 
+    TextView bottomSheetName;
+    ImageView bottonSheetProfilePicture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,12 +103,6 @@ public class PostDetailsActivity extends AppCompatActivity {
 
         viewPager2 = findViewById(R.id.viewPagerImageSlider);
 
-//        sliderItems.add(new SliderItem("https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980898/requests/ckafdkng60002akuqaq41epec.png"));
-//        sliderItems.add(new SliderItem(	"https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980715/requests/ckafdgr2a0000akuq3tvaajqi.jpg"));
-//        sliderItems.add(new SliderItem("https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980853/requests/ckafdjpda0001akuq2dq55rvk.jpg"));
-//        sliderItems.add(new SliderItem("noimage"));
-//        sliderItems.add(new SliderItem(R.drawable.test2));
-//        sliderItems.add(new SliderItem(R.drawable.test3));
 
         viewPager2.setAdapter(new SliderAdapter(this, sliderItems, viewPager2));
 
@@ -134,14 +131,31 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
+
+//        bottomSheetName.setText("HELLO");
+//        Picasso.get().load(profilePicture).fit().centerInside().into(bottonSheetProfilePicture);
+
+
         CardView authorDetails = (CardView)findViewById(R.id.authorDetails);
+        final String finalProfilePicture = profilePicture;
+        final String finalPostedBy = postedBy;
         authorDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(PostDetailsActivity.this, R.style.BottomSheet);
+
+                Log.w("BottomSheet", finalPostedBy);
+                Log.w("BottomSheet", finalProfilePicture);
+
                 View bottomSheet = LayoutInflater.from(getApplicationContext()).inflate(R.layout.profile_bottom_sheet, (LinearLayout) findViewById(R.id.bottomSheetContent));
+
+                bottomSheetName = (TextView) bottomSheet.findViewById(R.id.profile_bottom_sheet_name);
+                bottonSheetProfilePicture = (ImageView) bottomSheet.findViewById(R.id.profile_bottom_sheet_profile_picture);
+
                 bottomSheetDialog.setContentView(bottomSheet);
                 bottomSheetDialog.show();
+                bottomSheetName.setText(finalPostedBy);
+                Picasso.get().load(finalProfilePicture).fit().centerInside().into(bottonSheetProfilePicture);
             }
         });
 
