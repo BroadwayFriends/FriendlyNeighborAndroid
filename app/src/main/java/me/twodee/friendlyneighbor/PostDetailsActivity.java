@@ -23,13 +23,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.snov.timeagolibrary.PrettyTimeAgo;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PostDetailsActivity extends AppCompatActivity {
@@ -37,7 +41,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
 
-    TextView selectedTitle, selectedDescription, selectedPostedBy, selectedMinutesAway;
+    TextView selectedTitle, selectedDescription, selectedPostedBy, selectedMinutesAway, selectedTimeAgo;
     ImageView profilePictureView;
 
     TextView bottomSheetName;
@@ -57,6 +61,8 @@ public class PostDetailsActivity extends AppCompatActivity {
         JSONArray imageUrl = null;
         String profilePicture = null;
         double time = 0;
+        String creationtime = null;
+        String timeAgo = null;
 
         List<SliderItem> sliderItems = new ArrayList<>();
 
@@ -79,6 +85,19 @@ public class PostDetailsActivity extends AppCompatActivity {
             imageUrl = value2.getJSONArray("images");
             time = value.getInt("distance") / 0.25;         //Since, average bicycle speed in 15kmph with is equal to 0.25 kmpmin
 
+
+            creationtime = value2.getString("createdAt");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
+            Date date = dateFormat.parse(creationtime);
+            long tago = date.getTime();
+            long now = System.currentTimeMillis();
+
+            timeAgo = PrettyTimeAgo.getTimeAgo(tago);
+
+            Log.w("TIME IN MILI", String.valueOf(tago));
+            Log.w("TIME AGO", timeAgo);
+
             int sizeImageArray = imageUrl.length();
 
             if (sizeImageArray == 0) {
@@ -91,7 +110,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                 }
             }
 
-        } catch (JSONException e) {
+        } catch (JSONException | ParseException e) {
             Log.w("JSON_ERROR", e);
         }
 
@@ -100,12 +119,14 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedPostedBy = (TextView) findViewById(R.id.discover_posted_by);
         profilePictureView = (ImageView) findViewById(R.id.postDetails_profile_picture);
         selectedMinutesAway = (TextView) findViewById(R.id.profile_minutes_away);
+        selectedTimeAgo = (TextView) findViewById(R.id.postDetails_time_ago);
 
         selectedTitle.setText(title);
         selectedDescription.setText(description);
         selectedPostedBy.setText(postedBy);
         Picasso.get().load(profilePicture).fit().centerInside().into(profilePictureView);
         selectedMinutesAway.setText(String.valueOf((int)time) + " minutes away");
+        selectedTimeAgo.setText(timeAgo);
 
 
         viewPager2 = findViewById(R.id.viewPagerImageSlider);

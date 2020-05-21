@@ -199,6 +199,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="20dp"/>
                         <TextView
+                            android:id="@+id/postDetails_time_ago"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="5 hours ago"
