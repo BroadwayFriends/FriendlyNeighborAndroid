@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -33,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.common.io.LineReader;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -63,7 +65,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private LatLng finalPosition;
     private List<Address> addresses;
     private String changedEmail, changedPhone, changedLocation, changedUsername, changedRadius;
-    private final String baseUrl = getResources().getString(R.string.base_url) ;
+    private  String baseUrl ;
     private Uri mCropImageUri;
 
     String locatedAddressLine1, locatedCity, locatedState, locatedCountry, locatedPostalCode;
@@ -77,8 +79,8 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
-
-
+        baseUrl = getResources().getString(R.string.base_url) ;
+        LinearLayout goBack = findViewById(R.id.goBackLayout);
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPhone = (EditText) findViewById(R.id.editTextPhone);
@@ -89,11 +91,20 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextLocation.setFocusable(false);
         editTextLocation.setCursorVisible(false);
         updateProfileButton.setClickable(false);
-//        fetchData();
+        fetchData();
 
 //        updateProfileButton.setClickable(false);
 //        updateProfileButton.setAlpha(.4f);
 
+
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EditProfileActivity.this, DashboardActivity.class);
+                startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
+                onProfileEdit();
+            }
+        });
 
         editTextUsername.addTextChangedListener(new TextWatcher() {
 
@@ -317,7 +328,8 @@ public class EditProfileActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject object = new JSONObject();
 
-        String userId = preferences.getString("_id", null);
+//        String userId = preferences.getString("_id", null);
+        String userId =  "5ec7e4eddb059c13762d643f" ;
         try {
             object.put("id", userId);
 
@@ -325,19 +337,23 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, baseUrl, object,
+        String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.w("ServerResponse", response.toString());
 
                         try {
+//                            Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
+//                            nameTV.setText(response.getString("name"));
+//                            emailTV.setText(response.getString("email"));
                             editTextUsername.setText(response.getString("name"));
                             editTextEmail.setText(response.getString("email"));
-                            editTextPhone.setText(response.getString("changedPhone"));
-                            editTextLocation.setText(response.getString("changedLocation"));
-                            editTextRadius.setText(response.getString("changedRadius"));
+                            editTextPhone.setText(response.getString("contactNumber"));
+                            editTextRadius.setText(response.getString("defaultSearchRadius"));
+                            editTextLocation.setText(response.getString("address"));
+//                            editTextLocation.setText(response.getString("defaultLocation"));
 
                         } catch (JSONException e) {
                             e.printStackTrace();

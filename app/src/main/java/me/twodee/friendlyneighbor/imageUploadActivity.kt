@@ -28,7 +28,7 @@ class imageUploadActivity : AppCompatActivity() {
         // Choose the number which is good for you, here I'll use a random one.
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
-        const val baseUrl = "https://c7e610f7.ngrok.io/api/requests"
+        const val baseUrl = "https://fn.twodee.me/api/requests"
         var image1: Uri = Uri.EMPTY
         var image2: Uri = Uri.EMPTY
         var image3: Uri = Uri.EMPTY

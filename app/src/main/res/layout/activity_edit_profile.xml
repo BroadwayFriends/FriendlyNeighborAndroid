@@ -24,7 +24,8 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            android:padding="15dp">
+            android:padding="15dp"
+            android:id = "@+id/goBackLayout">
 
             <ImageView
                 android:layout_width="24dp"

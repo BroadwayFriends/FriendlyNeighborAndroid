@@ -168,6 +168,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
+            android:id = "@+id/KarmaPage"
             android:layout_width="180dp"
             android:layout_height="120dp"
             app:cardElevation="2dp"
@@ -200,6 +201,7 @@
 
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
+            android:id = "@+id/DiscoverPage"
             android:layout_width="180dp"
             android:layout_height="120dp"
             app:cardElevation="2dp"
@@ -237,9 +239,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <com.google.android.material.card.MaterialCardView
+            android:id = "@+id/RequestPage"
             android:layout_width="180dp"
             android:layout_height="120dp"
             app:cardElevation="2dp"
@@ -272,6 +276,7 @@
 
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
+            android:id = "@+id/RespondToPosts"
             android:layout_width="180dp"
             android:layout_height="120dp"
             app:cardElevation="2dp"
