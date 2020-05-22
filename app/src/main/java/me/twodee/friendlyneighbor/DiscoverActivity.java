@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -259,8 +260,8 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 //                        progressBar.setVisibility(View.GONE);
                         discoverLoadingLayout.setVisibility(View.GONE);
 
-                        Log.w("ServerError", error);
-                        Toast.makeText(DiscoverActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.w("RESPONSE ERROR", error);
+                        Toast.makeText(DiscoverActivity.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -274,6 +275,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         requestQueue.add(jsonArrayRequest);
         Log.w("_id", id);
     }
+
 
     @Override
     public void onDiscoverDetailsClick(int position) {
