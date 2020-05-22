@@ -58,7 +58,17 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
+
     //Image  cropper
-//    implementation 'com.github.yalantis:ucrop:2.2.5-native'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.5.1'
+
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    //LoadingDialog
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    //Image
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+
 }

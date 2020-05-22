@@ -1,4 +1,8 @@
 <resources>
+
+    <string name="agni_url">https://22b6bcf8.ngrok.io</string>
+
+
     <string name="app_name">FriendlyNeighbour</string>
     <string name="signup">SignUp</string>
     <string name="post_location">Post Location</string>

@@ -1,11 +1,12 @@
 package me.twodee.friendlyneighbor;
 
 public class SliderItem {
-    private int image;
-    SliderItem(int image){
-        this.image = image;
+    private String imageUrl;
+
+    SliderItem(String imageUrl){
+        this.imageUrl = imageUrl;
     }
-    public int getImage(){
-        return image;
+    public String getImageUrl(){
+        return imageUrl;
     }
 }

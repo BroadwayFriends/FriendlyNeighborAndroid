@@ -1,6 +1,8 @@
 package me.twodee.friendlyneighbor;
 
+import android.content.Context;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder>{
 
+    Context context;
     private List<SliderItem> sliderItems;
     private ViewPager2 viewPager2;
 
-    SliderAdapter(List<SliderItem> sliderItems, ViewPager2 viewPager2) {
+    SliderAdapter(Context context, List<SliderItem> sliderItems, ViewPager2 viewPager2) {
+        this.context = context;
         this.sliderItems = sliderItems;
         this.viewPager2 = viewPager2;
     }
@@ -37,7 +42,12 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
 
     @Override
     public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
-        holder.setImage(sliderItems.get(position));
+
+        SliderItem currentSliderItem = sliderItems.get(position);
+        String imageUrl = currentSliderItem.getImageUrl();
+        Picasso.get().load(imageUrl).error(R.drawable.imagenotavailable).fit().centerInside().into(holder.imageView);
+
+        Log.w("Image string", sliderItems.get(position).getImageUrl());
         if(position == sliderItems.size() - 2){
             viewPager2.post(runnable);
         }
@@ -54,10 +64,6 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
         SliderViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageSlide);
-        }
-
-        void setImage(SliderItem sliderItem){
-            imageView.setImageResource(sliderItem.getImage());
         }
     }
 

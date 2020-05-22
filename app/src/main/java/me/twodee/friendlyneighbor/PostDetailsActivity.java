@@ -9,16 +9,25 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +36,10 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
+    String strValue = "";
+
+    TextView selectedTitle, selectedDescription, selectedPostedBy;
+    ImageView profilePictureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +49,66 @@ public class PostDetailsActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_post_details);
 
-        viewPager2 = findViewById(R.id.viewPagerImageSlider);
+        String title = null;
+        String description = null;
+        String postedBy = null;
+        JSONArray imageUrl = null;
+        String profilePicture = null;
 
         List<SliderItem> sliderItems = new ArrayList<>();
-        sliderItems.add(new SliderItem(R.drawable.test1));
-        sliderItems.add(new SliderItem(R.drawable.test2));
-        sliderItems.add(new SliderItem(R.drawable.test3));
 
-        viewPager2.setAdapter(new SliderAdapter(sliderItems, viewPager2));
+        strValue = getIntent().getStringExtra("jsonString");
+        JSONObject value = null;
+
+        try {
+            value = new JSONObject(strValue);
+            value = value.getJSONObject("request");
+
+            Log.w("Selected JSON", value.toString());
+
+            title = value.getString("title");
+            description = value.getString("description");
+            postedBy = value.getJSONObject("requestedBy").getString("name");
+            profilePicture = value.getJSONObject("requestedBy").getString("profilePicture");
+            imageUrl = value.getJSONArray("images");
+
+            int sizeImageArray = imageUrl.length();
+
+            if (sizeImageArray == 0) {
+                sliderItems.add(new SliderItem("noimage"));
+            } else {
+                for (int i = 0; i < sizeImageArray; i++) {
+                    JSONObject imageDetails = imageUrl.getJSONObject(i);
+                    String iurl = imageDetails.getString("imageURL");
+                    sliderItems.add(new SliderItem(iurl));
+                }
+            }
+
+        } catch (JSONException e) {
+            Log.w("JSON_ERROR", e);
+        }
+
+        selectedTitle = (TextView) findViewById(R.id.selected_title);
+        selectedDescription = (TextView) findViewById(R.id.selected_description);
+        selectedPostedBy = (TextView) findViewById(R.id.discover_posted_by);
+        profilePictureView = (ImageView) findViewById(R.id.postDetails_profile_picture);
+
+        selectedTitle.setText(title);
+        selectedDescription.setText(description);
+        selectedPostedBy.setText(postedBy);
+        Picasso.get().load(profilePicture).fit().centerInside().into(profilePictureView);
+
+
+        viewPager2 = findViewById(R.id.viewPagerImageSlider);
+
+//        sliderItems.add(new SliderItem("https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980898/requests/ckafdkng60002akuqaq41epec.png"));
+//        sliderItems.add(new SliderItem(	"https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980715/requests/ckafdgr2a0000akuq3tvaajqi.jpg"));
+//        sliderItems.add(new SliderItem("https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980853/requests/ckafdjpda0001akuq2dq55rvk.jpg"));
+//        sliderItems.add(new SliderItem("noimage"));
+//        sliderItems.add(new SliderItem(R.drawable.test2));
+//        sliderItems.add(new SliderItem(R.drawable.test3));
+
+        viewPager2.setAdapter(new SliderAdapter(this, sliderItems, viewPager2));
 
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);

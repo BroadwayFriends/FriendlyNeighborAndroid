@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".RegistrationActivity">
+
+    tools:context=".DiscoverActivity"
+    android:padding="16dp"
+    android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="412dp"
@@ -17,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -309,4 +313,62 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/menu" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="0dp"
+        android:background="@drawable/bg_view1"
+        android:layout_height="6dp"
+        android:layout_marginBottom="14dp">
+
+    </View>
+
+        <RelativeLayout
+            android:id="@+id/discover_loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/discover_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                style="@style/SpinKitView.ThreeBounce"
+                app:SpinKit_Color="@color/appTheme"
+                android:layout_margin="12dp"
+                android:visibility="visible">
+            </com.github.ybq.android.spinkit.SpinKitView>
+
+            <TextView
+                android:layout_below="@id/discover_progress_bar"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please Wait"
+                android:fontFamily="@font/product_sans_regular">
+            </TextView>
+
+        </RelativeLayout>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/discover_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:queryHint="Search Item"
+        android:layout_marginBottom="10dp"
+        app:iconifiedByDefault="false">
+
+    </androidx.appcompat.widget.SearchView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/discover_recycler_view">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
 </LinearLayout>
