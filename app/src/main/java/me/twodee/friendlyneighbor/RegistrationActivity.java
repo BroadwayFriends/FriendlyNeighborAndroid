@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,7 @@ import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    TextInputLayout address1, searchRadius, city, state, country, pincode, contactNumber;
+    EditText address1, searchRadius, city, state, country, pincode, contactNumber;
     Button submitButton,autoFillAddress;
 
     AwesomeValidation awesomeValidation;
@@ -68,6 +69,18 @@ public class RegistrationActivity extends AppCompatActivity {
         contactNumber = findViewById(R.id.contact);
         submitButton = findViewById(R.id.submitButton);
         autoFillAddress = findViewById(R.id.autoFillAddress);
+        address1.setFocusable(false);
+        address1.setCursorVisible(false);
+        city.setFocusable(false);
+        city.setCursorVisible(false);
+        state.setFocusable(false);
+        state.setCursorVisible(false);
+        country.setFocusable(false);
+        country.setCursorVisible(false);
+        pincode.setFocusable(false);
+        pincode.setCursorVisible(false);
+        searchRadius.setFocusable(false);
+        searchRadius.setCursorVisible(false);
 
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
@@ -98,13 +111,13 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (awesomeValidation.validate()) {
 
-                    addr1 = address1.getEditText().getText().toString();
-                    addr2 = searchRadius.getEditText().getText().toString();
-                    cty = city.getEditText().getText().toString();
-                    st = state.getEditText().getText().toString();
-                    cntry = country.getEditText().getText().toString();
-                    pc = Integer.parseInt(pincode.getEditText().getText().toString());
-                    cno = contactNumber.getEditText().getText().toString();
+                    addr1 = address1.getText().toString();
+                    addr2 = searchRadius.getText().toString();
+                    cty = city.getText().toString();
+                    st = state.getText().toString();
+                    cntry = country.getText().toString();
+                    pc = Integer.parseInt(pincode.getText().toString());
+                    cno = contactNumber.getText().toString();
 
                     sendRegistrationData();
 
@@ -187,7 +200,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     assert data != null;
                     geocoder = new Geocoder(RegistrationActivity.this,Locale.getDefault());
                     locatedRadius = data.getExtras().getString("radius");
-                    Objects.requireNonNull(searchRadius.getEditText()).setText(locatedRadius);
+                    searchRadius.setText(locatedRadius);
                     finalPosition = data.getExtras().getParcelable("finalPosition");
                     addresses = geocoder.getFromLocation(finalPosition.latitude, finalPosition.longitude, 1);
                     String locatedAddressLine1 = addresses.get(0).getAddressLine(0);// If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
@@ -198,11 +211,11 @@ public class RegistrationActivity extends AppCompatActivity {
                     String locatedPostalCode = addresses.get(0).getPostalCode();
 //                    String knownName = addresses.get(0).getFeatureName();
                     Log.v(TAG,"Addr,"+locatedAddressLine1+"City,"+locatedState+"state,"+locatedState+"country,"+locatedCountry+"postalCode,"+locatedPostalCode);
-                    Objects.requireNonNull(address1.getEditText()).setText(locatedAddressLine1);
-                    Objects.requireNonNull(city.getEditText()).setText(locatedCity);
-                    Objects.requireNonNull(state.getEditText()).setText(locatedState);
-                    Objects.requireNonNull(country.getEditText()).setText(locatedCountry);
-                    Objects.requireNonNull(pincode.getEditText()).setText(locatedPostalCode);
+                    address1.setText(locatedAddressLine1);
+                    city.setText(locatedCity);
+                    state.setText(locatedState);
+                    country.setText(locatedCountry);
+                    pincode.setText(locatedPostalCode);
 
 
 

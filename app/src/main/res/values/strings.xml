@@ -7,7 +7,7 @@
     <string name="signup">SignUp</string>
     <string name="post_location">Post Location</string>
     <string name="send_location">Send location</string>
-    <string name="action_geolocate"> Use home / Choose new location </string>
+    <string name="action_geolocate"> Use this location </string>
     <string name="next">Next</string>
 
     <string name="sign_in_page">Sign In Page</string>
@@ -15,7 +15,7 @@
     <string name="errorInDescription">Please enter a valid description.</string>
     <string name="errorInPhone">Please enter a valid phone number.</string>
     <string name="errorInDistance">Please enter a valid distance between 1 and 20 kms.</string>
-    <string name="title_activity_pick_location">Map</string>
+    <string name="title_activity_pick_location">Select your location</string>
     <string name="upload_image">"Upload Images "</string>
     <string name="locationNotPickedError">An error occurred while saving your location,Please try again</string>
     <!--    <string name="dateerror">Enter a valid date</string>-->

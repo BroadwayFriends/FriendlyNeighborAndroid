@@ -375,7 +375,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_map, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
