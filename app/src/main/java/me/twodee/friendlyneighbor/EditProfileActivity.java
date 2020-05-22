@@ -63,7 +63,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private LatLng finalPosition;
     private List<Address> addresses;
     private String changedEmail, changedPhone, changedLocation, changedUsername, changedRadius;
-    private static final String baseUrl = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
+    private final String baseUrl = getResources().getString(R.string.base_url) ;
     private Uri mCropImageUri;
 
     String locatedAddressLine1, locatedCity, locatedState, locatedCountry, locatedPostalCode;
@@ -325,8 +325,8 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, object,
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, baseUrl, object,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
