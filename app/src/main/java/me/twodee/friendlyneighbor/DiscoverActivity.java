@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -177,8 +180,11 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
     private void loadDiscoverData() {
 
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
-        final RelativeLayout discoverLoadingLayout = (RelativeLayout) findViewById(R.id.discover_loading_layout);
+        final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
         discoverLoadingLayout.setVisibility(View.VISIBLE);
+
+        final TextView noUsersTV = (TextView) findViewById(R.id.discover_no_users);
+
         ThreeBounce threeBounce = new ThreeBounce();
         progressBar.setIndeterminateDrawable(threeBounce);
         progressBar.setVisibility(View.VISIBLE);
@@ -207,6 +213,11 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                         try{
                             // Loop through the array elements
                             JSONArray allItems = response;
+
+                            if (allItems.length() == 0) {
+                                noUsersTV.setVisibility(View.VISIBLE);
+                            }
+
                             for(int i=0; i<allItems.length(); i++){
 
                                 // Get current json object
@@ -259,8 +270,8 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 //                        progressBar.setVisibility(View.GONE);
                         discoverLoadingLayout.setVisibility(View.GONE);
 
-                        Log.w("ServerError", error);
-                        Toast.makeText(DiscoverActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.w("RESPONSE ERROR", error);
+                        Toast.makeText(DiscoverActivity.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -274,6 +285,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         requestQueue.add(jsonArrayRequest);
         Log.w("_id", id);
     }
+
 
     @Override
     public void onDiscoverDetailsClick(int position) {

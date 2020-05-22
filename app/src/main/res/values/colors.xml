@@ -11,4 +11,8 @@
     <color name="customPurple" >#5e5ce6 </color>
     <color name="appTheme">#ee1f56</color>
 
+
+
+    <color name="transparent">#B0FFFFFF</color>
+
 </resources>

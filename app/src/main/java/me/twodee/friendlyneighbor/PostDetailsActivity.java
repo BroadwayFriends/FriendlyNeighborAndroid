@@ -23,13 +23,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.snov.timeagolibrary.PrettyTimeAgo;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PostDetailsActivity extends AppCompatActivity {
@@ -38,8 +42,11 @@ public class PostDetailsActivity extends AppCompatActivity {
     private Handler sliderHandler = new Handler();
     String strValue = "";
 
-    TextView selectedTitle, selectedDescription, selectedPostedBy;
+    TextView selectedTitle, selectedDescription, selectedPostedBy, selectedMinutesAway, selectedTimeAgo;
     ImageView profilePictureView;
+
+    TextView bottomSheetName;
+    ImageView bottonSheetProfilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +61,46 @@ public class PostDetailsActivity extends AppCompatActivity {
         String postedBy = null;
         JSONArray imageUrl = null;
         String profilePicture = null;
+        double time = 0;
+        String creationtime = null;
+        String timeAgo = null;
 
         List<SliderItem> sliderItems = new ArrayList<>();
 
-        strValue = getIntent().getStringExtra("jsonString");
-        JSONObject value = null;
 
+
+        //JSON data from previous activity
+        String strValue = getIntent().getStringExtra("jsonString");
+
+        JSONObject value = null;
+        JSONObject value2 = null;
+
+        //Parsing JSON data
         try {
             value = new JSONObject(strValue);
-            value = value.getJSONObject("request");
+            value2 = value.getJSONObject("request");
 
             Log.w("Selected JSON", value.toString());
 
-            title = value.getString("title");
-            description = value.getString("description");
-            postedBy = value.getJSONObject("requestedBy").getString("name");
-            profilePicture = value.getJSONObject("requestedBy").getString("profilePicture");
-            imageUrl = value.getJSONArray("images");
+            title = value2.getString("title");
+            description = value2.getString("description");
+            postedBy = value2.getJSONObject("requestedBy").getString("name");
+            profilePicture = value2.getJSONObject("requestedBy").getString("profilePicture");
+            imageUrl = value2.getJSONArray("images");
+            time = value.getInt("distance") / 0.25;         //Since, average bicycle speed in 15kmph with is equal to 0.25 kmpmin
+
+
+            creationtime = value2.getString("createdAt");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
+            Date date = dateFormat.parse(creationtime);
+            long tago = date.getTime();
+            long now = System.currentTimeMillis();
+
+            timeAgo = PrettyTimeAgo.getTimeAgo(tago);
+
+            Log.w("TIME IN MILI", String.valueOf(tago));
+            Log.w("TIME AGO", timeAgo);
 
             int sizeImageArray = imageUrl.length();
 
@@ -84,7 +114,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                 }
             }
 
-        } catch (JSONException e) {
+        } catch (JSONException | ParseException  | NullPointerException e) {
             Log.w("JSON_ERROR", e);
         }
 
@@ -92,21 +122,19 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedDescription = (TextView) findViewById(R.id.selected_description);
         selectedPostedBy = (TextView) findViewById(R.id.discover_posted_by);
         profilePictureView = (ImageView) findViewById(R.id.postDetails_profile_picture);
+        selectedMinutesAway = (TextView) findViewById(R.id.profile_minutes_away);
+        selectedTimeAgo = (TextView) findViewById(R.id.postDetails_time_ago);
 
         selectedTitle.setText(title);
         selectedDescription.setText(description);
         selectedPostedBy.setText(postedBy);
         Picasso.get().load(profilePicture).fit().centerInside().into(profilePictureView);
+        selectedMinutesAway.setText(String.valueOf((int)time) + " minutes away");
+        selectedTimeAgo.setText(timeAgo);
 
 
         viewPager2 = findViewById(R.id.viewPagerImageSlider);
 
-//        sliderItems.add(new SliderItem("https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980898/requests/ckafdkng60002akuqaq41epec.png"));
-//        sliderItems.add(new SliderItem(	"https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980715/requests/ckafdgr2a0000akuq3tvaajqi.jpg"));
-//        sliderItems.add(new SliderItem("https://res.cloudinary.com/friendly-neighbour/image/upload/v1589980853/requests/ckafdjpda0001akuq2dq55rvk.jpg"));
-//        sliderItems.add(new SliderItem("noimage"));
-//        sliderItems.add(new SliderItem(R.drawable.test2));
-//        sliderItems.add(new SliderItem(R.drawable.test3));
 
         viewPager2.setAdapter(new SliderAdapter(this, sliderItems, viewPager2));
 
@@ -135,14 +163,31 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
+
+//        bottomSheetName.setText("HELLO");
+//        Picasso.get().load(profilePicture).fit().centerInside().into(bottonSheetProfilePicture);
+
+
         CardView authorDetails = (CardView)findViewById(R.id.authorDetails);
+        final String finalProfilePicture = profilePicture;
+        final String finalPostedBy = postedBy;
         authorDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(PostDetailsActivity.this, R.style.BottomSheet);
+
+                Log.w("BottomSheet", finalPostedBy);
+                Log.w("BottomSheet", finalProfilePicture);
+
                 View bottomSheet = LayoutInflater.from(getApplicationContext()).inflate(R.layout.profile_bottom_sheet, (LinearLayout) findViewById(R.id.bottomSheetContent));
+
+                bottomSheetName = (TextView) bottomSheet.findViewById(R.id.profile_bottom_sheet_name);
+                bottonSheetProfilePicture = (ImageView) bottomSheet.findViewById(R.id.profile_bottom_sheet_profile_picture);
+
                 bottomSheetDialog.setContentView(bottomSheet);
                 bottomSheetDialog.show();
+                bottomSheetName.setText(finalPostedBy);
+                Picasso.get().load(finalProfilePicture).fit().centerInside().into(bottonSheetProfilePicture);
             }
         });
 

@@ -72,4 +72,9 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
 
+
+    //TimeAgo
+    implementation 'com.github.shamalka:Pretty-TimeAgo-android-library:1.0.0'
+
+
 }

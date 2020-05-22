@@ -134,10 +134,11 @@
                     android:layout_height="30dp"
                     android:button="@drawable/sl_notification_24dp"/>
                 <TextView
+                    android:id="@+id/profile_minutes_away"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="viewEnd"
-                    android:text="2 minutes away"
+                    android:text="x minutes away"
                     android:layout_marginRight="5dp"/>
 
             </LinearLayout>
@@ -198,6 +199,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="20dp"/>
                         <TextView
+                            android:id="@+id/postDetails_time_ago"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="5 hours ago"
