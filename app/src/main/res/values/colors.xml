@@ -3,5 +3,12 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="mapCircleStroke">#C2185B</color>
+    <color name="customYellow">#ffb340</color>
+    <color name="customBlue" >#0071a4</color>
+    <color name="customGray" >#636366 </color>
+    <color name="customPurple" >#5e5ce6 </color>
     <color name="appTheme">#ee1f56</color>
+
 </resources>

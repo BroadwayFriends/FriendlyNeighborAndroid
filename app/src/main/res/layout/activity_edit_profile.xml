@@ -70,6 +70,7 @@
             android:foreground="?android:attr/selectableItemBackground">
 
             <ImageView
+                android:id="@+id/editPictureButton"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:tint="#000"
@@ -79,7 +80,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Profie Picture"
+                android:text="Profile Picture"
                 android:fontFamily="@font/product_sans_regular"
                 android:textColor="#000"
                 android:textSize="12sp" />
@@ -92,6 +93,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
+            android:id = "@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Akhil Surendran"
@@ -115,12 +117,13 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="2dp">
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField1"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id = "@+id/editTextUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="akhilllll"/>
@@ -143,6 +146,7 @@
                 android:hint="Phone number">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id = "@+id/editTextPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="7995037674"/>
@@ -165,6 +169,7 @@
                 android:hint="Email addres">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id = "@+id/editTextEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="akhil.suredran@vitap.ac.in"/>
@@ -187,25 +192,64 @@
                 android:hint="Saved location">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id = "@+id/editTextLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:text="Mumbai, India"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <!--Radius-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="14dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="2dp">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Radius">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id = "@+id/editTextRadius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1 km"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
         </androidx.cardview.widget.CardView>
 
         <!-- Update Details Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/updateProfileButton"
+            android:id = "@+id/updateProfileButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:padding="16dp"
             android:text="Update Details"
+            android:clickable="false"
+            android:alpha = "0.4"
             android:backgroundTint="@android:color/black"
             android:textAllCaps="false"
             app:rippleColor="@android:color/holo_blue_light"/>
     </LinearLayout>
+    <!-- Image Cropper fill the remaining available height -->
+<!--    <com.theartofdev.edmodo.cropper.CropImageView-->
+<!--        xmlns:custom="http://schemas.android.com/apk/res-auto"-->
+<!--        android:id="@+id/cropImageView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        custom:cropShape="oval"/>-->
 
 
 </LinearLayout>
