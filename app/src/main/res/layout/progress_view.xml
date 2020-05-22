@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:focusable="true"
+    android:id="@+id/progress_view"
+    android:visibility="visible"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/discover_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            style="@style/SpinKitView.ThreeBounce"
+            app:SpinKit_Color="@color/appTheme"
+            android:layout_margin="12dp"
+            android:visibility="visible">
+        </com.github.ybq.android.spinkit.SpinKitView>
+
+        <TextView
+            android:layout_below="@id/discover_progress_bar"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please Wait"
+            android:fontFamily="@font/product_sans_regular">
+        </TextView>
+
+    </RelativeLayout>
+
+
+
+
+</FrameLayout>

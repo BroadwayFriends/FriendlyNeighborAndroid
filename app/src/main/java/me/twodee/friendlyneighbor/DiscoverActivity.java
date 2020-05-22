@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -178,8 +180,11 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
     private void loadDiscoverData() {
 
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
-        final RelativeLayout discoverLoadingLayout = (RelativeLayout) findViewById(R.id.discover_loading_layout);
+        final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
         discoverLoadingLayout.setVisibility(View.VISIBLE);
+
+        final TextView noUsersTV = (TextView) findViewById(R.id.discover_no_users);
+
         ThreeBounce threeBounce = new ThreeBounce();
         progressBar.setIndeterminateDrawable(threeBounce);
         progressBar.setVisibility(View.VISIBLE);
@@ -208,6 +213,11 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                         try{
                             // Loop through the array elements
                             JSONArray allItems = response;
+
+                            if (allItems.length() == 0) {
+                                noUsersTV.setVisibility(View.VISIBLE);
+                            }
+
                             for(int i=0; i<allItems.length(); i++){
 
                                 // Get current json object
