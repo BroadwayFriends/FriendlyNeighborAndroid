@@ -40,6 +40,7 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
+    String strValue = "";
 
     TextView selectedTitle, selectedDescription, selectedPostedBy, selectedMinutesAway, selectedTimeAgo;
     ImageView profilePictureView;
@@ -66,8 +67,11 @@ public class PostDetailsActivity extends AppCompatActivity {
 
         List<SliderItem> sliderItems = new ArrayList<>();
 
+
+
         //JSON data from previous activity
         String strValue = getIntent().getStringExtra("jsonString");
+
         JSONObject value = null;
         JSONObject value2 = null;
 

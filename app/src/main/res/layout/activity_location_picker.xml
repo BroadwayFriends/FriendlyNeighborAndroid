@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+   >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@android:color/white"
+        android:background="@color/colorPrimary">
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="560dp"
+            android:paddingBottom="20dp"
+            tools:context=".MapsActivity"
+
+
+            >
+
+            <ImageView
+                android:id="@+id/pin"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_geolocate" />
+
+
+
+
+        </fragment>
+        <TextView
+            android:id="@+id/textViewSeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:textSize="17sp"
+            android:background="#07000000"
+            android:textColor="@color/customBlue"
+            android:textStyle="bold"
+            android:paddingBottom="2dp"
+            />
+            <SeekBar
+                android:id="@+id/seekBar1"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="#0071a4"
+                android:indeterminate="false"
+                android:layout_gravity="bottom"
+                android:max="20"
+                android:theme="@style/SeekBarTheme"
+                android:padding="10dp"
+                android:progress="1" />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
