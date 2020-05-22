@@ -37,5 +37,19 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.basgeekball:awesome-validation:4.2'
+    //ViewPager2
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    //LoadingDialog
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    //Image
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //TimeAgo
+    implementation 'com.github.shamalka:Pretty-TimeAgo-android-library:1.0.0'
 
 }

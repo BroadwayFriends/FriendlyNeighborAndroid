@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DiscoverActivity"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Discover"
+            android:textSize="40dp"
+            android:fontFamily="@font/product_sans_bold"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="0dp"
+        android:background="@drawable/bg_view1"
+        android:layout_height="6dp"
+        android:layout_marginBottom="14dp">
+
+    </View>
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/discover_loading_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:visibility="gone">-->
+
+<!--            <com.github.ybq.android.spinkit.SpinKitView-->
+<!--                xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--                android:id="@+id/discover_progress_bar"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                style="@style/SpinKitView.ThreeBounce"-->
+<!--                app:SpinKit_Color="@color/appTheme"-->
+<!--                android:layout_margin="12dp"-->
+<!--                android:visibility="visible">-->
+<!--            </com.github.ybq.android.spinkit.SpinKitView>-->
+
+<!--            <TextView-->
+<!--                android:layout_below="@id/discover_progress_bar"-->
+<!--                android:textAlignment="center"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Please Wait"-->
+<!--                android:fontFamily="@font/product_sans_regular">-->
+<!--            </TextView>-->
+
+<!--        </RelativeLayout>-->
+
+    <TextView
+        android:fontFamily="@font/product_sans_italic"
+        android:id="@+id/discover_no_users"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Oops... No Users Nearby !">
+
+    </TextView>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/discover_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:queryHint="Search Item"
+        android:layout_marginBottom="10dp"
+        app:iconifiedByDefault="false">
+
+    </androidx.appcompat.widget.SearchView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/progress_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/discover_recycler_view">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
