@@ -50,6 +50,7 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -61,6 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private String TAG = "editProfilePage";
     String changedUri = "";
     private Geocoder geocoder;
+    private LinearLayout editProfilePicture;
     private Boolean UPDATE_FLAG = Boolean.FALSE;
     private LatLng finalPosition;
     private List<Address> addresses;
@@ -88,6 +90,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editPictureButton = (ImageView) findViewById(R.id.editPictureButton);
         editTextLocation = (EditText) findViewById(R.id.editTextLocation);
         editTextRadius = (EditText) findViewById(R.id.editTextRadius);
+        editProfilePicture =  findViewById(R.id.editProfilePicture);
         editTextLocation.setFocusable(false);
         editTextLocation.setCursorVisible(false);
         updateProfileButton.setClickable(false);
@@ -97,13 +100,10 @@ public class EditProfileActivity extends AppCompatActivity {
 //        updateProfileButton.setAlpha(.4f);
 
 
-        goBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(EditProfileActivity.this, DashboardActivity.class);
-                startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
-                onProfileEdit();
-            }
+        goBack.setOnClickListener(v -> {
+            Intent i = new Intent(EditProfileActivity.this, DashboardActivity.class);
+            startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
+            onProfileEdit();
         });
 
         editTextUsername.addTextChangedListener(new TextWatcher() {
@@ -178,30 +178,21 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
 
-        editTextLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(EditProfileActivity.this, locationPickerActivity.class);
-                startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
-                onProfileEdit();
+        editTextLocation.setOnClickListener(v -> {
+            Intent i = new Intent(EditProfileActivity.this, locationPickerActivity.class);
+            startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
+            onProfileEdit();
+        });
+
+        updateProfileButton.setOnClickListener(v -> {
+            if (UPDATE_FLAG) {
+                updateData();
             }
         });
 
-        updateProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (UPDATE_FLAG) {
-                    updateData();
-                }
-            }
-        });
-
-        editPictureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onProfileEdit();
-                onSelectImageClick(findViewById(R.id.cropImageView));
-            }
+        editProfilePicture.setOnClickListener(v -> {
+            onProfileEdit();
+            onSelectImageClick(findViewById(R.id.cropImageView));
         });
 
     }
@@ -237,7 +228,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String permissions[], int[] grantResults) {
         if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 CropImage.startPickImageActivity(this);
@@ -266,9 +257,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
                     assert data != null;
                     geocoder = new Geocoder(EditProfileActivity.this, Locale.getDefault());
-                    String locatedRadius = data.getExtras().getString("radius");
+                    String locatedRadius = Objects.requireNonNull(data.getExtras()).getString("radius");
                     editTextRadius.setText(locatedRadius);
                     finalPosition = data.getExtras().getParcelable("finalPosition");
+                    assert finalPosition != null;
                     addresses = geocoder.getFromLocation(finalPosition.latitude, finalPosition.longitude, 1);
                     locatedAddressLine1 = addresses.get(0).getAddressLine(0);
                     locatedCity = addresses.get(0).getLocality();
@@ -339,35 +331,29 @@ public class EditProfileActivity extends AppCompatActivity {
 
         String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.w("ServerResponse", response.toString());
+                response -> {
+                    Log.w("ServerResponse", response.toString());
 
-                        try {
+                    try {
 //                            Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
 //                            nameTV.setText(response.getString("name"));
 //                            emailTV.setText(response.getString("email"));
-                            editTextUsername.setText(response.getString("name"));
-                            editTextEmail.setText(response.getString("email"));
-                            editTextPhone.setText(response.getString("contactNumber"));
-                            editTextRadius.setText(response.getString("defaultSearchRadius"));
-                            editTextLocation.setText(response.getString("address"));
+                        editTextUsername.setText(response.getString("name"));
+                        editTextEmail.setText(response.getString("email"));
+                        editTextPhone.setText(response.getString("contactNumber"));
+                        editTextRadius.setText(response.getString("defaultSearchRadius"));
+                        editTextLocation.setText(response.getString("address"));
 //                            editTextLocation.setText(response.getString("defaultLocation"));
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.w("ServerError", error);
-                ;
-            }
-        });
+
+
+                }, error -> {
+                    Log.w("ServerError", error);
+
+                });
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -386,13 +372,13 @@ public class EditProfileActivity extends AppCompatActivity {
         changedLocation = editTextLocation.getText().toString();
         try {
 
-            defaultLocation.put("latitude", finalPosition.latitude);
-            defaultLocation.put("longitude", finalPosition.longitude);
-            address.put("addr",locatedAddressLine1);
-            address.put("state",locatedState);
-            address.put("city",locatedCity);
-            address.put("pincode",locatedPostalCode);
-            address.put("country",locatedCountry);
+//            defaultLocation.put("latitude", finalPosition.latitude);
+//            defaultLocation.put("longitude", finalPosition.longitude);
+//            address.put("addr",locatedAddressLine1);
+//            address.put("state",locatedState);
+//            address.put("city",locatedCity);
+//            address.put("pincode",locatedPostalCode);
+//            address.put("country",locatedCountry);
 
 //            object.put("id", userId);
             object.put("name", changedUsername);
@@ -406,8 +392,8 @@ public class EditProfileActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
+//        https://fn.twodee.me/api/users/5ec7e4eddb059c13762d643f
+        String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId ;
         MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
                 .setMethod("PUT")
                 .addHeader("_id", "5ec402f5e9071a16705469a4")
@@ -448,7 +434,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
+        Intent intent = new Intent(EditProfileActivity.this, DashboardActivity.class);
         startActivity(intent);
 
     }

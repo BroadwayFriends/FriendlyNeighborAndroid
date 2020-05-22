@@ -1,33 +1,29 @@
 package me.twodee.friendlyneighbor;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +38,7 @@ public class DashboardActivity extends AppCompatActivity {
     MaterialCardView RequestPage,DiscoverPage,KarmaPage, RespondToPosts;
 
     String personName, personEmail;
+    ImageView displayImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +56,9 @@ public class DashboardActivity extends AppCompatActivity {
         DiscoverPage = findViewById(R.id.DiscoverPage);
         KarmaPage = findViewById(R.id.KarmaPage);
         RespondToPosts = findViewById(R.id.RespondToPosts);
+        displayImage = findViewById(R.id.displayImage);
+        emailTV.setVisibility(View.GONE);
+
 
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, EditProfileActivity.class);
@@ -99,8 +99,8 @@ public class DashboardActivity extends AppCompatActivity {
 //            String personId = acct.getId();
 //            Uri personPhoto = acct.getPhotoUrl();
 
-            nameTV.setText("Welcome, " +personName);
-            emailTV.setText("Email: "+personEmail);
+            nameTV.setText(String.format("Welcome, %s", personName));
+            emailTV.setText(String.format("Email: %s", personEmail));
 //            idTV.setText("ID: "+personId);
             //Glide.with(this).load(personPhoto).into(photoIV);
 
@@ -108,23 +108,15 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-        sign_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
+        sign_out.setOnClickListener(view -> signOut());
     }
 
     private void signOut() {
         mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(DashboardActivity.this,"Successfully Signed Out !!!",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(DashboardActivity.this, MainActivity.class));
-                        finish();
-                    }
+                .addOnCompleteListener(this, task -> {
+                    Toast.makeText(DashboardActivity.this,"Successfully Signed Out !!!",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(DashboardActivity.this, MainActivity.class));
+                    finish();
                 });
     }
 
@@ -153,34 +145,31 @@ public class DashboardActivity extends AppCompatActivity {
 
         String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.w("ServerResponse", response.toString());
+                response -> {
+                    Log.w("ServerResponse", response.toString());
 
-                        try {
-                            Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
-                            nameTV.setText(response.getString("name"));
-                            emailTV.setText(response.getString("email"));
+                    try {
+                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
+                        nameTV.setText(response.getString("name"));
+                        emailTV.setText(response.getString("email"));
+                        String profilePictureUrl =  response.getString("profilePicture");
+                        Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
+
 //                            editTextUsername.setText(response.getString("name"));
 //                            editTextEmail.setText(response.getString("email"));
 //                            editTextPhone.setText(response.getString("changedPhone"));
 //                            editTextLocation.setText(response.getString("changedLocation"));
 //                            editTextRadius.setText(response.getString("changedRadius"));
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.w("ServerError", error);
-                ;
-            }
-        });
+
+
+                }, error -> {
+                    Log.w("ServerError", error);
+
+                });
         requestQueue.add(jsonObjectRequest);
     }
 }
