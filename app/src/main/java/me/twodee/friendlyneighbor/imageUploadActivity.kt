@@ -107,7 +107,8 @@ class imageUploadActivity : AppCompatActivity() {
         data["location"] = "{\"latitude\":$lat,\"longitude\":$lng}"
         data["expiration"] = expirationDate
         data["cost"] = priceQuote
-        data["requestedBy"] = "5ebc27d7e6fe7a77013ecd2a"
+//        data["requestedBy"] = "5ebc27d7e6fe7a77013ecd2a"
+        data["requestedBy"] = id.toString()
 
         val imageCount = imageUriArray.size
         Log.v(TAG, "Size$imageCount")

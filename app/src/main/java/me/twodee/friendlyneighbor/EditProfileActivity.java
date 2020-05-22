@@ -66,6 +66,7 @@ public class EditProfileActivity extends AppCompatActivity {
 //    private static final String baseUrl = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
     private  String baseUrl;
     private Uri mCropImageUri;
+    String id;
 
 
     String locatedAddressLine1, locatedCity, locatedState, locatedCountry, locatedPostalCode;
@@ -96,7 +97,7 @@ public class EditProfileActivity extends AppCompatActivity {
 //        updateProfileButton.setClickable(false);
 //        updateProfileButton.setAlpha(.4f);
 
-        final String id = preferences.getString("_id", null);
+        id = preferences.getString("_id", null);
 
         baseUrl = getResources().getString(R.string.agni_url) + "/api/users/" + id;
 
@@ -323,9 +324,9 @@ public class EditProfileActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject object = new JSONObject();
 
-        String userId = preferences.getString("_id", null);
+//        String userId = preferences.getString("_id", null);
         try {
-            object.put("id", userId);
+            object.put("id", id);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -402,7 +403,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
                 .setMethod("PUT")
-                .addHeader("_id", "5ec402f5e9071a16705469a4")
+                .addHeader("_id", id)
                 .addParameter("data", object.toString());
         try {
            reqObj.addFileToUpload(changedUri, "image");
