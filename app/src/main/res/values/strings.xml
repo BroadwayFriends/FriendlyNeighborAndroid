@@ -1,7 +1,7 @@
 <resources>
 
   
-    <string name="agni_url">https://726efe41.ngrok.io</string>
+    <string name="agni_url"> https://fn.twodee.me</string>
 
     <string name="app_name">FriendlyNeighbour</string>
     <string name="signup">SignUp</string>

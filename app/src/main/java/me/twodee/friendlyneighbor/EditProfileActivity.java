@@ -63,8 +63,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private LatLng finalPosition;
     private List<Address> addresses;
     private String changedEmail, changedPhone, changedLocation, changedUsername, changedRadius;
-    private static final String baseUrl = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
+//    private static final String baseUrl = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
+    private  String baseUrl;
     private Uri mCropImageUri;
+
 
     String locatedAddressLine1, locatedCity, locatedState, locatedCountry, locatedPostalCode;
 
@@ -93,6 +95,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
 //        updateProfileButton.setClickable(false);
 //        updateProfileButton.setAlpha(.4f);
+
+        final String id = preferences.getString("_id", null);
+
+        baseUrl = getResources().getString(R.string.agni_url) + "/api/users/" + id;
 
 
         editTextUsername.addTextChangedListener(new TextWatcher() {
@@ -325,7 +331,9 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
+        final String id = preferences.getString("_id", null);
+
+        String url = getResources().getString(R.string.agni_url) + "/api/users/" + id;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override

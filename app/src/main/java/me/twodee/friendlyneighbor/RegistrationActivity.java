@@ -159,7 +159,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
         // Enter the correct url for your api service site
 
-        String url = "https://6b6acf18.ngrok.io/api/users/register";
+        final String id = preferences.getString("_id", null);
+//        String url = "https://6b6acf18.ngrok.io/api/users/register";
+        String url = getResources().getString(R.string.agni_url) + "/api/users/register";
 
        // String url = getResources().getString(R.string.agni_url) + "/api/users/register";
 
