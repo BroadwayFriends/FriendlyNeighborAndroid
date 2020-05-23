@@ -167,22 +167,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.w("ServerResponse", response.toString());
+                response -> {
+                    Log.w("ServerResponse", response.toString());
 
-                        if(response.has("uid")) {
-                            startActivity(new Intent(RegistrationActivity.this, DashboardActivity.class));
-                        }
+                    if(response.has("uid")) {
+                        startActivity(new Intent(RegistrationActivity.this, DashboardActivity.class));
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.w("ServerError", error);
-                ;
-            }
-        });
+                }, error -> {
+                    Log.w("ServerError", error);
+                    ;
+                });
         requestQueue.add(jsonObjectRequest);
     }
 

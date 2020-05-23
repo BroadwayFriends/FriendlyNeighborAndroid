@@ -137,7 +137,7 @@ public class DashboardActivity extends AppCompatActivity {
 //        String userId = preferences.getString("_id", null);
         String userId =  "5ec7e4eddb059c13762d643f" ;
         try {
-            object.put("id", userId);
+            object.put("_id", userId);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -149,7 +149,7 @@ public class DashboardActivity extends AppCompatActivity {
                     Log.w("ServerResponse", response.toString());
 
                     try {
-                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
                         nameTV.setText(response.getString("name"));
                         emailTV.setText(response.getString("email"));
                         String profilePictureUrl =  response.getString("profilePicture");

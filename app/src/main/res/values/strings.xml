@@ -1,7 +1,8 @@
 <resources>
 
 
-    <string name="base_url">https://fn.twodee.me/</string>
+<!--    <string name="base_url">https://fn.twodee.me/</string>-->
+    <string name="base_url">https://974bbcde.ngrok.io/</string>
 
     <string name="agni_url"> https://fn.twodee.me</string>
 
