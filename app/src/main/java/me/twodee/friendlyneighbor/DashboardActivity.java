@@ -100,7 +100,7 @@ public class DashboardActivity extends AppCompatActivity {
 //            String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
 
-            nameTV.setText(String.format("Welcome, %s", personName));
+            nameTV.setText(String.format(personName));
 //            emailTV.setText(String.format("Email: %s", personEmail));
 //            idTV.setText("ID: "+personId);
             //Glide.with(this).load(personPhoto).into(photoIV);

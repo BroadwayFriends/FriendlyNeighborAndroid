@@ -58,10 +58,11 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/akhil"
+                android:src="@drawable/ppchange"
                 android:scaleType="centerCrop"/>
         </androidx.cardview.widget.CardView>
         <LinearLayout
+            android:layout_marginTop="4dp"
             android:id="@+id/editProfilePicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -120,14 +121,14 @@
             <com.google.android.material.textfield.TextInputLayout
 
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username">
+                android:layout_height="wrap_content">
+<!--                android:hint="Username">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="akhilllll"/>
+                    android:hint="Username"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
@@ -143,14 +144,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phone number">
+                android:layout_height="wrap_content">
+<!--                android:hint="Phone number">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="7995037674"/>
+                    android:hint="Phone number"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
@@ -166,14 +167,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email addres">
+                android:layout_height="wrap_content">
+<!--                android:hint="Email addres">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="akhil.suredran@vitap.ac.in"/>
+                    android:hint="Email address"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
@@ -189,15 +190,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Saved location">
+                android:layout_height="wrap_content">
+<!--                android:hint="Saved location">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:text="Mumbai, India"/>
+                    android:hint="Saved Location"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -216,14 +217,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Radius">
+                android:layout_height="wrap_content">
+<!--                android:hint="Radius">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextRadius"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1 km"/>
+                    android:hint="Radius"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
