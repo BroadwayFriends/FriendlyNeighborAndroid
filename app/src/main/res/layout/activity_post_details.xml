@@ -94,6 +94,8 @@
             app:cardCornerRadius="20dp"
             android:layout_margin="20dp">
         <LinearLayout
+            android:padding="8dp"
+            android:background="#EEEEEE"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -157,6 +159,7 @@
             android:clickable="true"
             android:focusable="true">
             <LinearLayout
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
