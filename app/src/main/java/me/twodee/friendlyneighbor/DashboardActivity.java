@@ -69,6 +69,11 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        KarmaPage.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, KarmaPointsActivity.class);
+            startActivity(intent);
+        });
+
         RequestPage.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, postRequirementActivity.class);
             startActivity(intent);
