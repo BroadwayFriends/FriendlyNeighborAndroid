@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Discover"
+            android:text="Discover1"
             android:textSize="40dp"
             android:fontFamily="@font/product_sans_bold"
             android:textColor="@android:color/black"/>
