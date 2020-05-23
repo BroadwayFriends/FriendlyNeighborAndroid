@@ -28,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -50,8 +51,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -99,6 +102,10 @@ public class EditProfileActivity extends AppCompatActivity {
         editProfilePicture =  findViewById(R.id.editProfilePicture);
         editTextLocation.setFocusable(false);
         editTextLocation.setCursorVisible(false);
+        editTextEmail.setFocusable(false);
+        editTextEmail.setCursorVisible(false);
+        editTextUsername.setFocusable(false);
+        editTextUsername.setCursorVisible(false);
         updateProfileButton.setClickable(false);
         fetchData();
 
@@ -340,7 +347,7 @@ public class EditProfileActivity extends AppCompatActivity {
         String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
                 response -> {
-                    Log.w("ServerResponse", response.toString());
+                    Log.w(TAG, response.toString());
 
                     try {
 //                            Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
@@ -352,6 +359,9 @@ public class EditProfileActivity extends AppCompatActivity {
                         editTextEmail.setText(response.getString("email"));
                         editTextPhone.setText(response.getString("contactNumber"));
                         editTextRadius.setText(response.getString("defaultSearchRadius"));
+                        Boolean canChangeName  = Boolean.valueOf (response.getString("defaultSearchRadius"));
+                        editTextUsername.setFocusable(canChangeName);
+                        editTextUsername.setCursorVisible(canChangeName);
                         String address = response.getString("address");
                         Log.v(TAG,address);
                         try {
@@ -360,10 +370,10 @@ public class EditProfileActivity extends AppCompatActivity {
                             String addr = obj.getString("addr");
                             editTextLocation.setText(addr);
 
-                            Log.d("My App", obj.toString());
+
 
                         } catch (Throwable t) {
-                            Log.e("My App", "Could not parse malformed JSON:");
+                            Log.e(TAG, "Could not parse malformed JSON:");
                         }
 
 
@@ -378,7 +388,17 @@ public class EditProfileActivity extends AppCompatActivity {
                 }, error -> {
                     Log.w("ServerError", error);
 
-                });
+                }){
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                headers.put("_id", userId);
+                return headers;
+            }
+        };
+
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -398,13 +418,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
         try {
 
-//            defaultLocation.put("latitude", finalPosition.latitude);
-//            defaultLocation.put("longitude", finalPosition.longitude);
-//            address.put("addr",locatedAddressLine1);
-//            address.put("state",locatedState);
-//            address.put("city",locatedCity);
-//            address.put("pincode",locatedPostalCode);
-//            address.put("country",locatedCountry);
+            defaultLocation.put("latitude", finalPosition.latitude);
+            defaultLocation.put("longitude", finalPosition.longitude);
+            address.put("addr",locatedAddressLine1);
+            address.put("state",locatedState);
+            address.put("city",locatedCity);
+            address.put("pincode",locatedPostalCode);
+            address.put("country",locatedCountry);
 
 //            object.put("id", userId);
             object.put("name", changedUsername);
@@ -478,7 +498,16 @@ public class EditProfileActivity extends AppCompatActivity {
                         }
                     }, error -> {
                 Log.w("ServerError", error);
-            });
+            }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("_id", userId);
+                    return headers;
+                }
+            };
 
             newRequestQueue.add(jsonObjectRequest);
 

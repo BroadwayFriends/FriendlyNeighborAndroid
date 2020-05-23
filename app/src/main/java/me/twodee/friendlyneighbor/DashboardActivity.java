@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -27,6 +28,9 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -152,7 +156,7 @@ public class DashboardActivity extends AppCompatActivity {
 //                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
                         nameTV.setText(response.getString("name"));
                         emailTV.setText(response.getString("email"));
-                        String profilePictureUrl =  response.getString("profilePicture");
+                        String profilePictureUrl = response.getString("profilePicture");
                         Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
 
 //                            editTextUsername.setText(response.getString("name"));
@@ -169,7 +173,17 @@ public class DashboardActivity extends AppCompatActivity {
                 }, error -> {
                     Log.w("ServerError", error);
 
-                });
+                }){
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                headers.put("_id", userId);
+                return headers;
+            }
+        };
+
         requestQueue.add(jsonObjectRequest);
     }
 }
