@@ -3,10 +3,8 @@ package me.twodee.friendlyneighbor
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings.Global.getString
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,8 +21,6 @@ import kotlin.collections.HashMap
 
 
 class imageUploadActivity : AppCompatActivity() {
-
-
     private var imageEncoded: String? = null
     var preferences: SharedPreferences? = null
     companion object {
@@ -32,13 +28,7 @@ class imageUploadActivity : AppCompatActivity() {
         // Choose the number which is good for you, here I'll use a random one.
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
-
-        val url: String = Resources.getSystem().getString(R.string.agni_url)
-
-//        const val baseUrl = "https://c7e610f7.ngrok.io/api/requests"
-        val baseUrl = url + "/api/requests"
-
-
+        const val baseUrl = "https://fn.twodee.me/api/requests"
         var image1: Uri = Uri.EMPTY
         var image2: Uri = Uri.EMPTY
         var image3: Uri = Uri.EMPTY
@@ -89,7 +79,8 @@ class imageUploadActivity : AppCompatActivity() {
     private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,radius:String,lat:String,lng:String,expirationDate:String, priceQuote:String,imageUriArray :ArrayList<String>) {
         val data = HashMap<String, String>()
         val location = HashMap<String,String>()
-        val id = preferences?.getString("_id", null)
+//        val id = preferences?.getString("_id", null)
+        val id = "5ec7e77bb6bad31464e5ae9b"
 //        data.put("requestedBy","5ebc27d7e6fe7a77013ecd2a")
 //        data.put("title",reqTitle)
 //        data.put("description",description)
@@ -107,8 +98,7 @@ class imageUploadActivity : AppCompatActivity() {
         data["location"] = "{\"latitude\":$lat,\"longitude\":$lng}"
         data["expiration"] = expirationDate
         data["cost"] = priceQuote
-//        data["requestedBy"] = "5ebc27d7e6fe7a77013ecd2a"
-        data["requestedBy"] = id.toString()
+        data["requestedBy"] = "5ec7e77bb6bad31464e5ae9b"
 
         val imageCount = imageUriArray.size
         Log.v(TAG, "Size$imageCount")
@@ -117,7 +107,7 @@ class imageUploadActivity : AppCompatActivity() {
         val reqObj = MultipartUploadRequest(this, baseUrl)
                 .setMethod("POST")
                 .addParameter("data", JSONObject(data as Map<*, *>).toString())
-                .addParameter("uid", "d8586cbd")
+                .addParameter("uid", "2LTTd1O4v")
                 .addHeader("_id", id.toString())
 
 

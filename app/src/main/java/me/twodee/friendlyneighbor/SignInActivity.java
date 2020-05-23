@@ -116,7 +116,7 @@ public class SignInActivity extends AppCompatActivity {
         Log.w("Sign In Data", object.toString());
 
         // Enter the correct url for your api service site
-        String url = getResources().getString(R.string.agni_url) + "/api/users/login";
+        String url = getResources().getString(R.string.base_url) + "/api/users/login";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
