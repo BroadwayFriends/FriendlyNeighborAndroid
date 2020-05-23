@@ -202,7 +202,7 @@
                             android:id="@+id/postDetails_time_ago"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="5 hours ago"
+                            android:text="time ago"
                             android:layout_marginTop="0dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginBottom="5dp"

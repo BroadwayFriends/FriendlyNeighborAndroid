@@ -396,7 +396,7 @@ public class EditProfileActivity extends AppCompatActivity {
         String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId ;
         MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
                 .setMethod("PUT")
-                .addHeader("_id", "5ec402f5e9071a16705469a4")
+                .addHeader("_id", "5ec7e77bb6bad31464e5ae9b")
                 .addParameter("data", object.toString());
         try {
            reqObj.addFileToUpload(changedUri, "image");

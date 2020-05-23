@@ -1,7 +1,10 @@
 <resources>
 
-  
+
     <string name="base_url">https://fn.twodee.me/</string>
+
+    <string name="agni_url"> https://fn.twodee.me</string>
+
 
     <string name="app_name">FriendlyNeighbour</string>
     <string name="signup">SignUp</string>
