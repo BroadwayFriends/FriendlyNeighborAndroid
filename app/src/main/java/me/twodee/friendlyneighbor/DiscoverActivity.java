@@ -1,5 +1,6 @@
 package me.twodee.friendlyneighbor;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,10 +34,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -177,7 +180,8 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         });
     }
 
-    private void loadDiscoverData() {
+    void loadDiscoverData() {
+
 
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
         final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
@@ -249,7 +253,6 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 Log.w("ITEMS: ", time);
                                 Log.w("ITEMS: ", String.valueOf(distance));
 
-
                                 DiscoverDetails discoverDetails = new DiscoverDetails(title, type, person, time, distance, jsonObjectString);
                                 discoverDetailsList.add(discoverDetails);
                             }
@@ -286,17 +289,41 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         Log.w("_id", id);
     }
 
-
     @Override
     public void onDiscoverDetailsClick(int position) {
 
         discoverDetailsList.get(position);
         Intent intent = new Intent(this, PostDetailsActivity.class);
         DiscoverDetails selectedDiscoverDetails = discoverDetailsList.get(position);
+        
         String selectedJsonString = selectedDiscoverDetails.getDiscoverJsonResponse();
+        
+//        Boolean responded = null;
+//        responded = "false";
+
         intent.putExtra("jsonString", selectedJsonString);
-        startActivity(intent);
+        
+        startActivityForResult(intent, 1);
 
         Log.w("Clicker Checker", String.valueOf(position));
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                discoverDetailsList.clear();
+                loadDiscoverData();
+            }
+        }
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        discoverDetailsList.clear();
+//        loadDiscoverData();
+//    }
 }

@@ -189,7 +189,7 @@ public class RespondToRequestActivity extends AppCompatActivity implements Respo
 //        String userId = preferences.getString("uid", null);
 //
 //
-//        String url = getResources().getString(R.string.agni_url) + "/api/requests/" + userId;
+//        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
 //
 //        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
 //                Request.Method.GET,

@@ -43,6 +43,8 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
     @Override
     public void onBindViewHolder(@NonNull DiscoverDetailsViewHolder holder, int position) {
 
+        holder.setIsRecyclable(false);
+
         DiscoverDetails discoverDetails = discoverDetailsList.get(position);
         holder.titleTV.setText(discoverDetails.getDiscoverTitle());
         holder.typeTV.setText(discoverDetails.getDiscoverType());
@@ -92,6 +94,12 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
             notifyDataSetChanged();
         }
     };
+
+    public void clear() {
+
+        discoverDetailsList.clear();
+        notifyDataSetChanged();
+    }
 
 
 
