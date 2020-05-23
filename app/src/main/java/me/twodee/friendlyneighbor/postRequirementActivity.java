@@ -30,6 +30,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -67,17 +68,18 @@ import java.util.Objects;
 public class postRequirementActivity extends AppCompatActivity {
     private EditText editTextTitle, editTextDescription, editTextPhone,
             editTextDate, editTextDistance,editTextAddress,editTextPrice;
-
+    private TextView textViewTitle;
     private Button buttonSubmit,buttonImageUpload;
     private AwesomeValidation awesomeValidation;
     private Switch switchPrice;
-    private Spinner spinnerChooseLocation;
+    private Spinner spinnerChooseLocation,spinnerRequestType;
     String title,description,radius,expirationDate,phoneNumber,imageEncoded,fullAddress,priceQuote;
     private int mYear, mMonth, mDay;
     //Images
     int PICK_IMAGE_MULTIPLE = 1;
     List<String> imagesEncodedList;
-    private final String TAG = "request" ;
+    private final String TAG = "request";
+    private String  requestType ;
     private boolean IMAGE_FLAG = false;
     ArrayList<String> imageUriArray = new ArrayList<>();
     //Location
@@ -95,22 +97,24 @@ public class postRequirementActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_post_requirement);
-        editTextTitle = (EditText) findViewById(R.id.editTextTitle);
-        editTextDescription = (EditText) findViewById(R.id.editTextDescription);
-        editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-        editTextDistance = (EditText) findViewById(R.id.editTextDistance);
-        editTextDate = (EditText) findViewById(R.id.editTextDate);
-        editTextAddress = (EditText) findViewById(R.id.editTextAddress);
-        editTextPrice = (EditText) findViewById(R.id.editTextPrice);
+        editTextTitle = findViewById(R.id.editTextTitle);
+        textViewTitle =  findViewById(R.id.textViewTitle);
+        editTextDescription = findViewById(R.id.editTextDescription);
+        editTextPhone = findViewById(R.id.editTextPhone);
+        editTextDistance = findViewById(R.id.editTextDistance);
+        editTextDate = findViewById(R.id.editTextDate);
+        editTextAddress = findViewById(R.id.editTextAddress);
+        editTextPrice = findViewById(R.id.editTextPrice);
         editTextPrice.setVisibility(View.GONE);
         switchPrice = findViewById(R.id.switchPrice);
-        spinnerChooseLocation = (Spinner)findViewById(R.id.spinnerChooseLocation);
+        spinnerChooseLocation = findViewById(R.id.spinnerChooseLocation);
+        spinnerRequestType = findViewById(R.id.spinnerRequestType);
         editTextAddress.setVisibility(View.GONE);
         editTextDistance.setVisibility(View.GONE);
+        editTextDate.setCursorVisible(false);
 
-
-        buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
-        buttonImageUpload = (Button) findViewById(R.id.btnUploadImage);
+        buttonSubmit = findViewById(R.id.buttonSubmit);
+        buttonImageUpload = findViewById(R.id.btnUploadImage);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
@@ -221,7 +225,7 @@ public class postRequirementActivity extends AppCompatActivity {
             }
         });
 
-        String[] availableLocations = new String[] { "Home", "Choose a custom location" };
+        String[] availableLocations = new String[] { "Use Home", "Choose a custom location" };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(postRequirementActivity.this,
                 android.R.layout.simple_spinner_item,availableLocations);
@@ -238,7 +242,7 @@ public class postRequirementActivity extends AppCompatActivity {
                     Intent i = new Intent(postRequirementActivity.this, locationPickerActivity.class);
                     startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
                 }
-                if(selectedItem.equals("Home"))
+                if(selectedItem.equals("Use Home"))
                 {
                    editTextAddress.setText("Default");
                    editTextDistance.setText("1");
@@ -253,6 +257,37 @@ public class postRequirementActivity extends AppCompatActivity {
             }
         });
 
+        String[] requestTypesArray = new String[] { "Requesting", "Offering" };
+
+        ArrayAdapter<String> reqAdapter = new ArrayAdapter<String>(postRequirementActivity.this,
+                android.R.layout.simple_spinner_item,requestTypesArray);
+
+        reqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRequestType.setAdapter(reqAdapter);
+        spinnerRequestType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if(selectedItem.equals("Requesting"))
+                {
+                    requestType = "request" ;
+                    textViewTitle.setText("New Request");
+                }
+                if(selectedItem.equals("Offering"))
+                {
+                    requestType = "offering" ;
+                    textViewTitle.setText("New Offering");
+                }
+
+//                Log.v("item", (String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO : take default location
+            }
+        });
 
 
 
@@ -379,6 +414,7 @@ public class postRequirementActivity extends AppCompatActivity {
             i.putExtra("description",description);
             i.putExtra("phoneNumber",phoneNumber);
             i.putExtra("expirationDate",expirationDate);
+            i.putExtra("requestType",expirationDate);
             i.putExtra("radius",radius);
             i.putExtra("lat",String.valueOf( finalPosition.latitude));
             i.putExtra("lng",String.valueOf( finalPosition.longitude));

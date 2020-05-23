@@ -24,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.card.MaterialCardView;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -158,10 +159,13 @@ public class DashboardActivity extends AppCompatActivity {
                     Log.w("ServerResponse", response.toString());
 
                     try {
+                        JSONObject respObj = new JSONObject(response.getString("user"));
+
+
 //                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
-                        nameTV.setText(response.getString("name"));
-                        emailTV.setText(response.getString("email"));
-                        String profilePictureUrl = response.getString("profilePicture");
+                        nameTV.setText(respObj.getString("name"));
+                        emailTV.setText(respObj.getString("email"));
+                        String profilePictureUrl = respObj.getString("profilePicture");
                         Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
 
 //                            editTextUsername.setText(response.getString("name"));

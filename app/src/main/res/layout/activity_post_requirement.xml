@@ -23,6 +23,7 @@
         android:orientation="vertical">
         <!-- Form Title -->
         <TextView
+            android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="New Request"
@@ -43,6 +44,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text= "Select the type of post you are making"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:layout_margin="5dp"/>
+                    <!--  Request Type Spinner             -->
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerRequestType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:layout_margin="5dp"/>
+
                 <!-- Request Title -->
                 <TextView
                 android:layout_width="match_parent"
@@ -104,6 +119,7 @@
                     android:layout_height="wrap_content"
                     android:text="Set expiration date for your request"
                     android:fontFamily="@font/product_sans_bold"
+                    android:focusableInTouchMode="false"
                     android:layout_margin="5dp"/>
                 <EditText
                     android:id="@+id/editTextDate"
@@ -138,10 +154,18 @@
                     android:fontFamily="@font/product_sans_regular"
                     android:textSize="14dp"
                     android:inputType="number"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text= "Set your preferred location"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:layout_margin="5dp"/>
                 <!-- Spinner -->
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerChooseLocation"
                     android:layout_width="match_parent"
+                    android:fontFamily="@font/product_sans_regular"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"/>
                 <!-- Change Location -->

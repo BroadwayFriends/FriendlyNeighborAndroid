@@ -200,7 +200,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
         updateProfileButton.setOnClickListener(v -> {
             if (UPDATE_FLAG) {
-                updateData();
+                if(finalPosition != null){
+                    updateData();
+                }
+                else{Toast.makeText(EditProfileActivity.this,"Please provide your current location.",Toast.LENGTH_SHORT).show();}
             }
         });
 
@@ -347,22 +350,23 @@ public class EditProfileActivity extends AppCompatActivity {
         String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
                 response -> {
-                    Log.w(TAG, response.toString());
+//                    Log.w(TAG, response.toString());
 
                     try {
 //                            Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
 //                            nameTV.setText(response.getString("name"));
 //                            emailTV.setText(response.getString("email"));
-                        String profilePictureUrl =  response.getString("profilePicture");
+                        JSONObject respObj = new JSONObject(response.getString("user"));
+                        String profilePictureUrl =  respObj.getString("profilePicture");
                         Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
-                        editTextUsername.setText(response.getString("name"));
-                        editTextEmail.setText(response.getString("email"));
-                        editTextPhone.setText(response.getString("contactNumber"));
-                        editTextRadius.setText(response.getString("defaultSearchRadius"));
-                        Boolean canChangeName  = Boolean.valueOf (response.getString("defaultSearchRadius"));
+                        editTextUsername.setText(respObj.getString("name"));
+                        editTextEmail.setText(respObj.getString("email"));
+                        editTextPhone.setText(respObj.getString("contactNumber"));
+                        editTextRadius.setText(respObj.getString("defaultSearchRadius"));
+                        Boolean canChangeName  = Boolean.valueOf (respObj.getString("defaultSearchRadius"));
                         editTextUsername.setFocusable(canChangeName);
                         editTextUsername.setCursorVisible(canChangeName);
-                        String address = response.getString("address");
+                        String address = respObj.getString("address");
                         Log.v(TAG,address);
                         try {
 
@@ -373,11 +377,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                         } catch (Throwable t) {
-                            Log.e(TAG, "Could not parse malformed JSON:");
+                            Log.e(TAG, "Could not parse malformed JSON"+address.toString());
                         }
 
 
-                        textViewName.setText(response.getString("name"));
+                        textViewName.setText(respObj.getString("name"));
 //                            editTextLocation.setText(response.getString("defaultLocation"));
 
                     } catch (JSONException e) {
@@ -441,6 +445,7 @@ public class EditProfileActivity extends AppCompatActivity {
 //        https://fn.twodee.me/api/users/5ec7e4eddb059c13762d643f
         String userId = "5ec7e4eddb059c13762d643f" ;
         String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId ;
+//        String baseUrl = "https://httpbin.org/anything";
 
 
         if (CHANGED_PICTURE_FLAG) {
@@ -488,6 +493,13 @@ public class EditProfileActivity extends AppCompatActivity {
             });
         }
         else {
+
+            try {
+                object.put("image","");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.v(TAG,"Works");
             RequestQueue newRequestQueue = Volley.newRequestQueue(getApplicationContext());
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, baseUrl, object,
                     response -> {
@@ -503,7 +515,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 @Override
                 public Map getHeaders() throws AuthFailureError {
                     HashMap headers = new HashMap();
-                    headers.put("Content-Type", "application/json");
                     headers.put("_id", userId);
                     return headers;
                 }
