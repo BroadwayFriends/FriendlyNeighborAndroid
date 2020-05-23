@@ -220,10 +220,11 @@
         </com.google.android.material.card.MaterialCardView>
         <!-- Submit Request Button -->
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/postDetails_respond_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Make a Request"
+            android:text="Respond"
             android:backgroundTint="@android:color/holo_green_dark"
             android:textAllCaps="false"
             app:rippleColor="@android:color/holo_blue_light"/>

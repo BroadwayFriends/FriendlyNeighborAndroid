@@ -21,8 +21,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.snov.timeagolibrary.PrettyTimeAgo;
 import com.squareup.picasso.Picasso;
 
@@ -47,6 +49,8 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     TextView bottomSheetName;
     ImageView bottonSheetProfilePicture;
+
+    MaterialButton respondButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +192,18 @@ public class PostDetailsActivity extends AppCompatActivity {
                 bottomSheetDialog.show();
                 bottomSheetName.setText(finalPostedBy);
                 Picasso.get().load(finalProfilePicture).fit().centerInside().into(bottonSheetProfilePicture);
+            }
+        });
+
+
+
+        respondButton = (MaterialButton) findViewById(R.id.postDetails_respond_button);
+        respondButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PostDetailsActivity.this, "Responded", Toast.LENGTH_LONG).show();
+                respondButton.setEnabled(false);
+                respondButton.setText("Responded");
             }
         });
 
