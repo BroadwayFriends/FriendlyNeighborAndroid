@@ -28,6 +28,7 @@ class imageUploadActivity : AppCompatActivity() {
         // Choose the number which is good for you, here I'll use a random one.
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
+//        const val baseUrl = "https://fn.twodee.me/api/requests"
         const val baseUrl = "https://fn.twodee.me/api/requests"
         var image1: Uri = Uri.EMPTY
         var image2: Uri = Uri.EMPTY
@@ -57,13 +58,14 @@ class imageUploadActivity : AppCompatActivity() {
             val expirationDate = extras.getString("expirationDate").toString()
             val lat = extras.getString("lat").toString()
             val lng = extras.getString("lng").toString()
+            val requestType = extras.getString("requestType").toString()
             val priceQuote = extras.getString("priceQuote").toString()
 
             val imageUriArray = extras.getStringArrayList("imageUriArray")
 
             Log.v(TAG, "Size : ${imageUriArray}")
             if (imageUriArray != null) {
-                upload(context = this, lifecycleOwner = this,reqTitle = reqTitle,description = description,phoneNumber = phoneNumber,radius = radius,lat=lat,lng=lng,expirationDate = expirationDate,priceQuote= priceQuote,imageUriArray = imageUriArray )
+                upload(context = this, lifecycleOwner = this,reqTitle = reqTitle,description = description,phoneNumber = phoneNumber,radius = radius,lat=lat,lng=lng,expirationDate = expirationDate,priceQuote= priceQuote,imageUriArray = imageUriArray ,requestType =requestType )
                 Log.v(TAG, "title:${reqTitle},description:${description},finalPosition:${(lat)}")
             }
 
@@ -76,7 +78,7 @@ class imageUploadActivity : AppCompatActivity() {
 
 
 
-    private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,radius:String,lat:String,lng:String,expirationDate:String, priceQuote:String,imageUriArray :ArrayList<String>) {
+    private fun upload(context: Context, lifecycleOwner: LifecycleOwner,reqTitle: String, description :String , phoneNumber:String,radius:String,lat:String,lng:String,expirationDate:String,requestType:String, priceQuote:String,imageUriArray :ArrayList<String>) {
         val data = HashMap<String, String>()
         val location = HashMap<String,String>()
 //        val id = preferences?.getString("_id", null)
@@ -98,6 +100,7 @@ class imageUploadActivity : AppCompatActivity() {
         data["location"] = "{\"latitude\":$lat,\"longitude\":$lng}"
         data["expiration"] = expirationDate
         data["cost"] = priceQuote
+        data["requestType"] = requestType
         data["requestedBy"] = "5ec7e77bb6bad31464e5ae9b"
 
         val imageCount = imageUriArray.size

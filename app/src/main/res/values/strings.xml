@@ -1,6 +1,5 @@
 <resources>
 
-
     <string name="base_url">https://fn.twodee.me</string>
 
     <string name="app_name">FriendlyNeighbour</string>

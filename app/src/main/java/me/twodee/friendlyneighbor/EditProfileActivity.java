@@ -22,11 +22,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,6 +37,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.io.LineReader;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -48,19 +51,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     int LAUNCH_LOCATION_ACTIVITY = 877;
     private Button updateProfileButton;
+    private TextView textViewName;
     private EditText editTextEmail, editTextPhone, editTextUsername, editTextRadius, editTextLocation;
-    private ImageView editPictureButton;
+    private ImageView editPictureButton,displayImage;
     private SharedPreferences preferences;
     private String TAG = "editProfilePage";
     String changedUri = "";
+    private Boolean CHANGED_PICTURE_FLAG = Boolean.FALSE;
     private Geocoder geocoder;
     private LinearLayout editProfilePicture;
     private Boolean UPDATE_FLAG = Boolean.FALSE;
@@ -82,17 +89,23 @@ public class EditProfileActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         baseUrl = getResources().getString(R.string.base_url) ;
+        displayImage = findViewById(R.id.displayImage);
         LinearLayout goBack = findViewById(R.id.goBackLayout);
-        editTextUsername = (EditText) findViewById(R.id.editTextUsername);
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-        updateProfileButton = (Button) findViewById(R.id.updateProfileButton);
-        editPictureButton = (ImageView) findViewById(R.id.editPictureButton);
-        editTextLocation = (EditText) findViewById(R.id.editTextLocation);
-        editTextRadius = (EditText) findViewById(R.id.editTextRadius);
+        editTextUsername = findViewById(R.id.editTextUsername);
+        textViewName =  findViewById(R.id.textViewName);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPhone = findViewById(R.id.editTextPhone);
+        updateProfileButton = findViewById(R.id.updateProfileButton);
+        editPictureButton = findViewById(R.id.editPictureButton);
+        editTextLocation = findViewById(R.id.editTextLocation);
+        editTextRadius = findViewById(R.id.editTextRadius);
         editProfilePicture =  findViewById(R.id.editProfilePicture);
         editTextLocation.setFocusable(false);
         editTextLocation.setCursorVisible(false);
+        editTextEmail.setFocusable(false);
+        editTextEmail.setCursorVisible(false);
+        editTextUsername.setFocusable(false);
+        editTextUsername.setCursorVisible(false);
         updateProfileButton.setClickable(false);
         fetchData();
 
@@ -118,6 +131,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
+                textViewName.setText(s.toString());
                 onProfileEdit();
 
             }
@@ -186,13 +200,17 @@ public class EditProfileActivity extends AppCompatActivity {
 
         updateProfileButton.setOnClickListener(v -> {
             if (UPDATE_FLAG) {
-                updateData();
+                if(finalPosition != null){
+                    updateData();
+                }
+                else{Toast.makeText(EditProfileActivity.this,"Please provide your current location.",Toast.LENGTH_SHORT).show();}
             }
         });
 
         editProfilePicture.setOnClickListener(v -> {
             onProfileEdit();
             onSelectImageClick(findViewById(R.id.cropImageView));
+            CHANGED_PICTURE_FLAG = Boolean.TRUE;
         });
 
     }
@@ -228,7 +246,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
-    public void onRequestPermissionsResult(int requestCode, @NotNull String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, int[] grantResults) {
         if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 CropImage.startPickImageActivity(this);
@@ -323,7 +341,7 @@ public class EditProfileActivity extends AppCompatActivity {
 //        String userId = preferences.getString("_id", null);
         String userId =  "5ec7e4eddb059c13762d643f" ;
         try {
-            object.put("id", userId);
+            object.put("_id", userId);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -332,17 +350,38 @@ public class EditProfileActivity extends AppCompatActivity {
         String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
                 response -> {
-                    Log.w("ServerResponse", response.toString());
+//                    Log.w(TAG, response.toString());
 
                     try {
 //                            Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
 //                            nameTV.setText(response.getString("name"));
 //                            emailTV.setText(response.getString("email"));
-                        editTextUsername.setText(response.getString("name"));
-                        editTextEmail.setText(response.getString("email"));
-                        editTextPhone.setText(response.getString("contactNumber"));
-                        editTextRadius.setText(response.getString("defaultSearchRadius"));
-                        editTextLocation.setText(response.getString("address"));
+                        JSONObject respObj = new JSONObject(response.getString("user"));
+                        String profilePictureUrl =  respObj.getString("profilePicture");
+                        Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
+                        editTextUsername.setText(respObj.getString("name"));
+                        editTextEmail.setText(respObj.getString("email"));
+                        editTextPhone.setText(respObj.getString("contactNumber"));
+                        editTextRadius.setText(respObj.getString("defaultSearchRadius"));
+                        Boolean canChangeName  = Boolean.valueOf (respObj.getString("defaultSearchRadius"));
+                        editTextUsername.setFocusable(canChangeName);
+                        editTextUsername.setCursorVisible(canChangeName);
+                        String address = respObj.getString("address");
+                        Log.v(TAG,address);
+                        try {
+
+                            JSONObject obj = new JSONObject(address);
+                            String addr = obj.getString("addr");
+                            editTextLocation.setText(addr);
+
+
+
+                        } catch (Throwable t) {
+                            Log.e(TAG, "Could not parse malformed JSON"+address.toString());
+                        }
+
+
+                        textViewName.setText(respObj.getString("name"));
 //                            editTextLocation.setText(response.getString("defaultLocation"));
 
                     } catch (JSONException e) {
@@ -353,7 +392,17 @@ public class EditProfileActivity extends AppCompatActivity {
                 }, error -> {
                     Log.w("ServerError", error);
 
-                });
+                }){
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                headers.put("_id", userId);
+                return headers;
+            }
+        };
+
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -364,21 +413,22 @@ public class EditProfileActivity extends AppCompatActivity {
         JSONObject defaultLocation = new JSONObject();
         JSONObject address = new JSONObject();
 
-        String userId = preferences.getString("_id", null);
+//        String userId = preferences.getString("_id", null);
         changedUsername = editTextUsername.getText().toString();
         changedEmail = editTextEmail.getText().toString();
         changedPhone = editTextPhone.getText().toString();
         changedRadius = editTextRadius.getText().toString();
         changedLocation = editTextLocation.getText().toString();
+
         try {
 
-//            defaultLocation.put("latitude", finalPosition.latitude);
-//            defaultLocation.put("longitude", finalPosition.longitude);
-//            address.put("addr",locatedAddressLine1);
-//            address.put("state",locatedState);
-//            address.put("city",locatedCity);
-//            address.put("pincode",locatedPostalCode);
-//            address.put("country",locatedCountry);
+            defaultLocation.put("latitude", finalPosition.latitude);
+            defaultLocation.put("longitude", finalPosition.longitude);
+            address.put("addr",locatedAddressLine1);
+            address.put("state",locatedState);
+            address.put("city",locatedCity);
+            address.put("pincode",locatedPostalCode);
+            address.put("country",locatedCountry);
 
 //            object.put("id", userId);
             object.put("name", changedUsername);
@@ -393,49 +443,88 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 //        https://fn.twodee.me/api/users/5ec7e4eddb059c13762d643f
+        String userId = "5ec7e4eddb059c13762d643f" ;
         String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId ;
-        MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
-                .setMethod("PUT")
-                .addHeader("_id", "5ec7e77bb6bad31464e5ae9b")
-                .addParameter("data", object.toString());
-        try {
-           reqObj.addFileToUpload(changedUri, "image");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        String baseUrl = "https://httpbin.org/anything";
+
+
+        if (CHANGED_PICTURE_FLAG) {
+            MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
+                    .setMethod("PUT")
+                    .addHeader("_id", "5ec7e4eddb059c13762d643f")
+                    .addParameter("data", object.toString());
+            try {
+
+                reqObj.addFileToUpload(changedUri, "image");
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 //                .addFileToUpload(changedUri, "updatedPhoto")
 
-        reqObj.subscribe(this, this, new RequestObserverDelegate() {
+            reqObj.subscribe(this, this, new RequestObserverDelegate() {
 
-            @Override
-            public void onSuccess(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull ServerResponse serverResponse) {
-                Log.i(TAG, "Success:" + serverResponse.getBodyString());
-                Toast.makeText(EditProfileActivity.this, "Successfully Updated !!", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onSuccess(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull ServerResponse serverResponse) {
+                    Log.i(TAG, "Success:" + serverResponse.getBodyString());
+                    Toast.makeText(EditProfileActivity.this, "Successfully Updated !!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onProgress(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+
+                }
+
+                @Override
+                public void onError(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull Throwable throwable) {
+                    Log.e(TAG, "Error, upload error:");
+                }
+
+                @Override
+                public void onCompletedWhileNotObserving() {
+
+                }
+
+                @Override
+                public void onCompleted(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+
+                }
+            });
+        }
+        else {
+
+            try {
+                object.put("image","");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+            Log.v(TAG,"Works");
+            RequestQueue newRequestQueue = Volley.newRequestQueue(getApplicationContext());
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, baseUrl, object,
+                    response -> {
+                        Log.w(TAG, response.toString());
 
-            @Override
-            public void onProgress(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+                        if(response.has("uid")) {
+                            startActivity(new Intent(EditProfileActivity.this, DashboardActivity.class));
+                        }
+                    }, error -> {
+                Log.w("ServerError", error);
+            }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("_id", userId);
+                    return headers;
+                }
+            };
 
-            }
+            newRequestQueue.add(jsonObjectRequest);
 
-            @Override
-            public void onError(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull Throwable throwable) {
-                Log.e(TAG, "Error, upload error:");
-            }
+        }
 
-            @Override
-            public void onCompletedWhileNotObserving() {
-
-            }
-
-            @Override
-            public void onCompleted(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
-
-            }
-        });
-
-        Intent intent = new Intent(EditProfileActivity.this, DashboardActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(EditProfileActivity.this, DashboardActivity.class));
 
     }
 
