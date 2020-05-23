@@ -1,22 +1,29 @@
 package me.twodee.friendlyneighbor;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.kusu.loadingbutton.LoadingButton;
 
 public class MainActivity extends AppCompatActivity
 {
     Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, historyButton, postReqButton;
+//    LoadingButton loadingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -136,5 +143,27 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+//        loadingButton = (LoadingButton) findViewById(R.id.loadingButton);
+//
+//        final Boolean[] isLoading = {false};
+//
+//        loadingButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if(!isLoading[0]) {
+//                    loadingButton.showLoading();
+//                    isLoading[0] = true;
+//                }
+//                else {
+//                    loadingButton.hideLoading();
+//                    isLoading[0] = false;
+//                    loadingButton.setButtonText("Completed");
+//                    loadingButton.setEnabled(false);
+//                }
+//            }
+//        });
+
     }
 }

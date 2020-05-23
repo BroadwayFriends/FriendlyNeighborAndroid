@@ -219,15 +219,27 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <!-- Submit Request Button -->
-        <com.google.android.material.button.MaterialButton
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/postDetails_respond_button"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:text="Respond"-->
+<!--            android:backgroundTint="@android:color/holo_green_dark"-->
+<!--            android:textAllCaps="false"-->
+<!--            app:rippleColor="@android:color/holo_blue_light"/>-->
+        <com.kusu.loadingbutton.LoadingButton
+            android:layout_gravity="center"
             android:id="@+id/postDetails_respond_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="Respond"
-            android:backgroundTint="@android:color/holo_green_dark"
-            android:textAllCaps="false"
-            app:rippleColor="@android:color/holo_blue_light"/>
+            android:textColor="@color/white"
+            app:lb_buttonColor="@android:color/holo_green_dark"
+            app:lb_isCircular="false"/>
     </LinearLayout>
 
 
