@@ -1,6 +1,7 @@
 package me.twodee.friendlyneighbor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,6 +47,8 @@ public class DashboardActivity extends AppCompatActivity {
     String personName, personEmail;
     ImageView displayImage;
 
+    SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +56,6 @@ public class DashboardActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_dashboard);
-        fetchData();
         sign_out = findViewById(R.id.sign_out_button);
         nameTV = findViewById(R.id.name);
 //        emailTV = findViewById(R.id.email);
@@ -65,6 +67,9 @@ public class DashboardActivity extends AppCompatActivity {
         displayImage = findViewById(R.id.displayImage);
 //        emailTV.setVisibility(View.GONE);
 
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+
+        fetchData();
 
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, EditProfileActivity.class);
@@ -102,21 +107,21 @@ public class DashboardActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(DashboardActivity.this);
-        if (acct != null) {
-            personName = acct.getDisplayName();
+//        if (acct != null) {
+//            personName = acct.getDisplayName();
 //            String personGivenName = acct.getGivenName();
 //            String personFamilyName = acct.getFamilyName();
-            personEmail = acct.getEmail();
+//            personEmail = acct.getEmail();
 //            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-
-            nameTV.setText(String.format(personName));
+//            Uri personPhoto = acct.getPhotoUrl();
+//
+//            nameTV.setText(String.format(personName));
 //            emailTV.setText(String.format("Email: %s", personEmail));
-//            idTV.setText("ID: "+personId);
-            //Glide.with(this).load(personPhoto).into(photoIV);
-            Picasso.get().load(personPhoto).fit().centerInside().into(displayImage);
-
-        }
+////            idTV.setText("ID: "+personId);
+////            Glide.with(this).load(personPhoto).into(photoIV);
+//            Picasso.get().load(personPhoto).fit().centerInside().into(displayImage);
+//
+//        }
 
 
 
@@ -146,8 +151,9 @@ public class DashboardActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject object = new JSONObject();
 
-//        String userId = preferences.getString("_id", null);
-        String userId =  "5ec7e4eddb059c13762d643f" ;
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+
+        String userId = preferences.getString("_id", null);
         try {
             object.put("_id", userId);
 
@@ -155,7 +161,7 @@ public class DashboardActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId;
+        String baseUrl = getResources().getString(R.string.base_url)+ "/api/users/" + userId;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
                 response -> {
                     Log.w("ServerResponse", response.toString());
@@ -166,7 +172,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 //                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
                         nameTV.setText(respObj.getString("name"));
-                        emailTV.setText(respObj.getString("email"));
+//                        emailTV.setText(respObj.getString("email"));
                         String profilePictureUrl = respObj.getString("profilePicture");
                         Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
 

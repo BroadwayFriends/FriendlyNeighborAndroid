@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:textSize="24dp"
-                    android:text="name"
+                    android:text="Name"
                     android:fontFamily="@font/product_sans_bold"/>
 
 
@@ -90,7 +90,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/akhil" />
+                            android:src="@drawable/ppchange" />
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>

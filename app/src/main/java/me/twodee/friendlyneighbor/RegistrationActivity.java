@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,8 +31,10 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -119,7 +122,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     sendRegistrationData();
 
-                    Toast.makeText(RegistrationActivity.this, "Registration successful !!!", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(RegistrationActivity.this, "Registration successful !!!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(RegistrationActivity.this, "Failed", Toast.LENGTH_LONG).show();
                 }
@@ -133,10 +136,10 @@ public class RegistrationActivity extends AppCompatActivity {
         JSONObject defaultLocation = new JSONObject();
         JSONObject address = new JSONObject();
 
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         String userId = preferences.getString("_id", null);
         try {
-            //input your API parameters
-//            object.put("id", userId);  // hardcoded for the time being
+            object.put("id", userId);
             defaultLocation.put("latitude",finalPosition.latitude);
             defaultLocation.put("longitude",finalPosition.longitude);
             object.put("id", userId);
@@ -155,14 +158,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
         Log.w("Regi Data", object.toString());
 
-        // Enter the correct url for your api service site
-
         final String id = preferences.getString("_id", null);
-//        String url = "https://6b6acf18.ngrok.io/api/users/register";
         String url = getResources().getString(R.string.base_url) + "/api/users/register";
-
-       // String url = getResources().getString(R.string.base_url) + "/api/users/register";
-
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 response -> {
@@ -174,14 +171,20 @@ public class RegistrationActivity extends AppCompatActivity {
                 }, error -> {
                     Log.w("ServerError", error);
                     ;
-                });
+                }) {
+            /**
+             * Passing some request headers*
+             */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                headers.put("_id", id);
+                return headers;
+            }
+        };
         requestQueue.add(jsonObjectRequest);
     }
-
-
-
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -210,11 +213,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     state.setText(locatedState);
                     country.setText(locatedCountry);
                     pincode.setText(locatedPostalCode);
-
-
-
-
-
 
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {

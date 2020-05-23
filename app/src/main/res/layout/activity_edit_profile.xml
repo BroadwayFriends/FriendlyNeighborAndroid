@@ -99,7 +99,6 @@
             android:id = "@+id/textViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Akhil Surendran"
             android:fontFamily="@font/product_sans_bold"
             android:textSize="30dp"
             android:textAlignment="center"

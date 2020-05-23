@@ -338,8 +338,9 @@ public class EditProfileActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject object = new JSONObject();
 
-//        String userId = preferences.getString("_id", null);
-        String userId =  "5ec7e4eddb059c13762d643f" ;
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        String userId = preferences.getString("_id", null);
+//        String userId =  "5ec7e4eddb059c13762d643f" ;
         try {
             object.put("_id", userId);
 
@@ -347,15 +348,12 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId;
+        String baseUrl = getResources().getString(R.string.base_url)+ "/api/users/" + userId;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
                 response -> {
-//                    Log.w(TAG, response.toString());
+                    Log.w("FETCH DATA", response.toString());
 
                     try {
-//                            Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
-//                            nameTV.setText(response.getString("name"));
-//                            emailTV.setText(response.getString("email"));
                         JSONObject respObj = new JSONObject(response.getString("user"));
                         String profilePictureUrl =  respObj.getString("profilePicture");
                         Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
@@ -363,9 +361,18 @@ public class EditProfileActivity extends AppCompatActivity {
                         editTextEmail.setText(respObj.getString("email"));
                         editTextPhone.setText(respObj.getString("contactNumber"));
                         editTextRadius.setText(respObj.getString("defaultSearchRadius"));
-                        Boolean canChangeName  = Boolean.valueOf (respObj.getString("defaultSearchRadius"));
+                        boolean canChangeName  = response.getBoolean("canChangeName");
+
+                        Log.w("FETCH DATA", Boolean.toString(canChangeName));
+
                         editTextUsername.setFocusable(canChangeName);
+                        editTextUsername.setFocusableInTouchMode(canChangeName);
                         editTextUsername.setCursorVisible(canChangeName);
+
+//                        editTextEmail.setFocusable(canChangeName);
+//                        editTextEmail.setFocusableInTouchMode(canChangeName);
+//                        editTextEmail.setCursorVisible(canChangeName);
+
                         String address = respObj.getString("address");
                         Log.v(TAG,address);
                         try {
@@ -413,7 +420,7 @@ public class EditProfileActivity extends AppCompatActivity {
         JSONObject defaultLocation = new JSONObject();
         JSONObject address = new JSONObject();
 
-//        String userId = preferences.getString("_id", null);
+        String userId = preferences.getString("_id", null);
         changedUsername = editTextUsername.getText().toString();
         changedEmail = editTextEmail.getText().toString();
         changedPhone = editTextPhone.getText().toString();
@@ -430,9 +437,9 @@ public class EditProfileActivity extends AppCompatActivity {
             address.put("pincode",locatedPostalCode);
             address.put("country",locatedCountry);
 
-//            object.put("id", userId);
+            object.put("id", userId);
             object.put("name", changedUsername);
-            object.put("email", changedEmail);
+//            object.put("email", changedEmail);
             object.put("contactNumber", changedPhone);
             object.put("defaultLocation", defaultLocation);
             object.put("address",address);
@@ -442,16 +449,14 @@ public class EditProfileActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        https://fn.twodee.me/api/users/5ec7e4eddb059c13762d643f
-        String userId = "5ec7e4eddb059c13762d643f" ;
-        String baseUrl = getResources().getString(R.string.base_url)+ "api/users/" + userId ;
+        String baseUrl = getResources().getString(R.string.base_url)+ "/api/users/" + userId ;
 //        String baseUrl = "https://httpbin.org/anything";
 
 
         if (CHANGED_PICTURE_FLAG) {
             MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
                     .setMethod("PUT")
-                    .addHeader("_id", "5ec7e4eddb059c13762d643f")
+                    .addHeader("_id", userId)
                     .addParameter("data", object.toString());
             try {
 
