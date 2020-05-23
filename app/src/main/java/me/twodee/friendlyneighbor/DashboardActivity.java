@@ -2,6 +2,7 @@ package me.twodee.friendlyneighbor;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,14 +51,14 @@ public class DashboardActivity extends AppCompatActivity {
         fetchData();
         sign_out = findViewById(R.id.sign_out_button);
         nameTV = findViewById(R.id.name);
-        emailTV = findViewById(R.id.email);
+//        emailTV = findViewById(R.id.email);
         editProfileButton = findViewById(R.id.editProfieButton);
         RequestPage = findViewById(R.id.RequestPage);
         DiscoverPage = findViewById(R.id.DiscoverPage);
         KarmaPage = findViewById(R.id.KarmaPage);
         RespondToPosts = findViewById(R.id.RespondToPosts);
         displayImage = findViewById(R.id.displayImage);
-        emailTV.setVisibility(View.GONE);
+//        emailTV.setVisibility(View.GONE);
 
 
         editProfileButton.setOnClickListener(v -> {
@@ -97,12 +98,13 @@ public class DashboardActivity extends AppCompatActivity {
 //            String personFamilyName = acct.getFamilyName();
             personEmail = acct.getEmail();
 //            String personId = acct.getId();
-//            Uri personPhoto = acct.getPhotoUrl();
+            Uri personPhoto = acct.getPhotoUrl();
 
             nameTV.setText(String.format("Welcome, %s", personName));
-            emailTV.setText(String.format("Email: %s", personEmail));
+//            emailTV.setText(String.format("Email: %s", personEmail));
 //            idTV.setText("ID: "+personId);
             //Glide.with(this).load(personPhoto).into(photoIV);
+            Picasso.get().load(personPhoto).fit().centerInside().into(displayImage);
 
         }
 

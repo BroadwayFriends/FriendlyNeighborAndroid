@@ -26,14 +26,12 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -161,9 +159,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
         final String id = preferences.getString("_id", null);
 //        String url = "https://6b6acf18.ngrok.io/api/users/register";
-        String url = getResources().getString(R.string.agni_url) + "/api/users/register";
+        String url = getResources().getString(R.string.base_url) + "/api/users/register";
 
-       // String url = getResources().getString(R.string.agni_url) + "/api/users/register";
+       // String url = getResources().getString(R.string.base_url) + "/api/users/register";
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
