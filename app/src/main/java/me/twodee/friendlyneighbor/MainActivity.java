@@ -59,16 +59,16 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        signInPage = findViewById(R.id.sign_in_page);
-        signInPage.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                startActivity(intent);
-            }
-        });
+//        signInPage = findViewById(R.id.sign_in_page);
+//        signInPage.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 //        dashboard = findViewById(R.id.dashoard);
 //        dashboard.setOnClickListener(new View.OnClickListener()
