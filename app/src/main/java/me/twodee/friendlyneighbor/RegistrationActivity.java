@@ -69,7 +69,11 @@ public class RegistrationActivity extends AppCompatActivity {
         pincode = findViewById(R.id.pincode);
         contactNumber = findViewById(R.id.contact);
         submitButton = findViewById(R.id.submitButton);
-        autoFillAddress = findViewById(R.id.autoFillAddress);
+//        autoFillAddress = findViewById(R.id.autoFillAddress);
+        city.setVisibility(View.GONE);
+        state.setVisibility(View.GONE);
+        country.setVisibility(View.GONE);
+        pincode.setVisibility(View.GONE);
         address1.setFocusable(false);
         address1.setCursorVisible(false);
         city.setFocusable(false);
@@ -98,34 +102,29 @@ public class RegistrationActivity extends AppCompatActivity {
         awesomeValidation.addValidation(this, R.id.contact, "(0/91)?[7-9][0-9]{9}", R.string.invalid_contact_number);
 
 
-        autoFillAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(RegistrationActivity.this, locationPickerActivity.class);
-                startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
-            }
-        });
 
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (awesomeValidation.validate()) {
+        address1.setOnClickListener(v -> autoFill());
 
-                    addr1 = address1.getText().toString();
-                    addr2 = searchRadius.getText().toString();
-                    cty = city.getText().toString();
-                    st = state.getText().toString();
-                    cntry = country.getText().toString();
-                    pc = Integer.parseInt(pincode.getText().toString());
-                    cno = contactNumber.getText().toString();
+        searchRadius.setOnClickListener(v -> autoFill());
 
-                    sendRegistrationData();
+
+        submitButton.setOnClickListener(v -> {
+            if (awesomeValidation.validate()) {
+
+                addr1 = address1.getText().toString();
+                addr2 = searchRadius.getText().toString();
+                cty = city.getText().toString();
+                st = state.getText().toString();
+                cntry = country.getText().toString();
+                pc = Integer.parseInt(pincode.getText().toString());
+                cno = contactNumber.getText().toString();
+
+                sendRegistrationData();
 
 //                    Toast.makeText(RegistrationActivity.this, "Registration successful !!!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(RegistrationActivity.this, "Failed", Toast.LENGTH_LONG).show();
-                }
+            } else {
+                Toast.makeText(RegistrationActivity.this, "Failed", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -186,6 +185,11 @@ public class RegistrationActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
+
+    protected void autoFill(){
+        Intent i = new Intent(RegistrationActivity.this, locationPickerActivity.class);
+        startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
