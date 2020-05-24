@@ -137,7 +137,7 @@ public class SignInActivity extends AppCompatActivity {
                             if (userStatus == true) {
                                 startActivity(new Intent(SignInActivity.this, RegistrationActivity.class));
                             } else {
-                                startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
+//                                startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
                             }
 
                             String idReceived = preferences.getString("_id", null);
@@ -180,7 +180,7 @@ public class SignInActivity extends AppCompatActivity {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("Google Sign In Error", "signInResult:failed code=" + e.getStatusCode());
-            Toast.makeText(SignInActivity.this, "Failed !!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignInActivity.this, "Failed", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -197,8 +197,9 @@ public class SignInActivity extends AppCompatActivity {
 
             postData();
 
-            Toast.makeText(SignInActivity.this, "Already Signed In !!!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(SignInActivity.this, "Already Signed In !!!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
+            finish();
         }
 
         super.onStart();

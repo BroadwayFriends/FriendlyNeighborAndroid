@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 Intent intent = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(intent);
+                finish();
             }
         }, SPLASH_SCREEN);
 
