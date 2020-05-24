@@ -75,6 +75,18 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
+//        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
+//        final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
+//        discoverLoadingLayout.setVisibility(View.VISIBLE);
+//
+////        final TextView noUsersTV = (TextView) findViewById(R.id.discover_no_users);
+//
+//        ThreeBounce threeBounce = new ThreeBounce();
+//        progressBar.setIndeterminateDrawable(threeBounce);
+//        progressBar.setVisibility(View.VISIBLE);
+
+
+
 
         //Adding dummy static data
 //        discoverDetailsList.add(
@@ -183,6 +195,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
     void loadDiscoverData() {
 
 
+        recyclerView.setVisibility(View.GONE);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
         final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
         discoverLoadingLayout.setVisibility(View.VISIBLE);
@@ -211,6 +224,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
                         progressBar.setVisibility(View.GONE);
                         discoverLoadingLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
 
                         // Do something with response
                         // Process the JSON
@@ -259,6 +273,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
                             discoverDetailsAdapter = new DiscoverDetailsAdapter(DiscoverActivity.this, discoverDetailsList, DiscoverActivity.this);
                             recyclerView.setAdapter(discoverDetailsAdapter);
+//                            recyclerView.setVisibility(View.VISIBLE);
 
                         }catch (JSONException | ParseException e){
                             e.printStackTrace();

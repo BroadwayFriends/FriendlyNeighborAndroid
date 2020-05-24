@@ -92,6 +92,7 @@ public class DiscoverDetailsAdapter extends RecyclerView.Adapter <DiscoverDetail
             discoverDetailsList.clear();
             discoverDetailsList.addAll((List) results.values);
             notifyDataSetChanged();
+
         }
     };
 
