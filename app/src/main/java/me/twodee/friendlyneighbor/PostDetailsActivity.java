@@ -187,11 +187,6 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
-
-//        bottomSheetName.setText("HELLO");
-//        Picasso.get().load(profilePicture).fit().centerInside().into(bottonSheetProfilePicture);
-
-
         CardView authorDetails = (CardView) findViewById(R.id.authorDetails);
         final String finalProfilePicture = profilePicture;
         final String finalPostedBy = postedBy;
