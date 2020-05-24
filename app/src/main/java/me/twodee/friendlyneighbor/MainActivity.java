@@ -11,8 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,17 +26,46 @@ import com.kusu.loadingbutton.LoadingButton;
 
 public class MainActivity extends AppCompatActivity
 {
-    Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, historyButton, postReqButton;
+    //Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, historyButton, postReqButton;
 //    LoadingButton loadingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        privatestatic int SPLASH_SCREEN = 5000;
+
+        Animation topAnim, bottomAnim;
+        ImageView image;
+        TextView logo, slogan;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
+
+        topAnim = AnimationUtils.loadAnimation(this, R.anim.splash_top_animation);
+        bottomAnim = AnimationUtils.loadAnimation(this, R.anim.splash_bottom_animation);
+
+        //Hooks
+        image = findViewById(R.id.imageView);
+        logo = findViewById(R.id.textView);
+        slogan = findViewById(R.id.textView2);
+
+        image.setAnimation(topAnim);
+        logo.setAnimation(bottomAnim);
+        slogan.setAnimation(bottomAnim);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(intent);
+            }
+        }, SPLASH_SCREEN);
+    }
 
 //        discover = findViewById(R.id.discover);
 //        discover.setOnClickListener(new View.OnClickListener()
