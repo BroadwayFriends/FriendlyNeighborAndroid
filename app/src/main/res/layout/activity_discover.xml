@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Discover"
+            android:layout_marginTop="10dp"
             android:textSize="40dp"
             android:fontFamily="@font/product_sans_bold"
             android:textColor="@android:color/black"/>

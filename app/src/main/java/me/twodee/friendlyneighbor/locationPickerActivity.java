@@ -80,9 +80,6 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_location_picker);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -250,7 +247,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                textViewSeekBar.setText(Integer.toString(progress));
+                                textViewSeekBar.setText(Integer.toString(progress) + " kms");
                                 double percent = progress / (double) seekBar.getMax();
                                 int offset = seekBar.getThumbOffset();
                                 int seekWidth = seekBar.getWidth();
@@ -409,7 +406,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.w(TAG, "Canont get Address!");
+            Log.w(TAG, "Cannot get Address!");
         }
         return strAdd;
     }
