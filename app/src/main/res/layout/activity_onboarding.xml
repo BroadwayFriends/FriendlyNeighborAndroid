@@ -28,6 +28,7 @@
         android:background="#fff"
         android:drawableRight="@drawable/forward_arrow"
         android:text="Next"
+        android:textAllCaps="false"
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -52,7 +53,7 @@
     <Button
         android:visibility="invisible"
         android:id="@+id/btn_get_started"
-        android:layout_width="132dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
