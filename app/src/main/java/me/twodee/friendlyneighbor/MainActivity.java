@@ -29,17 +29,14 @@ public class MainActivity extends AppCompatActivity
     //Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, historyButton, postReqButton;
 //    LoadingButton loadingButton;
 
+    private static int SPLASH_SCREEN = 5000;
+
+    Animation topAnim, bottomAnim;
+    ImageView image;
+    TextView logo, slogan;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        privatestatic int SPLASH_SCREEN = 5000;
-
-        Animation topAnim, bottomAnim;
-        ImageView image;
-        TextView logo, slogan;
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -65,7 +62,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         }, SPLASH_SCREEN);
-    }
 
 //        discover = findViewById(R.id.discover);
 //        discover.setOnClickListener(new View.OnClickListener()
