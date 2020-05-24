@@ -17,8 +17,9 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="SeekBarTheme" parent="Widget.AppCompat.SeekBar" >
-        <item name="colorAccent">#ffb340</item>
+    <style name="SeekBarTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">#f50057</item>
+        <item name="android:colorControlNormal">#b0bec5</item>
     </style>
 
 </resources>
