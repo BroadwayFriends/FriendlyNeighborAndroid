@@ -7,16 +7,48 @@
     android:orientation="vertical"
     tools:context=".EditProfileActivity">
 
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Profile"
+            android:textSize="40dp"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/product_sans_bold"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="0dp"
+        android:background="@drawable/bg_view1"
+        android:layout_height="6dp"></View>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="20dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -153,6 +185,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Phone number"/>
 
+
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
         <!-- Email address -->
@@ -224,7 +257,8 @@
                     android:id = "@+id/editTextRadius"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Radius"/>
+                    android:hint="Radius"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
