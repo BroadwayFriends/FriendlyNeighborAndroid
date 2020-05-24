@@ -129,7 +129,7 @@ public class SignInActivity extends AppCompatActivity {
                             if (userStatus == true) {
                                 startActivity(new Intent(SignInActivity.this, RegistrationActivity.class));
                             } else {
-//                                startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
+                                startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
                             }
 
                             String idReceived = preferences.getString("_id", null);
