@@ -7,16 +7,48 @@
     android:orientation="vertical"
     tools:context=".EditProfileActivity">
 
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Profile"
+            android:textSize="40dp"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/product_sans_bold"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="0dp"
+        android:background="@drawable/bg_view1"
+        android:layout_height="6dp"></View>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="20dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -24,7 +56,8 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            android:padding="15dp">
+            android:padding="15dp"
+            android:id = "@+id/goBackLayout">
 
             <ImageView
                 android:layout_width="24dp"
@@ -55,12 +88,14 @@
             app:cardCornerRadius="50dp"
             android:layout_gravity="center">
             <ImageView
+                android:id ="@+id/displayImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/akhil"
+                android:src="@drawable/ppchange"
                 android:scaleType="centerCrop"/>
         </androidx.cardview.widget.CardView>
         <LinearLayout
+            android:layout_marginTop="4dp"
             android:id="@+id/editProfilePicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,10 +128,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:id = "@+id/editTextName"
+            android:id = "@+id/textViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Akhil Surendran"
             android:fontFamily="@font/product_sans_bold"
             android:textSize="30dp"
             android:textAlignment="center"
@@ -119,14 +153,14 @@
             <com.google.android.material.textfield.TextInputLayout
 
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username">
+                android:layout_height="wrap_content">
+<!--                android:hint="Username">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="akhilllll"/>
+                    android:hint="Username"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
@@ -142,14 +176,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phone number">
+                android:layout_height="wrap_content">
+<!--                android:hint="Phone number">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="7995037674"/>
+                    android:hint="Phone number"/>
+
 
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
@@ -165,14 +200,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email addres">
+                android:layout_height="wrap_content">
+<!--                android:hint="Email addres">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="akhil.suredran@vitap.ac.in"/>
+                    android:hint="Email address"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
@@ -188,15 +223,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Saved location">
+                android:layout_height="wrap_content">
+<!--                android:hint="Saved location">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:text="Mumbai, India"/>
+                    android:hint="Saved Location"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -215,14 +250,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Radius">
+                android:layout_height="wrap_content">
+<!--                android:hint="Radius">-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id = "@+id/editTextRadius"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1 km"/>
+                    android:hint="Radius"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 

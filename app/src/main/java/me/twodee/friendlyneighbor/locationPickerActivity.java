@@ -3,6 +3,7 @@ package me.twodee.friendlyneighbor;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -245,15 +247,15 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                textViewSeekBar.setText(Integer.toString(progress));
+                                textViewSeekBar.setText(Integer.toString(progress) + " kms");
                                 double percent = progress / (double) seekBar.getMax();
                                 int offset = seekBar.getThumbOffset();
                                 int seekWidth = seekBar.getWidth();
                                 int val = (int) Math.round(percent * (seekWidth - 2 * offset));
                                 int labelWidth = textViewSeekBar.getWidth();
-                                textViewSeekBar.setX(offset + seekBar.getX() + val
-                                        - Math.round(percent * offset)
-                                        - Math.round(percent * labelWidth/2));
+//                                textViewSeekBar.setX(offset + seekBar.getX() + val
+//                                        - Math.round(percent * offset)
+//                                        - Math.round(percent * labelWidth/2));
                             }
                             @Override
                             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -404,7 +406,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.w(TAG, "Canont get Address!");
+            Log.w(TAG, "Cannot get Address!");
         }
         return strAdd;
     }

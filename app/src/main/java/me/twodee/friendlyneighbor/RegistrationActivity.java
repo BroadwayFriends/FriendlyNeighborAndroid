@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,14 +27,14 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -68,7 +69,11 @@ public class RegistrationActivity extends AppCompatActivity {
         pincode = findViewById(R.id.pincode);
         contactNumber = findViewById(R.id.contact);
         submitButton = findViewById(R.id.submitButton);
-        autoFillAddress = findViewById(R.id.autoFillAddress);
+//        autoFillAddress = findViewById(R.id.autoFillAddress);
+        city.setVisibility(View.GONE);
+        state.setVisibility(View.GONE);
+        country.setVisibility(View.GONE);
+        pincode.setVisibility(View.GONE);
         address1.setFocusable(false);
         address1.setCursorVisible(false);
         city.setFocusable(false);
@@ -97,34 +102,29 @@ public class RegistrationActivity extends AppCompatActivity {
         awesomeValidation.addValidation(this, R.id.contact, "(0/91)?[7-9][0-9]{9}", R.string.invalid_contact_number);
 
 
-        autoFillAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(RegistrationActivity.this, locationPickerActivity.class);
-                startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
-            }
-        });
 
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (awesomeValidation.validate()) {
+        address1.setOnClickListener(v -> autoFill());
 
-                    addr1 = address1.getText().toString();
-                    addr2 = searchRadius.getText().toString();
-                    cty = city.getText().toString();
-                    st = state.getText().toString();
-                    cntry = country.getText().toString();
-                    pc = Integer.parseInt(pincode.getText().toString());
-                    cno = contactNumber.getText().toString();
+        searchRadius.setOnClickListener(v -> autoFill());
 
-                    sendRegistrationData();
 
-                    Toast.makeText(RegistrationActivity.this, "Registration successful !!!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(RegistrationActivity.this, "Failed", Toast.LENGTH_LONG).show();
-                }
+        submitButton.setOnClickListener(v -> {
+            if (awesomeValidation.validate()) {
+
+                addr1 = address1.getText().toString();
+                addr2 = searchRadius.getText().toString();
+                cty = city.getText().toString();
+                st = state.getText().toString();
+                cntry = country.getText().toString();
+                pc = Integer.parseInt(pincode.getText().toString());
+                cno = contactNumber.getText().toString();
+
+                sendRegistrationData();
+
+//                    Toast.makeText(RegistrationActivity.this, "Registration successful !!!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(RegistrationActivity.this, "Failed", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -135,10 +135,10 @@ public class RegistrationActivity extends AppCompatActivity {
         JSONObject defaultLocation = new JSONObject();
         JSONObject address = new JSONObject();
 
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         String userId = preferences.getString("_id", null);
         try {
-            //input your API parameters
-//            object.put("id", userId);  // hardcoded for the time being
+            object.put("id", userId);
             defaultLocation.put("latitude",finalPosition.latitude);
             defaultLocation.put("longitude",finalPosition.longitude);
             object.put("id", userId);
@@ -157,38 +157,39 @@ public class RegistrationActivity extends AppCompatActivity {
 
         Log.w("Regi Data", object.toString());
 
-        // Enter the correct url for your api service site
-
-        String url = "https://6b6acf18.ngrok.io/api/users/register";
-
-       // String url = getResources().getString(R.string.agni_url) + "/api/users/register";
-
+        final String id = preferences.getString("_id", null);
+        String url = getResources().getString(R.string.base_url) + "/api/users/register";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.w("ServerResponse", response.toString());
+                response -> {
+                    Log.w("ServerResponse", response.toString());
 
-                        if(response.has("uid")) {
-                            startActivity(new Intent(RegistrationActivity.this, DashboardActivity.class));
-                        }
+                    if(response.has("uid")) {
+                        startActivity(new Intent(RegistrationActivity.this, OnboardingActivity.class));
                     }
-                }, new Response.ErrorListener() {
+                }, error -> {
+                    Log.w("ServerError", error);
+                    ;
+                }) {
+            /**
+             * Passing some request headers*
+             */
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.w("ServerError", error);
-                ;
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                headers.put("_id", id);
+                return headers;
             }
-        });
+        };
         requestQueue.add(jsonObjectRequest);
     }
 
 
-
-
-
-
+    protected void autoFill(){
+        Intent i = new Intent(RegistrationActivity.this, locationPickerActivity.class);
+        startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -216,11 +217,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     state.setText(locatedState);
                     country.setText(locatedCountry);
                     pincode.setText(locatedPostalCode);
-
-
-
-
-
 
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {

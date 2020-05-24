@@ -1,13 +1,9 @@
 package me.twodee.friendlyneighbor;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,9 +11,15 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -27,20 +29,26 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class DiscoverActivity extends AppCompatActivity implements DiscoverDetailsAdapter.OnDiscoverDetailsClickListener {
 
@@ -71,6 +79,18 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         searchView = (SearchView) findViewById(R.id.discover_search_view);
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+
+//        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
+//        final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
+//        discoverLoadingLayout.setVisibility(View.VISIBLE);
+//
+////        final TextView noUsersTV = (TextView) findViewById(R.id.discover_no_users);
+//
+//        ThreeBounce threeBounce = new ThreeBounce();
+//        progressBar.setIndeterminateDrawable(threeBounce);
+//        progressBar.setVisibility(View.VISIBLE);
+
+
 
 
         //Adding dummy static data
@@ -177,8 +197,10 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         });
     }
 
-    private void loadDiscoverData() {
+    void loadDiscoverData() {
 
+
+        recyclerView.setVisibility(View.GONE);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
         final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
         discoverLoadingLayout.setVisibility(View.VISIBLE);
@@ -194,19 +216,21 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         String userId = preferences.getString("uid", null);
 
 
-        String url = getResources().getString(R.string.agni_url) + "/api/requests/" + userId;
+        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
                 new Response.Listener<JSONArray>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.w("Discover Response", response.toString());
 
                         progressBar.setVisibility(View.GONE);
                         discoverLoadingLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
 
                         // Do something with response
                         // Process the JSON
@@ -238,7 +262,10 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                 SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
+
+                            //  Changed Time to IST
                                 Date date = dateFormat.parse(createdAt);
+//                                timeExtract.setTimeZone(TimeZone.getTimeZone("IST"));
                                 String time = timeExtract.format(date.getTime());
 
                                 Log.w("ITEMS: ", title);
@@ -249,13 +276,13 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 Log.w("ITEMS: ", time);
                                 Log.w("ITEMS: ", String.valueOf(distance));
 
-
                                 DiscoverDetails discoverDetails = new DiscoverDetails(title, type, person, time, distance, jsonObjectString);
                                 discoverDetailsList.add(discoverDetails);
                             }
 
                             discoverDetailsAdapter = new DiscoverDetailsAdapter(DiscoverActivity.this, discoverDetailsList, DiscoverActivity.this);
                             recyclerView.setAdapter(discoverDetailsAdapter);
+//                            recyclerView.setVisibility(View.VISIBLE);
 
                         }catch (JSONException | ParseException e){
                             e.printStackTrace();
@@ -286,17 +313,41 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         Log.w("_id", id);
     }
 
-
     @Override
     public void onDiscoverDetailsClick(int position) {
 
         discoverDetailsList.get(position);
         Intent intent = new Intent(this, PostDetailsActivity.class);
         DiscoverDetails selectedDiscoverDetails = discoverDetailsList.get(position);
+        
         String selectedJsonString = selectedDiscoverDetails.getDiscoverJsonResponse();
+        
+//        Boolean responded = null;
+//        responded = "false";
+
         intent.putExtra("jsonString", selectedJsonString);
-        startActivity(intent);
+        
+        startActivityForResult(intent, 1);
 
         Log.w("Clicker Checker", String.valueOf(position));
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                discoverDetailsList.clear();
+                loadDiscoverData();
+            }
+        }
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        discoverDetailsList.clear();
+//        loadDiscoverData();
+//    }
 }

@@ -8,21 +8,29 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.kusu.loadingbutton.LoadingButton;
 import com.snov.timeagolibrary.PrettyTimeAgo;
 import com.squareup.picasso.Picasso;
 
@@ -34,19 +42,26 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PostDetailsActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
     String strValue = "";
+    String requestId = null;
 
-    TextView selectedTitle, selectedDescription, selectedPostedBy, selectedMinutesAway, selectedTimeAgo;
+    TextView selectedTitle, selectedDescription, selectedPostedBy, selectedCost, selectedTimeAgo;
     ImageView profilePictureView;
 
     TextView bottomSheetName;
     ImageView bottonSheetProfilePicture;
+
+    LoadingButton respondButton;
+
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +75,15 @@ public class PostDetailsActivity extends AppCompatActivity {
         String description = null;
         String postedBy = null;
         JSONArray imageUrl = null;
+        JSONArray respondedByArray = null;
         String profilePicture = null;
-        double time = 0;
+        double cost = 0;
         String creationtime = null;
         String timeAgo = null;
 
         List<SliderItem> sliderItems = new ArrayList<>();
 
-
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
         //JSON data from previous activity
         String strValue = getIntent().getStringExtra("jsonString");
@@ -87,7 +103,8 @@ public class PostDetailsActivity extends AppCompatActivity {
             postedBy = value2.getJSONObject("requestedBy").getString("name");
             profilePicture = value2.getJSONObject("requestedBy").getString("profilePicture");
             imageUrl = value2.getJSONArray("images");
-            time = value.getInt("distance") / 0.25;         //Since, average bicycle speed in 15kmph with is equal to 0.25 kmpmin
+
+            cost = (double) value2.getInt("cost");
 
 
             creationtime = value2.getString("createdAt");
@@ -114,7 +131,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                 }
             }
 
-        } catch (JSONException | ParseException  | NullPointerException e) {
+        } catch (JSONException | ParseException | NullPointerException e) {
             Log.w("JSON_ERROR", e);
         }
 
@@ -122,14 +139,21 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedDescription = (TextView) findViewById(R.id.selected_description);
         selectedPostedBy = (TextView) findViewById(R.id.discover_posted_by);
         profilePictureView = (ImageView) findViewById(R.id.postDetails_profile_picture);
-        selectedMinutesAway = (TextView) findViewById(R.id.profile_minutes_away);
+        selectedCost = (TextView) findViewById(R.id.profile_cost);
         selectedTimeAgo = (TextView) findViewById(R.id.postDetails_time_ago);
+
+        respondButton = (LoadingButton) findViewById(R.id.postDetails_respond_button);
 
         selectedTitle.setText(title);
         selectedDescription.setText(description);
         selectedPostedBy.setText(postedBy);
         Picasso.get().load(profilePicture).fit().centerInside().into(profilePictureView);
-        selectedMinutesAway.setText(String.valueOf((int)time) + " minutes away");
+
+        String costDisplay = (cost != 0.0) ? "₹" + String.valueOf(cost) : "Free";
+
+        selectedCost.setText(costDisplay);
+
+
         selectedTimeAgo.setText(timeAgo);
 
 
@@ -163,12 +187,7 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
-
-//        bottomSheetName.setText("HELLO");
-//        Picasso.get().load(profilePicture).fit().centerInside().into(bottonSheetProfilePicture);
-
-
-        CardView authorDetails = (CardView)findViewById(R.id.authorDetails);
+        CardView authorDetails = (CardView) findViewById(R.id.authorDetails);
         final String finalProfilePicture = profilePicture;
         final String finalPostedBy = postedBy;
         authorDetails.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +210,111 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
+        final String id = preferences.getString("_id", null);
 
+        try {
+            respondedByArray = value2.getJSONArray("respondedBy");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.w("Ids in Array", respondedByArray.toString());
+        Log.w("Ids find", id);
+
+        boolean found = false;
+        for (int i = 0; i < respondedByArray.length(); i++) {
+            try {
+                if (respondedByArray.getString(i).equals(id))
+                    found = true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (found) {
+            respondButton.setEnabled(false);
+            respondButton.setButtonText("Already Responded");
+        } else {
+            respondButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        respondData();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+//
+
+    void respondData() throws JSONException {
+
+        respondButton.showLoading();
+
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+
+        //JSON data from previous activity
+        String strValue = getIntent().getStringExtra("jsonString");
+
+        JSONObject value = null;
+        JSONObject value2 = null;
+
+        //Parsing JSON Data
+        value = new JSONObject(strValue);
+        value2 = value.getJSONObject("request");
+
+        requestId = value2.getString("reqUID");
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        final String id = preferences.getString("_id", null);
+        String userId = preferences.getString("uid", null);
+
+
+        String url = getResources().getString(R.string.base_url) + "/api/requests/" + requestId + "/respond/" + id;
+
+        Log.w("REQUEST ID", requestId);
+        Log.w("_ID", id);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.w("Respond Response", response.toString());
+
+                try {
+                    if(response.getBoolean("success")) {
+                        respondButton.hideLoading();
+                        respondButton.setButtonText("Done");
+                        respondButton.setEnabled(false);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Respond Error", "Error: " + error.getMessage());
+                Log.e("Respond Error", "Site Info Error: " + error.getMessage());
+                Toast.makeText(PostDetailsActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+
+                respondButton.hideLoading();
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("_id", id);
+                return headers;
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
     }
 
     private Runnable sliderRunnable = new Runnable() {
@@ -211,5 +334,11 @@ public class PostDetailsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         sliderHandler.postDelayed(sliderRunnable, 3000);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
     }
 }

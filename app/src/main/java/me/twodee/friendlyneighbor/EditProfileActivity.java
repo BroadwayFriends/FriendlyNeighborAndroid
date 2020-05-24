@@ -21,11 +21,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,6 +37,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.common.io.LineReader;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -46,24 +52,30 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     int LAUNCH_LOCATION_ACTIVITY = 877;
     private Button updateProfileButton;
+    private TextView textViewName,textViewTitle;
     private EditText editTextEmail, editTextPhone, editTextUsername, editTextRadius, editTextLocation;
-    private ImageView editPictureButton;
+    private ImageView editPictureButton,displayImage;
     private SharedPreferences preferences;
     private String TAG = "editProfilePage";
     String changedUri = "";
+    private Boolean CHANGED_PICTURE_FLAG = Boolean.FALSE;
     private Geocoder geocoder;
+    private LinearLayout editProfilePicture;
     private Boolean UPDATE_FLAG = Boolean.FALSE;
     private LatLng finalPosition;
     private List<Address> addresses;
     private String changedEmail, changedPhone, changedLocation, changedUsername, changedRadius;
-    private static final String baseUrl = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
+    private  String baseUrl ;
     private Uri mCropImageUri;
 
     String locatedAddressLine1, locatedCity, locatedState, locatedCountry, locatedPostalCode;
@@ -75,25 +87,51 @@ public class EditProfileActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_edit_profile);
-
+        String visitReason = getIntent().getStringExtra("visitReason");
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
-
-
-        editTextUsername = (EditText) findViewById(R.id.editTextUsername);
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-        updateProfileButton = (Button) findViewById(R.id.updateProfileButton);
-        editPictureButton = (ImageView) findViewById(R.id.editPictureButton);
-        editTextLocation = (EditText) findViewById(R.id.editTextLocation);
-        editTextRadius = (EditText) findViewById(R.id.editTextRadius);
+        baseUrl = getResources().getString(R.string.base_url) ;
+        displayImage = findViewById(R.id.displayImage);
+        LinearLayout goBack = findViewById(R.id.goBackLayout);
+        editTextUsername = findViewById(R.id.editTextUsername);
+        textViewName =  findViewById(R.id.textViewName);
+        textViewTitle =  findViewById(R.id.textViewTitle);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPhone = findViewById(R.id.editTextPhone);
+        updateProfileButton = findViewById(R.id.updateProfileButton);
+        editPictureButton = findViewById(R.id.editPictureButton);
+        editTextLocation = findViewById(R.id.editTextLocation);
+        editTextRadius = findViewById(R.id.editTextRadius);
+        editProfilePicture =  findViewById(R.id.editProfilePicture);
         editTextLocation.setFocusable(false);
         editTextLocation.setCursorVisible(false);
+        editTextEmail.setFocusable(false);
+        editTextEmail.setCursorVisible(false);
+        editTextUsername.setFocusable(false);
+        editTextUsername.setCursorVisible(false);
         updateProfileButton.setClickable(false);
-//        fetchData();
+//        updateProfileButton.setVisibility(View.GONE);
+//        textViewTitle.setText("My Profile");
+
+        if(visitReason.equals("edit")){
+            textViewTitle.setText("Edit Profile");
+            updateProfileButton.setVisibility(View.VISIBLE);
+        }
+        if(visitReason.equals("view")){
+            textViewTitle.setText("My Profile");
+            updateProfileButton.setVisibility(View.GONE);
+        }
+
+        fetchData();
 
 //        updateProfileButton.setClickable(false);
 //        updateProfileButton.setAlpha(.4f);
 
+
+        goBack.setOnClickListener(v -> {
+            Intent i = new Intent(EditProfileActivity.this, DashboardActivity.class);
+            startActivity(i);
+
+        });
 
         editTextUsername.addTextChangedListener(new TextWatcher() {
 
@@ -107,7 +145,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                onProfileEdit();
+                textViewName.setText(s.toString());
+                if(editTextUsername.hasFocus()) {
+                    onProfileEdit();
+                }
 
             }
         });
@@ -126,8 +167,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                onProfileEdit();
-
+                if(editTextEmail.hasFocus()) {
+                    onProfileEdit();
+                }
             }
         });
 
@@ -144,7 +186,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                onProfileEdit();
+                if(editTextPhone.hasFocus()) {
+                    onProfileEdit();
+                }
+
 
             }
         });
@@ -161,36 +206,31 @@ public class EditProfileActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                onProfileEdit();
+//                onProfileEdit();
 
             }
         });
 
 
-        editTextLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(EditProfileActivity.this, locationPickerActivity.class);
-                startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
-                onProfileEdit();
-            }
+        editTextLocation.setOnClickListener(v -> {
+            Intent i = new Intent(EditProfileActivity.this, locationPickerActivity.class);
+            startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
+            onProfileEdit();
         });
 
-        updateProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (UPDATE_FLAG) {
+        updateProfileButton.setOnClickListener(v -> {
+            if (UPDATE_FLAG) {
+                if(finalPosition != null){
                     updateData();
                 }
+                else{Toast.makeText(EditProfileActivity.this,"Please provide your current location.",Toast.LENGTH_SHORT).show();}
             }
         });
 
-        editPictureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onProfileEdit();
-                onSelectImageClick(findViewById(R.id.cropImageView));
-            }
+        editProfilePicture.setOnClickListener(v -> {
+            onProfileEdit();
+            onSelectImageClick(findViewById(R.id.cropImageView));
+            CHANGED_PICTURE_FLAG = Boolean.TRUE;
         });
 
     }
@@ -200,6 +240,8 @@ public class EditProfileActivity extends AppCompatActivity {
         updateProfileButton.setClickable(true);
         updateProfileButton.setAlpha(1f);
         UPDATE_FLAG = Boolean.TRUE;
+        textViewTitle.setText("Edit Profile");
+        updateProfileButton.setVisibility(View.VISIBLE);
 
     }
 
@@ -226,7 +268,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, int[] grantResults) {
         if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 CropImage.startPickImageActivity(this);
@@ -255,9 +297,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
                     assert data != null;
                     geocoder = new Geocoder(EditProfileActivity.this, Locale.getDefault());
-                    String locatedRadius = data.getExtras().getString("radius");
+                    String locatedRadius = Objects.requireNonNull(data.getExtras()).getString("radius");
                     editTextRadius.setText(locatedRadius);
                     finalPosition = data.getExtras().getParcelable("finalPosition");
+                    assert finalPosition != null;
                     addresses = geocoder.getFromLocation(finalPosition.latitude, finalPosition.longitude, 1);
                     locatedAddressLine1 = addresses.get(0).getAddressLine(0);
                     locatedCity = addresses.get(0).getLocality();
@@ -317,41 +360,78 @@ public class EditProfileActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject object = new JSONObject();
 
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         String userId = preferences.getString("_id", null);
+//        String userId =  "5ec7e4eddb059c13762d643f" ;
         try {
-            object.put("id", userId);
+            object.put("_id", userId);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        String url = "https://6b6acf18.ngrok.io/api/users/5ec402f5e9071a16705469a4";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.w("ServerResponse", response.toString());
+        String baseUrl = getResources().getString(R.string.base_url)+ "/api/users/" + userId;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
+                response -> {
+                    Log.w("FETCH DATA", response.toString());
 
+                    try {
+                        JSONObject respObj = new JSONObject(response.getString("user"));
+                        String profilePictureUrl =  respObj.getString("profilePicture");
+                        Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
+                        editTextUsername.setText(respObj.getString("name"));
+                        editTextEmail.setText(respObj.getString("email"));
+                        editTextPhone.setText(respObj.getString("contactNumber"));
+                        editTextRadius.setText(respObj.getString("defaultSearchRadius"));
+                        boolean canChangeName  = response.getBoolean("canChangeName");
+
+                        Log.w(TAG, "canChangeName"+Boolean.toString(canChangeName));
+
+                        editTextUsername.setFocusable(canChangeName);
+                        editTextUsername.setFocusableInTouchMode(canChangeName);
+                        editTextUsername.setCursorVisible(canChangeName);
+
+//                        editTextEmail.setFocusable(canChangeName);
+//                        editTextEmail.setFocusableInTouchMode(canChangeName);
+//                        editTextEmail.setCursorVisible(canChangeName);
+
+                        String address = respObj.getString("address");
+                        Log.v(TAG,address);
                         try {
-                            editTextUsername.setText(response.getString("name"));
-                            editTextEmail.setText(response.getString("email"));
-                            editTextPhone.setText(response.getString("changedPhone"));
-                            editTextLocation.setText(response.getString("changedLocation"));
-                            editTextRadius.setText(response.getString("changedRadius"));
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            JSONObject obj = new JSONObject(address);
+                            String addr = obj.getString("addr");
+                            editTextLocation.setText(addr);
+
+
+
+                        } catch (Throwable t) {
+                            Log.e(TAG, "Could not parse malformed JSON"+address.toString());
                         }
 
 
+                        textViewName.setText(respObj.getString("name"));
+//                            editTextLocation.setText(response.getString("defaultLocation"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+
+
+                }, error -> {
+                    Log.w("ServerError", error);
+
+                }){
+            /** Passing some request headers* */
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.w("ServerError", error);
-                ;
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                headers.put("_id", userId);
+                return headers;
             }
-        });
+        };
+
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -368,6 +448,7 @@ public class EditProfileActivity extends AppCompatActivity {
         changedPhone = editTextPhone.getText().toString();
         changedRadius = editTextRadius.getText().toString();
         changedLocation = editTextLocation.getText().toString();
+
         try {
 
             defaultLocation.put("latitude", finalPosition.latitude);
@@ -378,9 +459,9 @@ public class EditProfileActivity extends AppCompatActivity {
             address.put("pincode",locatedPostalCode);
             address.put("country",locatedCountry);
 
-//            object.put("id", userId);
+            object.put("id", userId);
             object.put("name", changedUsername);
-            object.put("email", changedEmail);
+//            object.put("email", changedEmail);
             object.put("contactNumber", changedPhone);
             object.put("defaultLocation", defaultLocation);
             object.put("address",address);
@@ -390,50 +471,87 @@ public class EditProfileActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        String baseUrl = getResources().getString(R.string.base_url)+ "/api/users/" + userId ;
+//        String baseUrl = "https://httpbin.org/anything";
 
 
-        MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
-                .setMethod("PUT")
-                .addHeader("_id", "5ec402f5e9071a16705469a4")
-                .addParameter("data", object.toString());
-        try {
-           reqObj.addFileToUpload(changedUri, "image");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        if (CHANGED_PICTURE_FLAG) {
+            MultipartUploadRequest reqObj = new MultipartUploadRequest(this, baseUrl)
+                    .setMethod("PUT")
+                    .addHeader("_id", userId)
+                    .addParameter("data", object.toString());
+            try {
+
+                reqObj.addFileToUpload(changedUri, "image");
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 //                .addFileToUpload(changedUri, "updatedPhoto")
 
-        reqObj.subscribe(this, this, new RequestObserverDelegate() {
+            reqObj.subscribe(this, this, new RequestObserverDelegate() {
 
-            @Override
-            public void onSuccess(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull ServerResponse serverResponse) {
-                Log.i(TAG, "Success:" + serverResponse.getBodyString());
-                Toast.makeText(EditProfileActivity.this, "Successfully Updated !!", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onSuccess(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull ServerResponse serverResponse) {
+                    Log.i(TAG, "Success:" + serverResponse.getBodyString());
+                    Toast.makeText(EditProfileActivity.this, "Successfully Updated !!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onProgress(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+
+                }
+
+                @Override
+                public void onError(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull Throwable throwable) {
+                    Log.e(TAG, "Error, upload error:");
+                }
+
+                @Override
+                public void onCompletedWhileNotObserving() {
+
+                }
+
+                @Override
+                public void onCompleted(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+
+                }
+            });
+        }
+        else {
+
+            try {
+                object.put("image","");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+            Log.v(TAG,"Works");
+            RequestQueue newRequestQueue = Volley.newRequestQueue(getApplicationContext());
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, baseUrl, object,
+                    response -> {
+                        Log.w(TAG, response.toString());
 
-            @Override
-            public void onProgress(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
+                        if(response.has("uid")) {
+                            startActivity(new Intent(EditProfileActivity.this, DashboardActivity.class));
+                        }
+                    }, error -> {
+                Log.w("ServerError", error);
+            }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("_id", userId);
+                    return headers;
+                }
+            };
 
-            }
+            newRequestQueue.add(jsonObjectRequest);
 
-            @Override
-            public void onError(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull Throwable throwable) {
-                Log.e(TAG, "Error, upload error:");
-            }
+        }
 
-            @Override
-            public void onCompletedWhileNotObserving() {
-
-            }
-
-            @Override
-            public void onCompleted(@NotNull Context context, @NotNull UploadInfo uploadInfo) {
-
-            }
-        });
-
-        Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(EditProfileActivity.this, DashboardActivity.class));
 
     }
 

@@ -71,10 +71,17 @@ dependencies {
     //Image
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-
-
     //TimeAgo
     implementation 'com.github.shamalka:Pretty-TimeAgo-android-library:1.0.0'
+   
+   //Lottie
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+   
+   //ProgressButton
+    implementation 'com.github.koushikcse:LoadingButton:1.5'
 
+    //Onboarding
+    implementation 'com.github.AppIntro:AppIntro:6.0.0'
 
 }

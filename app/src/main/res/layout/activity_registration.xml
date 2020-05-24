@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:text="Register"
             android:textSize="40dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/product_sans_bold"
             android:textColor="@android:color/black"/>
     </LinearLayout>
@@ -52,10 +53,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,6 +74,27 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -150,43 +169,31 @@
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/contact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:orientation="vertical"
         android:layout_gravity="center">
 
-        <Button
-            android:id="@+id/autoFillAddress"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Auto Fill" />
+
+<!--        <Button-->
+<!--            android:id="@+id/autoFillAddress"-->
+<!--            style="@style/Widget.MaterialComponents.Button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Auto Fill"-->
+<!--            android:layout_margin="10dp"/>-->
 
         <Button
             android:id="@+id/submitButton"
             style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:text="Submit"
+            android:backgroundTint="#1a237e"
+            android:layout_margin="2dp"/>
     </LinearLayout>
 
 

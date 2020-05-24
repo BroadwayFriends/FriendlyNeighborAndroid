@@ -1,8 +1,6 @@
 package me.twodee.friendlyneighbor;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-//import android.support.v7.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,32 +9,26 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+//import android.support.v7.app.AppCompatActivity;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -116,7 +108,7 @@ public class SignInActivity extends AppCompatActivity {
         Log.w("Sign In Data", object.toString());
 
         // Enter the correct url for your api service site
-        String url = getResources().getString(R.string.agni_url) + "/api/users/login";
+        String url = getResources().getString(R.string.base_url) + "/api/users/login";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
@@ -180,7 +172,7 @@ public class SignInActivity extends AppCompatActivity {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("Google Sign In Error", "signInResult:failed code=" + e.getStatusCode());
-            Toast.makeText(SignInActivity.this, "Failed !!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignInActivity.this, "Failed", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -197,8 +189,9 @@ public class SignInActivity extends AppCompatActivity {
 
             postData();
 
-            Toast.makeText(SignInActivity.this, "Already Signed In !!!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(SignInActivity.this, "Already Signed In !!!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
+            finish();
         }
 
         super.onStart();

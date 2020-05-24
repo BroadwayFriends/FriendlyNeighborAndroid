@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="14dp"
     tools:context="me.twodee.friendlyneighbor.postRequirementActivity">
 
 
@@ -16,166 +17,198 @@
 <!--        android:ems="10"-->
 <!--        android:hint="Select an expiration date for the request."  />-->
 
-
-    <EditText
-        android:id="@+id/editTextTitle"
-        android:layout_width="417dp"
-        android:layout_height="88dp"
-
-        android:ems="10"
-        android:hint="Add a title to your request."
-        android:inputType="textEmailSubject"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.018"
-        android:importantForAutofill="no" />
-
-    <EditText
-        android:id="@+id/editTextDescription"
-        android:layout_width="440dp"
-        android:layout_height="111dp"
-        android:ems="10"
-        android:hint="Describe why you need you need this article"
-        android:inputType="text"
-        android:lines="4"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.159" />
-
-    <EditText
-        android:id="@+id/editTextPhone"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter your phone number"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.306" />
+        android:orientation="vertical">
+        <!-- Form Title -->
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Request"
+            android:textSize="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/product_sans_bold"
+            android:textColor="@android:color/black"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="14dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text= "Select the type of post you are making"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:layout_margin="5dp"/>
+                    <!--  Request Type Spinner             -->
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerRequestType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:layout_margin="5dp"/>
+
+                <!-- Request Title -->
+                <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add a title to your request"
+                android:fontFamily="@font/product_sans_bold"
+                android:layout_margin="5dp"/>
+                <EditText
+                android:id="@+id/editTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Noodles"
+                android:fontFamily="@font/product_sans_regular"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:inputType="textEmailSubject"
+                android:importantForAutofill="no"/>
+                <!-- Description -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Describe why you need you need this article"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:layout_margin="5dp"/>
+                <EditText
+                    android:id="@+id/editTextDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/dummy_text"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:inputType="text"
+                    android:lines="4"
+                    android:scrollbars="vertical"
+                    android:importantForAutofill="no"/>
+                <!-- Phone Number -->
+                <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter your phone number"
+                android:fontFamily="@font/product_sans_bold"
+                android:layout_margin="5dp"/>
+                <EditText
+                    android:id="@+id/editTextPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="7995037674"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:inputType="text"/>
+                <!-- Date -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Set expiration date for your request"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:focusableInTouchMode="false"
+                    android:layout_margin="5dp"/>
+                <EditText
+                    android:id="@+id/editTextDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+                <!-- Price -->
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Do you want to add a price quote to your request?"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:layout_margin="5dp"/>
+                <!-- Switch for Price Quote -->
+                <Switch
+                    android:id="@+id/switchPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:showText="true"
+                    android:textOff="No"
+                    android:textOn="Yes"/>
+                <!-- Enter Price -->
+                <EditText
+                    android:id="@+id/editTextPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter price in INR"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:textSize="14dp"
+                    android:inputType="number"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text= "Set your preferred location"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:layout_margin="5dp"/>
+                <!-- Spinner -->
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerChooseLocation"
+                    android:layout_width="match_parent"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"/>
+                <!-- Change Location -->
+                <EditText
+                    android:id="@+id/editTextAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Click to Change Location "
+                    android:fontFamily="@font/product_sans_regular"
+                    android:textSize="14dp"
+                    android:importantForAutofill="no"
+                    android:inputType="text"/>
+                <!-- Default Distance -->
+                <EditText
+                    android:id="@+id/editTextDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Default Distance"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:textSize="14dp"/>
+                <!-- Upload Images Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUploadImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/upload_image"/>
+                <!-- Submit Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Submit"
+                    android:backgroundTint="@android:color/holo_green_dark"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 
 
-    <EditText
-        android:id="@+id/editTextDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.0"
-
-        android:hint="Set expiration date for your request"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.371" />
-
-    <Spinner
-        android:id="@+id/spinnerChooseLocation"
-        android:layout_width="387dp"
-        android:layout_height="45dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.549" />
-
-    <EditText
-        android:id="@+id/editTextAddress"
-        android:layout_width="229dp"
-        android:layout_height="106dp"
-        android:hint="Click to Change Location "
-        android:importantForAutofill="no"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.032"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.675" />
-
-    <EditText
-        android:id="@+id/editTextDistance"
-        android:layout_width="158dp"
-        android:layout_height="41dp"
-        android:hint="Default Distance"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.936"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.611" />
-
-    <EditText
-        android:id="@+id/editTextPrice"
-        android:layout_width="95dp"
-        android:layout_height="45dp"
-        android:hint="Enter price in INR"
-
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.806"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
-
-    <Switch
-        android:id="@+id/switchPrice"
-        android:layout_width="96dp"
-        android:layout_height="39dp"
-        android:showText="true"
-        android:textOff="No"
-        android:textOn="Yes"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.019"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="398dp"
-        android:layout_height="75dp"
-        android:text="Do you want to add a price quote to your request?"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.461" />
-
-    <Button
-        android:id="@+id/btnUploadImage"
-        android:layout_width="151dp"
-        android:layout_height="55dp"
-        android:text="@string/upload_image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.803" />
-
-    <Button
-        android:id="@+id/buttonSubmit"
-        android:layout_width="182dp"
-        android:layout_height="75dp"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.955" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

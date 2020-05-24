@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.icu.text.DecimalFormat;
 import android.icu.text.NumberFormat;
 import android.net.Uri;
@@ -20,6 +22,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,6 +31,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -48,6 +52,7 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.collect.Range;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,17 +70,19 @@ import java.util.Objects;
 public class postRequirementActivity extends AppCompatActivity {
     private EditText editTextTitle, editTextDescription, editTextPhone,
             editTextDate, editTextDistance,editTextAddress,editTextPrice;
-
+    private TextView textViewTitle;
     private Button buttonSubmit,buttonImageUpload;
     private AwesomeValidation awesomeValidation;
     private Switch switchPrice;
-    private Spinner spinnerChooseLocation;
+    private SharedPreferences preferences;
+    private Spinner spinnerChooseLocation,spinnerRequestType;
     String title,description,radius,expirationDate,phoneNumber,imageEncoded,fullAddress,priceQuote;
     private int mYear, mMonth, mDay;
     //Images
     int PICK_IMAGE_MULTIPLE = 1;
     List<String> imagesEncodedList;
-    private final String TAG = "request" ;
+    private final String TAG = "request";
+    private String  requestType ;
     private boolean IMAGE_FLAG = false;
     ArrayList<String> imageUriArray = new ArrayList<>();
     //Location
@@ -89,23 +96,29 @@ public class postRequirementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_post_requirement);
-        editTextTitle = (EditText) findViewById(R.id.editTextTitle);
-        editTextDescription = (EditText) findViewById(R.id.editTextDescription);
-        editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-        editTextDistance = (EditText) findViewById(R.id.editTextDistance);
-        editTextDate = (EditText) findViewById(R.id.editTextDate);
-        editTextAddress = (EditText) findViewById(R.id.editTextAddress);
-        editTextPrice = (EditText) findViewById(R.id.editTextPrice);
+        editTextTitle = findViewById(R.id.editTextTitle);
+        textViewTitle =  findViewById(R.id.textViewTitle);
+        editTextDescription = findViewById(R.id.editTextDescription);
+        editTextPhone = findViewById(R.id.editTextPhone);
+        editTextDistance = findViewById(R.id.editTextDistance);
+        editTextDate = findViewById(R.id.editTextDate);
+        editTextAddress = findViewById(R.id.editTextAddress);
+        editTextPrice = findViewById(R.id.editTextPrice);
         editTextPrice.setVisibility(View.GONE);
         switchPrice = findViewById(R.id.switchPrice);
-        spinnerChooseLocation = (Spinner)findViewById(R.id.spinnerChooseLocation);
+        spinnerChooseLocation = findViewById(R.id.spinnerChooseLocation);
+        spinnerRequestType = findViewById(R.id.spinnerRequestType);
         editTextAddress.setVisibility(View.GONE);
         editTextDistance.setVisibility(View.GONE);
-
-
-        buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
-        buttonImageUpload = (Button) findViewById(R.id.btnUploadImage);
+        editTextDate.setCursorVisible(false);
+        editTextPhone.setFocusable(false);
+        editTextPhone.setCursorVisible(false);
+        buttonSubmit = findViewById(R.id.buttonSubmit);
+        buttonImageUpload = findViewById(R.id.btnUploadImage);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
@@ -116,8 +129,8 @@ public class postRequirementActivity extends AppCompatActivity {
 //        awesomeValidation.addValidation(this, R.id.editTextDob, "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$", R.string.nameerror);
 
 
-//        TODO: TAKE DATA FROM PREVIOUS ACTIVITY (uID,phoneNumber,Home location,distance)
-
+//        TODO: take data from previous activity (uID,phoneNumber,Home location,distance)
+        fetchData();
 
         buttonImageUpload.setOnClickListener(new View.OnClickListener()
         {
@@ -216,7 +229,7 @@ public class postRequirementActivity extends AppCompatActivity {
             }
         });
 
-        String[] availableLocations = new String[] { "Home", "Choose a custom location" };
+        String[] availableLocations = new String[] { "[Choose a location]","Home", "Choose a custom location" };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(postRequirementActivity.this,
                 android.R.layout.simple_spinner_item,availableLocations);
@@ -235,8 +248,8 @@ public class postRequirementActivity extends AppCompatActivity {
                 }
                 if(selectedItem.equals("Home"))
                 {
-                   editTextAddress.setText("Default");
-                   editTextDistance.setText("1");
+                   editTextAddress.setVisibility(View.VISIBLE);
+                   editTextDistance.setVisibility(View.VISIBLE);
                 }
 
 //                Log.v("item", (String) parent.getItemAtPosition(position));
@@ -244,10 +257,41 @@ public class postRequirementActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
+                // TODO : take default location
             }
         });
 
+        String[] requestTypesArray = new String[] { "Requesting", "Offering" };
+
+        ArrayAdapter<String> reqAdapter = new ArrayAdapter<String>(postRequirementActivity.this,
+                android.R.layout.simple_spinner_item,requestTypesArray);
+
+        reqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRequestType.setAdapter(reqAdapter);
+        spinnerRequestType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if(selectedItem.equals("Requesting"))
+                {
+                    requestType = "request" ;
+                    textViewTitle.setText("New Request");
+                }
+                if(selectedItem.equals("Offering"))
+                {
+                    requestType = "offering" ;
+                    textViewTitle.setText("New Offering");
+                }
+
+//                Log.v("item", (String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO : take default location
+            }
+        });
 
 
 
@@ -255,7 +299,74 @@ public class postRequirementActivity extends AppCompatActivity {
     }
 
 
+    private void fetchData() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JSONObject object = new JSONObject();
 
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        String userId = preferences.getString("_id", null);
+//        String userId =  "5ec7e4eddb059c13762d643f" ;
+        try {
+            object.put("_id", userId);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String baseUrl = getResources().getString(R.string.base_url)+ "/api/users/" + userId;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
+                response -> {
+                    Log.w("FETCH DATA", response.toString());
+
+                    try {
+                        JSONObject respObj = new JSONObject(response.getString("user"));
+                        editTextPhone.setText(respObj.getString("contactNumber"));
+                        editTextDistance.setText(respObj.getString("defaultSearchRadius"));
+
+
+
+//                        editTextEmail.setFocusable(canChangeName);
+//                        editTextEmail.setFocusableInTouchMode(canChangeName);
+//                        editTextEmail.setCursorVisible(canChangeName);
+
+                        String address = respObj.getString("address");
+                        Log.v(TAG,address);
+                        try {
+
+                            JSONObject obj = new JSONObject(address);
+                            String addr = obj.getString("addr");
+                            editTextAddress.setText(addr);
+
+
+
+                        } catch (Throwable t) {
+                            Log.e(TAG, "Could not parse malformed JSON"+address.toString());
+                        }
+
+
+//                            editTextLocation.setText(response.getString("defaultLocation"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }, error -> {
+            Log.w("ServerError", error);
+
+        }){
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                headers.put("_id", userId);
+                return headers;
+            }
+        };
+
+        requestQueue.add(jsonObjectRequest);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -374,6 +485,7 @@ public class postRequirementActivity extends AppCompatActivity {
             i.putExtra("description",description);
             i.putExtra("phoneNumber",phoneNumber);
             i.putExtra("expirationDate",expirationDate);
+            i.putExtra("requestType",expirationDate);
             i.putExtra("radius",radius);
             i.putExtra("lat",String.valueOf( finalPosition.latitude));
             i.putExtra("lng",String.valueOf( finalPosition.longitude));
