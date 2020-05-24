@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -43,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity {
     LinearLayout editProfileButton;
 
     MaterialCardView RequestPage,DiscoverPage,KarmaPage, RespondToPosts;
-
+    CardView myProfile;
     String personName, personEmail;
     ImageView displayImage;
 
@@ -63,6 +64,7 @@ public class DashboardActivity extends AppCompatActivity {
         RequestPage = findViewById(R.id.RequestPage);
         DiscoverPage = findViewById(R.id.DiscoverPage);
         KarmaPage = findViewById(R.id.KarmaPage);
+        myProfile = findViewById(R.id.myProfile);
         RespondToPosts = findViewById(R.id.RespondToPosts);
         displayImage = findViewById(R.id.displayImage);
 //        emailTV.setVisibility(View.GONE);
@@ -70,11 +72,21 @@ public class DashboardActivity extends AppCompatActivity {
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
         fetchData();
-
         editProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, EditProfileActivity.class);
+            Intent intent = new Intent(getBaseContext(), EditProfileActivity.class);
+            intent.putExtra("visitReason", "edit");
             startActivity(intent);
+
         });
+
+        myProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(getBaseContext(), EditProfileActivity.class);
+            intent.putExtra("visitReason", "view");
+            startActivity(intent);
+
+        });
+
+
 
         KarmaPage.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, KarmaPointsActivity.class);
