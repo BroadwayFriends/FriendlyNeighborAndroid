@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
 
     private static int SPLASH_SCREEN = 5000;
 
-    Animation topAnim, bottomAnim;
+    Animation bottomAnim;
     ImageView image;
     TextView logo, slogan;
 
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_splash);
 
-        topAnim = AnimationUtils.loadAnimation(this, R.anim.splash_top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this, R.anim.splash_bottom_animation);
 
         //Hooks
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity
         logo = findViewById(R.id.textView);
         slogan = findViewById(R.id.textView2);
 
-        image.setAnimation(topAnim);
         logo.setAnimation(bottomAnim);
         slogan.setAnimation(bottomAnim);
 
