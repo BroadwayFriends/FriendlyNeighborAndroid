@@ -253,9 +253,9 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
                                 int seekWidth = seekBar.getWidth();
                                 int val = (int) Math.round(percent * (seekWidth - 2 * offset));
                                 int labelWidth = textViewSeekBar.getWidth();
-                                textViewSeekBar.setX(offset + seekBar.getX() + val
-                                        - Math.round(percent * offset)
-                                        - Math.round(percent * labelWidth/2));
+//                                textViewSeekBar.setX(offset + seekBar.getX() + val
+//                                        - Math.round(percent * offset)
+//                                        - Math.round(percent * labelWidth/2));
                             }
                             @Override
                             public void onStartTrackingTouch(SeekBar seekBar) {
