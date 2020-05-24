@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -61,7 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     int LAUNCH_LOCATION_ACTIVITY = 877;
     private Button updateProfileButton;
-    private TextView textViewName;
+    private TextView textViewName,textViewTitle;
     private EditText editTextEmail, editTextPhone, editTextUsername, editTextRadius, editTextLocation;
     private ImageView editPictureButton,displayImage;
     private SharedPreferences preferences;
@@ -86,13 +87,14 @@ public class EditProfileActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_edit_profile);
-
+        String visitReason = getIntent().getStringExtra("visitReason");
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         baseUrl = getResources().getString(R.string.base_url) ;
         displayImage = findViewById(R.id.displayImage);
         LinearLayout goBack = findViewById(R.id.goBackLayout);
         editTextUsername = findViewById(R.id.editTextUsername);
         textViewName =  findViewById(R.id.textViewName);
+        textViewTitle =  findViewById(R.id.textViewTitle);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPhone = findViewById(R.id.editTextPhone);
         updateProfileButton = findViewById(R.id.updateProfileButton);
@@ -107,6 +109,18 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextUsername.setFocusable(false);
         editTextUsername.setCursorVisible(false);
         updateProfileButton.setClickable(false);
+//        updateProfileButton.setVisibility(View.GONE);
+//        textViewTitle.setText("My Profile");
+
+        if(visitReason.equals("edit")){
+            textViewTitle.setText("Edit Profile");
+            updateProfileButton.setVisibility(View.VISIBLE);
+        }
+        if(visitReason.equals("view")){
+            textViewTitle.setText("My Profile");
+            updateProfileButton.setVisibility(View.GONE);
+        }
+
         fetchData();
 
 //        updateProfileButton.setClickable(false);
@@ -115,8 +129,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         goBack.setOnClickListener(v -> {
             Intent i = new Intent(EditProfileActivity.this, DashboardActivity.class);
-            startActivityForResult(i, LAUNCH_LOCATION_ACTIVITY);
-            onProfileEdit();
+            startActivity(i);
+
         });
 
         editTextUsername.addTextChangedListener(new TextWatcher() {
@@ -132,7 +146,9 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 textViewName.setText(s.toString());
-                onProfileEdit();
+                if(editTextUsername.hasFocus()) {
+                    onProfileEdit();
+                }
 
             }
         });
@@ -151,8 +167,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                onProfileEdit();
-
+                if(editTextEmail.hasFocus()) {
+                    onProfileEdit();
+                }
             }
         });
 
@@ -169,7 +186,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                onProfileEdit();
+                if(editTextPhone.hasFocus()) {
+                    onProfileEdit();
+                }
+
 
             }
         });
@@ -186,7 +206,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                onProfileEdit();
+//                onProfileEdit();
 
             }
         });
@@ -220,6 +240,8 @@ public class EditProfileActivity extends AppCompatActivity {
         updateProfileButton.setClickable(true);
         updateProfileButton.setAlpha(1f);
         UPDATE_FLAG = Boolean.TRUE;
+        textViewTitle.setText("Edit Profile");
+        updateProfileButton.setVisibility(View.VISIBLE);
 
     }
 
@@ -363,7 +385,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         editTextRadius.setText(respObj.getString("defaultSearchRadius"));
                         boolean canChangeName  = response.getBoolean("canChangeName");
 
-                        Log.w("FETCH DATA", Boolean.toString(canChangeName));
+                        Log.w(TAG, "canChangeName"+Boolean.toString(canChangeName));
 
                         editTextUsername.setFocusable(canChangeName);
                         editTextUsername.setFocusableInTouchMode(canChangeName);
