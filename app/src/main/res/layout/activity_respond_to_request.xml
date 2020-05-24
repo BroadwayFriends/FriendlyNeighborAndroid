@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:text="Your Requests"
             android:textSize="40dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/product_sans_bold"
             android:textColor="@android:color/black"/>
     </LinearLayout>

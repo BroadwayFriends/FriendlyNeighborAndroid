@@ -8,18 +8,14 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,11 +27,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.button.MaterialButton;
 import com.kusu.loadingbutton.LoadingButton;
 import com.snov.timeagolibrary.PrettyTimeAgo;
 import com.squareup.picasso.Picasso;
@@ -47,12 +41,10 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class PostDetailsActivity extends AppCompatActivity {
 
@@ -61,7 +53,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     String strValue = "";
     String requestId = null;
 
-    TextView selectedTitle, selectedDescription, selectedPostedBy, selectedMinutesAway, selectedTimeAgo;
+    TextView selectedTitle, selectedDescription, selectedPostedBy, selectedCost, selectedTimeAgo;
     ImageView profilePictureView;
 
     TextView bottomSheetName;
@@ -85,7 +77,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         JSONArray imageUrl = null;
         JSONArray respondedByArray = null;
         String profilePicture = null;
-        double time = 0;
+        double cost = 0;
         String creationtime = null;
         String timeAgo = null;
 
@@ -111,7 +103,8 @@ public class PostDetailsActivity extends AppCompatActivity {
             postedBy = value2.getJSONObject("requestedBy").getString("name");
             profilePicture = value2.getJSONObject("requestedBy").getString("profilePicture");
             imageUrl = value2.getJSONArray("images");
-            time = value.getInt("distance") / 0.25;         //Since, average bicycle speed in 15kmph with is equal to 0.25 kmpmin
+
+            cost = (double) value2.getInt("cost");
 
 
             creationtime = value2.getString("createdAt");
@@ -146,7 +139,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedDescription = (TextView) findViewById(R.id.selected_description);
         selectedPostedBy = (TextView) findViewById(R.id.discover_posted_by);
         profilePictureView = (ImageView) findViewById(R.id.postDetails_profile_picture);
-        selectedMinutesAway = (TextView) findViewById(R.id.profile_minutes_away);
+        selectedCost = (TextView) findViewById(R.id.profile_cost);
         selectedTimeAgo = (TextView) findViewById(R.id.postDetails_time_ago);
 
         respondButton = (LoadingButton) findViewById(R.id.postDetails_respond_button);
@@ -155,7 +148,12 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedDescription.setText(description);
         selectedPostedBy.setText(postedBy);
         Picasso.get().load(profilePicture).fit().centerInside().into(profilePictureView);
-        selectedMinutesAway.setText(String.valueOf((int) time) + " minutes away");
+
+        String costDisplay = (cost != 0.0) ? "₹" + String.valueOf(cost) : "Free";
+
+        selectedCost.setText(costDisplay);
+
+
         selectedTimeAgo.setText(timeAgo);
 
 
@@ -188,11 +186,6 @@ public class PostDetailsActivity extends AppCompatActivity {
                 sliderHandler.postDelayed(sliderRunnable, 3000);
             }
         });
-
-
-//        bottomSheetName.setText("HELLO");
-//        Picasso.get().load(profilePicture).fit().centerInside().into(bottonSheetProfilePicture);
-
 
         CardView authorDetails = (CardView) findViewById(R.id.authorDetails);
         final String finalProfilePicture = profilePicture;

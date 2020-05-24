@@ -13,18 +13,15 @@
         android:src="@drawable/login_background"
         android:scaleType="centerCrop"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="8dp"
-        android:text="App Logo Here"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="0dp"
+        android:src="@drawable/gift"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.174"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView"/>
 
@@ -44,7 +41,8 @@
             android:layout_marginLeft="125dp"
             android:padding="15dp"
             android:text="Authentication"
-            android:textColor="@android:color/black"
+            android:fontFamily="@font/product_sans_bold"
+            android:textColor="#455a64"
             android:textSize="18sp"
             android:textStyle="bold" />
 

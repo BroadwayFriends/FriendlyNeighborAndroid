@@ -2,7 +2,8 @@
 
     <string name="base_url">https://fn.twodee.me</string>
 
-    <string name="app_name">FriendlyNeighbour</string>
+    <string name="app_name">Friendly Neighbour</string>
+    <string name="app_tagline">Not all heroes swing about and shoot webs. The neighborhood\'s mightiest heroes unite here.</string>
     <string name="signup">SignUp</string>
     <string name="post_location">Post Location</string>
     <string name="send_location">Send location</string>

@@ -165,7 +165,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     Log.w("ServerResponse", response.toString());
 
                     if(response.has("uid")) {
-                        startActivity(new Intent(RegistrationActivity.this, DashboardActivity.class));
+                        startActivity(new Intent(RegistrationActivity.this, OnboardingActivity.class));
                     }
                 }, error -> {
                     Log.w("ServerError", error);

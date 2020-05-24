@@ -153,9 +153,8 @@ public class DashboardActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         super.onBackPressed();
-        startActivity(new Intent(DashboardActivity.this, MainActivity.class));
-        finish();
-
+//        startActivity(new Intent(DashboardActivity.this, MainActivity.class));
+//        moveTaskToBack(true);
     }
 
 
