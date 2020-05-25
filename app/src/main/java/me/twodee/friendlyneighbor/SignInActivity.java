@@ -191,7 +191,7 @@ public class SignInActivity extends AppCompatActivity {
 
 //            Toast.makeText(SignInActivity.this, "Already Signed In !!!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
-            finish();
+//            finish();
         }
 
         super.onStart();
