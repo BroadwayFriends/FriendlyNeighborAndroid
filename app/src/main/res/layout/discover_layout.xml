@@ -62,8 +62,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:src="@drawable/star"/>
                         <TextView
                             android:layout_width="wrap_content"
@@ -85,32 +85,33 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
                             <TextView
                                 android:id="@+id/discover_price"
-                                android:layout_gravity="left"
+                                android:layout_gravity="bottom"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="20dp"
                                 android:fontFamily="@font/product_sans_bold"
                                 android:text="10"/>
                             <TextView
-                                android:layout_gravity="left"
+                                android:layout_gravity="bottom"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
                                 android:fontFamily="@font/product_sans_regular"
-                                android:text="kms away"/>
+                                android:text=" kms away"/>
 
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="60dp">
                             <ImageView
-                                android:layout_marginLeft="210dp"
+                                android:layout_marginLeft="235dp"
                                 android:layout_marginRight="0dp"
                                 android:layout_width="60dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="60dp"
+                                android:layout_gravity="right"
                                 android:src="@drawable/discover"/>
                         </LinearLayout>
                     </LinearLayout>
