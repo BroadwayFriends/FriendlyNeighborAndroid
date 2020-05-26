@@ -69,7 +69,7 @@ public class HistoryPostDetailsAdapter extends RecyclerView.Adapter<HistoryPostD
         public ViewHolder(View view) {
             super(view);
             container = view;
-            itemNameTV = view.findViewById(R.id.itemNameTV);
+            itemNameTV = view.findViewById(R.id.history_post_name);
         }
 
     }

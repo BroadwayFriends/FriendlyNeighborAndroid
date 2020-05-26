@@ -76,13 +76,13 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 
 
 //        Adding dummy static data
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Maggi",
-                        "Request",
-                        "Akhil",
-                        "10:00 PM",
-                        100,""));
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Maggi",
+//                        "Request",
+//                        "Akhil",
+//                        "10:00 PM",
+//                        100,""));
 
 //        choicePageDetailsList.add(
 //                new HistoryDetails(
@@ -156,8 +156,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 //                        "10:10 AM",
 //                        700,""));
 //
-//        choicePageDetailsAdapter = new HistoryDetailsAdapter(this, choicePageDetailsList, this);
-//        recyclerView.setAdapter(choicePageDetailsAdapter);
+        choicePageDetailsAdapter = new HistoryDetailsAdapter(this, choicePageDetailsList, this);
+        recyclerView.setAdapter(choicePageDetailsAdapter);
 
 
         loadChoicePageData();
@@ -194,7 +194,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 
 
 //        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
-        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
+        String url = "https://08069bda.ngrok.io" + "/api/requests/history/" + id;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -203,7 +203,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray choicePage) {
-                        Log.w("choicePage Response", choicePage.toString());
+                        Log.w("History Response", choicePage.toString());
 
                         progressBar.setVisibility(View.GONE);
                         choicePageLoadingLayout.setVisibility(View.GONE);
@@ -220,16 +220,18 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                                 String jsonObjectString = item.toString();
 
                                 JSONObject requestDets = item.getJSONObject("request");
+                                JSONArray usersDets = item.getJSONArray("users");
 
                                 Log.w("REQDETS", requestDets.toString());
 
                                 // Get the current student (json object) data
                                 String title = requestDets.getString("title");
-                                String person = requestDets.getJSONObject("requestedBy").getString("name");
-                                String createdAt = requestDets.getString("createdAt");
-                                float cost = (float) requestDets.getInt("cost");
-                                String type = (cost != 0.0f) ? "Request" : "Giveaway";
-                                float distance = (float) item.getInt("distance");
+//                                String person = requestDets.getJSONObject("requestedBy").getString("name");
+//                                String createdAt = requestDets.getString("createdAt");
+//                                float cost = (float) requestDets.getInt("cost");
+                                String type = requestDets.getString("type");
+//                                float distance = (float) item.getInt("distance");
+                                String jsonUsersArr = usersDets.toString();
 
 //                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 //                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
@@ -237,16 +239,16 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 //                                String time = timeExtract.format(date.getTime());
 
                                 Log.w("ITEMS: ", title);
-                                Log.w("ITEMS: ", person);
-                                Log.w("ITEMS: ", createdAt);
-                                Log.w("ITEMS: ", String.valueOf(cost));
+//                                Log.w("ITEMS: ", person);
+//                                Log.w("ITEMS: ", createdAt);
+//                                Log.w("ITEMS: ", String.valueOf(cost));
                                 Log.w("ITEMS: ", type);
 //                                Log.w("ITEMS: ", time);
-                                Log.w("ITEMS: ", String.valueOf(distance));
+//                                Log.w("ITEMS: ", String.valueOf(distance));
 
 
-//                                HistoryDetails choicePageDetails = new HistoryDetails(title, type, person, time, distance, jsonObjectString);
-//                                choicePageDetailsList.add(choicePageDetails);
+                                HistoryDetails choicePageDetails = new HistoryDetails(title, type, jsonUsersArr);
+                                choicePageDetailsList.add(choicePageDetails);
                             }
 
                             choicePageDetailsAdapter = new HistoryDetailsAdapter(HistoryActivity.this, choicePageDetailsList, HistoryActivity.this);
@@ -309,7 +311,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         Button dialogAcceptButton = (Button) selectedDialog.findViewById(R.id.dialog_history_accept_btn);
         Button dialogDeclineButton = (Button) selectedDialog.findViewById(R.id.dialog_history_decline_btn);
 
-        dialog_name.setText(choicePageDetailsList.get(position).getChoicePagePerson());
+//        dialog_name.setText(choicePageDetailsList.get(position).getChoicePagePerson());
         dialog_info.setText(choicePageDetailsList.get(position).getChoicePageTitle());
 
         dialogAcceptButton.setOnClickListener(new View.OnClickListener() {

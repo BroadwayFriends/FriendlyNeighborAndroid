@@ -52,7 +52,7 @@ public class HistoryPostDetailsActivity<RecyclerViewAdapter> extends AppCompatAc
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Decline",
                         0,
-                        Color.parseColor("#e57373"),
+                        Color.parseColor("#f44336"),
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
@@ -77,7 +77,7 @@ public class HistoryPostDetailsActivity<RecyclerViewAdapter> extends AppCompatAc
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Accept",
                         0,
-                        Color.parseColor("#81C784"),
+                        Color.parseColor("#4CAF50"),
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {

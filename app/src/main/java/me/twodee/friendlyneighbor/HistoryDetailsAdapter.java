@@ -51,9 +51,9 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsA
         HistoryDetails choicePageDetails = choicePageDetailsList.get(position);
         holder.titleTV.setText(choicePageDetails.getChoicePageTitle());
         holder.typeTV.setText(choicePageDetails.getChoicePageType());
-        holder.personTV.setText(choicePageDetails.getChoicePagePerson());
-        holder.distanceTV.setText(String.valueOf(choicePageDetails.getChoicePagePrice()));
-        holder.timeTV.setText(choicePageDetails.getChoicePageTime());
+//        holder.personTV.setText(choicePageDetails.getChoicePagePerson());
+//        holder.distanceTV.setText(String.valueOf(choicePageDetails.getChoicePagePrice()));
+//        holder.timeTV.setText(choicePageDetails.getChoicePageTime());
 
     }
 
