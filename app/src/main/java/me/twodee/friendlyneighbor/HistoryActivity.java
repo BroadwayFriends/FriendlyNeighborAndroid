@@ -293,6 +293,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
         String selectedJsonString = selectedHistoryDetails.getJsonUsersArray();
         intent.putExtra("jsonString", selectedJsonString);
+        intent.putExtra("title", selectedHistoryDetails.getChoicePageTitle());
+        intent.putExtra("type", selectedHistoryDetails.getChoicePageType());
         startActivityForResult(intent, 1);
 
 //        openDialog(position);

@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -18,15 +19,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryPostDetailsActivity extends AppCompatActivity {
 
+    TextView selectedTitleTV, selectedTypeTV;
+
     RecyclerView itemsContainerRV;
     HistoryPostDetailsAdapter itemAdapter;
-
 
     SharedPreferences preferences;
 
@@ -49,6 +50,15 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 
         //JSON data from previous activity
         String strValue = getIntent().getStringExtra("jsonString");
+
+        String title = getIntent().getStringExtra("title");
+        String type = getIntent().getStringExtra("type");
+
+        selectedTitleTV = (TextView) findViewById(R.id.history_post_item_title);
+        selectedTypeTV = (TextView) findViewById(R.id.history_post_item_type);
+
+        selectedTitleTV.setText(title);
+        selectedTypeTV.setText(type);
 
         JSONArray userArray = null;
 
