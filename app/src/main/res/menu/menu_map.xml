@@ -6,7 +6,7 @@
     <!-- "Locate me", should appear as action button if possible -->
     <item
         android:id="@+id/saveAsHome"
-        android:icon="@drawable/baseline_check_white_18dp"
+        android:icon="@drawable/baseline_done_white_48dp"
         android:title="@string/action_geolocate"
         app:showAsAction="always|withText" />
 </menu>
