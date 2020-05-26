@@ -4,6 +4,7 @@
 //}
 package me.twodee.friendlyneighbor;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,6 +116,8 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsA
             timeTV = (TextView) itemView.findViewById(R.id.choicePage_time);
             this.onChoicePageDetailsClickListener = onChoicePageDetailsClickListener;
 
+
+
             itemView.setOnClickListener(this);
 
         }
@@ -122,7 +125,6 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsA
         @Override
         public void onClick(View v) {
             onChoicePageDetailsClickListener.onChoicePageDetailsClick(getAdapterPosition());
-
         }
     }
 

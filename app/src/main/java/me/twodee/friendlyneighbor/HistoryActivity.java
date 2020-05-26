@@ -6,13 +6,16 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 
     SearchView searchView;
 
+    private Dialog selectedDialog;
+
     SharedPreferences preferences;
+
 
 
     @Override
@@ -257,11 +263,24 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
     public void onChoicePageDetailsClick(int position) {
 
         choicePageDetailsList.get(position);
-        Intent intent = new Intent(this, PostDetailsActivity.class);
-        HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
-        String selectedJsonString = selectedHistoryDetails.getChoicePageJsonResponse();
-        intent.putExtra("jsonString", selectedJsonString);
-        startActivity(intent);
+
+//        Intent intent = new Intent(this, PostDetailsActivity.class);
+//        HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
+//        String selectedJsonString = selectedHistoryDetails.getChoicePageJsonResponse();
+//        intent.putExtra("jsonString", selectedJsonString);
+//        startActivity(intent);
+
+        selectedDialog = new Dialog(this);
+        selectedDialog.setContentView(R.layout.dialog_selected_history);
+        selectedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView dialog_name = (TextView)selectedDialog.findViewById(R.id.dialog_history_name);
+        TextView dialog_info = (TextView)selectedDialog.findViewById(R.id.dialog_history_info);
+
+        dialog_name.setText(choicePageDetailsList.get(position).getChoicePagePerson());
+        dialog_info.setText(choicePageDetailsList.get(position).getChoicePageTitle());
+
+        selectedDialog.show();
 
         Log.w("Clicker Checker", String.valueOf(position));
     }
