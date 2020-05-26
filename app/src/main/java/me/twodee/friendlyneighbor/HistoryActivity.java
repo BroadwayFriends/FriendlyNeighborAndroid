@@ -13,9 +13,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 
     SearchView searchView;
 
-    private Dialog selectedDialog;
+    Dialog selectedDialog;
 
     SharedPreferences preferences;
 
@@ -270,18 +273,40 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 //        intent.putExtra("jsonString", selectedJsonString);
 //        startActivity(intent);
 
+        openDialog(position);
+
+        Log.w("Clicker Checker", String.valueOf(position));
+    }
+
+    void openDialog(int position) {
+
         selectedDialog = new Dialog(this);
         selectedDialog.setContentView(R.layout.dialog_selected_history);
         selectedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+
         TextView dialog_name = (TextView)selectedDialog.findViewById(R.id.dialog_history_name);
         TextView dialog_info = (TextView)selectedDialog.findViewById(R.id.dialog_history_info);
+        Button dialogAcceptButton = (Button) selectedDialog.findViewById(R.id.dialog_history_accept_btn);
+        Button dialogDeclineButton = (Button) selectedDialog.findViewById(R.id.dialog_history_decline_btn);
 
         dialog_name.setText(choicePageDetailsList.get(position).getChoicePagePerson());
         dialog_info.setText(choicePageDetailsList.get(position).getChoicePageTitle());
 
-        selectedDialog.show();
+        dialogAcceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HistoryActivity.this, "Accepted", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        Log.w("Clicker Checker", String.valueOf(position));
+        dialogDeclineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HistoryActivity.this, "Declined", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        selectedDialog.show();
     }
 }
