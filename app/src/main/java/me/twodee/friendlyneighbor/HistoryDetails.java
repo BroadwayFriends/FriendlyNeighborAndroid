@@ -1,11 +1,11 @@
 
 package me.twodee.friendlyneighbor;
 
-public class RespondToRequestDetails {
+public class HistoryDetails {
     private String choicePageTitle, choicePageType, choicePagePerson, choicePageTime, jsonResponse;
     private float choicePagePrice;
 
-    public RespondToRequestDetails(String choicePageTitle, String choicePageType, String choicePagePerson, String choicePageTime, float choicePagePrice, String jsonResponse) {
+    public HistoryDetails(String choicePageTitle, String choicePageType, String choicePagePerson, String choicePageTime, float choicePagePrice, String jsonResponse) {
         this.choicePageTitle = choicePageTitle;
         this.choicePageType = choicePageType;
         this.choicePagePerson = choicePagePerson;

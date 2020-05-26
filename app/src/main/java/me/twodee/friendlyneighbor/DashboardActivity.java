@@ -3,10 +3,8 @@ package me.twodee.friendlyneighbor;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,7 +25,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.card.MaterialCardView;
-import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -104,7 +101,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         RespondToPosts.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, RespondToRequestActivity.class);
+            Intent intent = new Intent(DashboardActivity.this, HistoryActivity.class);
             startActivity(intent);
         });
 

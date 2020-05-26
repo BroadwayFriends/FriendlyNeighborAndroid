@@ -1,6 +1,6 @@
 //package me.twodee.friendlyneighbor;
 //
-//public class RespondToRequestAdapter {
+//public class HistoryDetailsAdapter {
 //}
 package me.twodee.friendlyneighbor;
 
@@ -18,15 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequestAdapter.ChoicePageDetailsViewHolder> implements Filterable {
+public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsAdapter.ChoicePageDetailsViewHolder> implements Filterable {
 
     private Context mCtx;
-    private List<RespondToRequestDetails> choicePageDetailsList;
-    private List<RespondToRequestDetails> choicePageDetailsListFull;
+    private List<HistoryDetails> choicePageDetailsList;
+    private List<HistoryDetails> choicePageDetailsListFull;
 
     private OnChoicePageDetailsClickListener onChoicePageDetailsClickListener;
 
-    public RespondToRequestAdapter(Context mCtx, List<RespondToRequestDetails> choicePageDetailsList, OnChoicePageDetailsClickListener onChoicePageDetailsClickListener) {
+    public HistoryDetailsAdapter(Context mCtx, List<HistoryDetails> choicePageDetailsList, OnChoicePageDetailsClickListener onChoicePageDetailsClickListener) {
         this.mCtx = mCtx;
         this.onChoicePageDetailsClickListener = onChoicePageDetailsClickListener;
         this.choicePageDetailsList = choicePageDetailsList;
@@ -47,7 +47,7 @@ public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequ
     @Override
     public void onBindViewHolder(@NonNull ChoicePageDetailsViewHolder holder, int position) {
 
-        RespondToRequestDetails choicePageDetails = choicePageDetailsList.get(position);
+        HistoryDetails choicePageDetails = choicePageDetailsList.get(position);
         holder.titleTV.setText(choicePageDetails.getChoicePageTitle());
         holder.typeTV.setText(choicePageDetails.getChoicePageType());
         holder.personTV.setText(choicePageDetails.getChoicePagePerson());
@@ -69,14 +69,14 @@ public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequ
     private Filter choicePageFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<RespondToRequestDetails> filteredList = new ArrayList<>();
+            List<HistoryDetails> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(choicePageDetailsListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for(RespondToRequestDetails item : choicePageDetailsListFull) {
+                for(HistoryDetails item : choicePageDetailsListFull) {
                     if (item.getChoicePageTitle().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }

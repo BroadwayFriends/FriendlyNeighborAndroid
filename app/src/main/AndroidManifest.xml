@@ -19,7 +19,6 @@
       
         <activity android:name=".KarmaPointsActivity" />
         <activity android:name=".OnboardingActivity" />
-        <activity android:name=".RespondToRequestActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".PostDetailsActivity" />
         <activity
