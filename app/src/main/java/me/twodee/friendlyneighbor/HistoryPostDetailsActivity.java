@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,15 +14,23 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryPostDetailsActivity<RecyclerViewAdapter> extends AppCompatActivity {
+public class HistoryPostDetailsActivity extends AppCompatActivity {
 
     RecyclerView itemsContainerRV;
     HistoryPostDetailsAdapter itemAdapter;
 
-    List<String> data = new ArrayList();
+
+    SharedPreferences preferences;
+
+    List<HistoryRespondedUserDetails> data;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -34,16 +43,57 @@ public class HistoryPostDetailsActivity<RecyclerViewAdapter> extends AppCompatAc
         itemsContainerRV.setLayoutManager(new LinearLayoutManager(this));
 
 
-        for (int i = 1; i <= 20; i++) {
-            data.add("Item " + i);
+        data =  new ArrayList();
+
+        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+
+        //JSON data from previous activity
+        String strValue = getIntent().getStringExtra("jsonString");
+
+        JSONArray userArray = null;
+
+        String name = null;
+        String profilePicture = null;
+        String contactNumber = null;
+
+        //Parsing JSON Data
+        try {
+
+            userArray = new JSONArray(strValue);
+
+            Log.w("USER ARRAY", userArray.toString());
+
+            for(int i = 0; i < userArray.length(); i++) {
+                // Get current json object
+                JSONObject item = userArray.getJSONObject(i);
+
+                name = item.getString("name");
+                contactNumber = item.getString("contactNumber");
+                profilePicture = item.getString("profilePicture");
+
+                HistoryRespondedUserDetails hruUserDetails = new HistoryRespondedUserDetails(name, contactNumber, profilePicture);
+                data.add(hruUserDetails);
+
+            }
+
+            itemAdapter = new HistoryPostDetailsAdapter(HistoryPostDetailsActivity.this, data);
+            itemsContainerRV.setAdapter(itemAdapter);
+
+        } catch (JSONException | NullPointerException e) {
+            e.printStackTrace();
         }
+
+//        for (int i = 1; i <= 20; i++) {
+//            data.add("Item " + i);
+//        }
+
 
         Log.w("Data Items", data.toString());
 
-        itemsContainerRV = findViewById(R.id.itemsContainerRV);
-        itemAdapter = new HistoryPostDetailsAdapter(HistoryPostDetailsActivity.this, data);
-        itemAdapter.notifyDataSetChanged();
-        itemsContainerRV.setAdapter(itemAdapter);
+//        itemsContainerRV = findViewById(R.id.itemsContainerRV);
+//        itemAdapter = new HistoryPostDetailsAdapter(HistoryPostDetailsActivity.this, data);
+//        itemAdapter.notifyDataSetChanged();
+//        itemsContainerRV.setAdapter(itemAdapter);
 
         SwipeHelper swipeHelper = new SwipeHelper(this) {
             @Override
@@ -56,15 +106,15 @@ public class HistoryPostDetailsActivity<RecyclerViewAdapter> extends AppCompatAc
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                final String item = itemAdapter.getData().get(pos);
-                                itemAdapter.removeItem(pos);
+//                                final String item = itemAdapter.getData().get(pos);
+//                                itemAdapter.removeItem(pos);
 
                                 Snackbar snackbar = Snackbar.make(itemsContainerRV, "Declined", Snackbar.LENGTH_LONG);
                                 snackbar.setAction("UNDO", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        itemAdapter.restoreItem(item, pos);
-                                        itemsContainerRV.scrollToPosition(pos);
+//                                        itemAdapter.restoreItem(item, pos);
+//                                        itemsContainerRV.scrollToPosition(pos);
                                     }
                                 });
 
@@ -100,5 +150,11 @@ public class HistoryPostDetailsActivity<RecyclerViewAdapter> extends AppCompatAc
             }
         };
         swipeHelper.attachToRecyclerView(itemsContainerRV);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
     }
 }

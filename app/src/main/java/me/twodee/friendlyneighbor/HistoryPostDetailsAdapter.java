@@ -4,20 +4,23 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class HistoryPostDetailsAdapter extends RecyclerView.Adapter<HistoryPostDetailsAdapter.ViewHolder>  {
 
     Context context;
-    List<String> data;
+    List<HistoryRespondedUserDetails> data;
 
-    public HistoryPostDetailsAdapter(Context context, List<String> data) {
+    public HistoryPostDetailsAdapter(Context context, List<HistoryRespondedUserDetails> data) {
         this.context = context;
         this.data = data;
     }
@@ -32,14 +35,19 @@ public class HistoryPostDetailsAdapter extends RecyclerView.Adapter<HistoryPostD
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        holder.itemNameTV.setText(data.get(position));
+
+        HistoryRespondedUserDetails historyRespondedUserDetails = data.get(position);
+
+        holder.itemNameTV.setText(historyRespondedUserDetails.getRUName());
         holder.itemNameTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String item = data.get(position);
-                Toast.makeText(context, "You clicked " + item, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Swipe left to accept or decline", Toast.LENGTH_SHORT).show();
             }
         });
+
+        holder.itemContactNumberTV.setText(historyRespondedUserDetails.getRUContactNumber());
+        Picasso.get().load(historyRespondedUserDetails.getRUProfilePicture()).fit().centerInside().into(holder.itemProfilePictureIV);
     }
 
     @Override
@@ -52,12 +60,12 @@ public class HistoryPostDetailsAdapter extends RecyclerView.Adapter<HistoryPostD
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(String item, int position) {
+    public void restoreItem(HistoryRespondedUserDetails item, int position) {
         data.add(position, item);
         notifyItemInserted(position);
     }
 
-    public List<String> getData() {
+    public List<HistoryRespondedUserDetails> getData() {
         return data;
     }
 
@@ -65,11 +73,16 @@ public class HistoryPostDetailsAdapter extends RecyclerView.Adapter<HistoryPostD
 
         View container;
         TextView itemNameTV;
+        TextView itemContactNumberTV;
+        ImageView itemProfilePictureIV;
 
         public ViewHolder(View view) {
             super(view);
             container = view;
             itemNameTV = view.findViewById(R.id.history_post_name);
+            itemContactNumberTV = view.findViewById(R.id.history_post_contact);
+            itemProfilePictureIV = view.findViewById(R.id.history_post_profile_picture);
+
         }
 
     }

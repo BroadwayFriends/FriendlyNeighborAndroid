@@ -1,6 +1,7 @@
 package me.twodee.friendlyneighbor;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -289,14 +290,26 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         choicePageDetailsList.get(position);
 
         Intent intent = new Intent(this, HistoryPostDetailsActivity.class);
-//        HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
-//        String selectedJsonString = selectedHistoryDetails.getChoicePageJsonResponse();
-//        intent.putExtra("jsonString", selectedJsonString);
-        startActivity(intent);
+        HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
+        String selectedJsonString = selectedHistoryDetails.getJsonUsersArray();
+        intent.putExtra("jsonString", selectedJsonString);
+        startActivityForResult(intent, 1);
 
 //        openDialog(position);
 
         Log.w("Clicker Checker", String.valueOf(position));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                choicePageDetailsList.clear();
+                loadChoicePageData();
+            }
+        }
     }
 
     void openDialog(int position) {
