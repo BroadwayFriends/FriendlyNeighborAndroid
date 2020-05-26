@@ -17,11 +17,29 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryDetailsAdapter.OnChoicePageDetailsClickListener {
 
@@ -66,83 +84,83 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                         "10:00 PM",
                         100,""));
 
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Saabun",
-                        "Giveaway",
-                        "Agni",
-                        "09:00 PM",
-                        270,""));
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Saabun",
+//                        "Giveaway",
+//                        "Agni",
+//                        "09:00 PM",
+//                        270,""));
+//
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Kitaab",
+//                        "Giveaway",
+//                        "Dediyaman",
+//                        "07:00 AM",
+//                        100.5f,""));
+//
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Hathoda",
+//                        "Request",
+//                        "Ritwik",
+//                        "5:30 PM",
+//                        87.8f,""));
+//
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Torch",
+//                        "Giveaway",
+//                        "Priyam",
+//                        "10:10 AM",
+//                        700,""));
+//
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Banyaan",
+//                        "Request",
+//                        "Akhil",
+//                        "10:00 PM",
+//                        100,""));
+//
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Mouse",
+//                        "Giveaway",
+//                        "Agni",
+//                        "09:00 PM",
+//                        270,""));
+//
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Eldoper",
+//                        "Giveaway",
+//                        "Dediyaman",
+//                        "07:00 AM",
+//                        100.5f,""));
+//
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Ande",
+//                        "Request",
+//                        "Ritwik",
+//                        "5:30 PM",
+//                        87.8f,""));
+//
+//        choicePageDetailsList.add(
+//                new HistoryDetails(
+//                        "Jumping wire",
+//                        "Giveaway",
+//                        "Priyam",
+//                        "10:10 AM",
+//                        700,""));
+//
+//        choicePageDetailsAdapter = new HistoryDetailsAdapter(this, choicePageDetailsList, this);
+//        recyclerView.setAdapter(choicePageDetailsAdapter);
 
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Kitaab",
-                        "Giveaway",
-                        "Dediyaman",
-                        "07:00 AM",
-                        100.5f,""));
 
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Hathoda",
-                        "Request",
-                        "Ritwik",
-                        "5:30 PM",
-                        87.8f,""));
-
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Torch",
-                        "Giveaway",
-                        "Priyam",
-                        "10:10 AM",
-                        700,""));
-
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Banyaan",
-                        "Request",
-                        "Akhil",
-                        "10:00 PM",
-                        100,""));
-
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Mouse",
-                        "Giveaway",
-                        "Agni",
-                        "09:00 PM",
-                        270,""));
-
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Eldoper",
-                        "Giveaway",
-                        "Dediyaman",
-                        "07:00 AM",
-                        100.5f,""));
-
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Ande",
-                        "Request",
-                        "Ritwik",
-                        "5:30 PM",
-                        87.8f,""));
-
-        choicePageDetailsList.add(
-                new HistoryDetails(
-                        "Jumping wire",
-                        "Giveaway",
-                        "Priyam",
-                        "10:10 AM",
-                        700,""));
-
-        choicePageDetailsAdapter = new HistoryDetailsAdapter(this, choicePageDetailsList, this);
-        recyclerView.setAdapter(choicePageDetailsAdapter);
-
-
-//        loadChoicePageData();
+        loadChoicePageData();
 
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -161,119 +179,120 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         });
     }
 
-//    private void loadChoicePageData() {
-//
-//        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.choicePage_progress_bar);
-//        final RelativeLayout choicePageLoadingLayout = (RelativeLayout) findViewById(R.id.choicePage_loading_layout);
-//        choicePageLoadingLayout.setVisibility(View.VISIBLE);
-//        ThreeBounce threeBounce = new ThreeBounce();
-//        progressBar.setIndeterminateDrawable(threeBounce);
-//        progressBar.setVisibility(View.VISIBLE);
-//
-//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//        final String id = preferences.getString("_id", null);
-//        String userId = preferences.getString("uid", null);
-//
-//
+    private void loadChoicePageData() {
+
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.choicePage_progress_bar);
+        final RelativeLayout choicePageLoadingLayout = (RelativeLayout) findViewById(R.id.choicePage_loading_layout);
+        choicePageLoadingLayout.setVisibility(View.VISIBLE);
+        ThreeBounce threeBounce = new ThreeBounce();
+        progressBar.setIndeterminateDrawable(threeBounce);
+        progressBar.setVisibility(View.VISIBLE);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        final String id = preferences.getString("_id", null);
+        String userId = preferences.getString("uid", null);
+
+
 //        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
-//
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-//                Request.Method.GET,
-//                url,
-//                null,
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray choicePage) {
-//                        Log.w("choicePage Response", choicePage.toString());
-//
-//                        progressBar.setVisibility(View.GONE);
-//                        choicePageLoadingLayout.setVisibility(View.GONE);
-//
-//                        // Do something with choicePage
-//                        // Process the JSON
-//                        try{
-//                            // Loop through the array elements
-//                            JSONArray allItems = choicePage;
-//                            for(int i=0; i<allItems.length(); i++){
-//
-//                                // Get current json object
-//                                JSONObject item = choicePage.getJSONObject(i);
-//                                String jsonObjectString = item.toString();
-//
-//                                JSONObject requestDets = item.getJSONObject("request");
-//
-//                                Log.w("REQDETS", requestDets.toString());
-//
-//                                // Get the current student (json object) data
-//                                String title = requestDets.getString("title");
-//                                String person = requestDets.getJSONObject("requestedBy").getString("name");
-//                                String createdAt = requestDets.getString("createdAt");
-//                                float cost = (float) requestDets.getInt("cost");
-//                                String type = (cost != 0.0f) ? "Request" : "Giveaway";
-//                                float distance = (float) item.getInt("distance");
-//
+        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray choicePage) {
+                        Log.w("choicePage Response", choicePage.toString());
+
+                        progressBar.setVisibility(View.GONE);
+                        choicePageLoadingLayout.setVisibility(View.GONE);
+
+                        // Do something with choicePage
+                        // Process the JSON
+                        try{
+                            // Loop through the array elements
+                            JSONArray allItems = choicePage;
+                            for(int i=0; i<allItems.length(); i++){
+
+                                // Get current json object
+                                JSONObject item = choicePage.getJSONObject(i);
+                                String jsonObjectString = item.toString();
+
+                                JSONObject requestDets = item.getJSONObject("request");
+
+                                Log.w("REQDETS", requestDets.toString());
+
+                                // Get the current student (json object) data
+                                String title = requestDets.getString("title");
+                                String person = requestDets.getJSONObject("requestedBy").getString("name");
+                                String createdAt = requestDets.getString("createdAt");
+                                float cost = (float) requestDets.getInt("cost");
+                                String type = (cost != 0.0f) ? "Request" : "Giveaway";
+                                float distance = (float) item.getInt("distance");
+
 //                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 //                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
 //                                Date date = dateFormat.parse(createdAt);
 //                                String time = timeExtract.format(date.getTime());
-//
-//                                Log.w("ITEMS: ", title);
-//                                Log.w("ITEMS: ", person);
-//                                Log.w("ITEMS: ", createdAt);
-//                                Log.w("ITEMS: ", String.valueOf(cost));
-//                                Log.w("ITEMS: ", type);
+
+                                Log.w("ITEMS: ", title);
+                                Log.w("ITEMS: ", person);
+                                Log.w("ITEMS: ", createdAt);
+                                Log.w("ITEMS: ", String.valueOf(cost));
+                                Log.w("ITEMS: ", type);
 //                                Log.w("ITEMS: ", time);
-//                                Log.w("ITEMS: ", String.valueOf(distance));
-//
-//
+                                Log.w("ITEMS: ", String.valueOf(distance));
+
+
 //                                HistoryDetails choicePageDetails = new HistoryDetails(title, type, person, time, distance, jsonObjectString);
 //                                choicePageDetailsList.add(choicePageDetails);
-//                            }
-//
-//                            choicePageDetailsAdapter = new HistoryDetailsAdapter(HistoryActivity.this, choicePageDetailsList, HistoryActivity.this);
-//                            recyclerView.setAdapter(choicePageDetailsAdapter);
-//
-//                        }catch (JSONException | ParseException e){
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener(){
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error){
-//
-////                        progressBar.setVisibility(View.GONE);
-//                        choicePageLoadingLayout.setVisibility(View.GONE);
-//
-//                        Log.w("ServerError", error);
-//                        Toast.makeText(HistoryActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-//                    }
-//                }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("_id", id);
-//
-//                return params;
-//            }
-//        };
-//        requestQueue.add(jsonArrayRequest);
-//        Log.w("_id", id);
-//    }
+                            }
+
+                            choicePageDetailsAdapter = new HistoryDetailsAdapter(HistoryActivity.this, choicePageDetailsList, HistoryActivity.this);
+                            recyclerView.setAdapter(choicePageDetailsAdapter);
+
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+
+//                        progressBar.setVisibility(View.GONE);
+                        choicePageLoadingLayout.setVisibility(View.GONE);
+
+                        Log.w("ServerError", error);
+                        Toast.makeText(HistoryActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("_id", id);
+
+                return params;
+            }
+        };
+        requestQueue.add(jsonArrayRequest);
+        Log.w("_id", id);
+    }
 
     @Override
     public void onChoicePageDetailsClick(int position) {
 
         choicePageDetailsList.get(position);
 
-//        Intent intent = new Intent(this, PostDetailsActivity.class);
+        Intent intent = new Intent(this, HistoryPostDetailsActivity.class);
 //        HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
 //        String selectedJsonString = selectedHistoryDetails.getChoicePageJsonResponse();
 //        intent.putExtra("jsonString", selectedJsonString);
-//        startActivity(intent);
+        startActivity(intent);
 
-        openDialog(position);
+//        openDialog(position);
 
         Log.w("Clicker Checker", String.valueOf(position));
     }

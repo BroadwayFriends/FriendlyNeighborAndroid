@@ -25,8 +25,9 @@ public class HistoryPostDetailsAdapter extends RecyclerView.Adapter<HistoryPostD
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.activity_history, parent, false);
-        return new ViewHolder(v);
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view = layoutInflater.inflate(R.layout.history_post_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override

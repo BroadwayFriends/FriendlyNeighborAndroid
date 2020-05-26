@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
-    android:background="#FFFFFF">
+    android:orientation="vertical"
+    tools:context=".HistoryPostDetailsActivity">
 
-    <TextView
-        android:id="@+id/itemNameTV"
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:padding="10dp"
-        android:text="Item"/>
+        android:layout_margin="2dp"
+        app:cardCornerRadius="8dp">
 
-</LinearLayout >
+        <TextView
+            android:id="@+id/itemNameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:padding="10dp"
+            android:text="Item"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
