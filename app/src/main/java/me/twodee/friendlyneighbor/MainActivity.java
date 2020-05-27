@@ -1,45 +1,43 @@
 package me.twodee.friendlyneighbor;
 
-import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationListener;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.kusu.loadingbutton.LoadingButton;
-
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     //Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, historyButton, postReqButton;
 //    LoadingButton loadingButton;
 
-    private static int SPLASH_SCREEN = 5000;
+    private static final int SPLASH_SCREEN = 5000;
 
     Animation bottomAnim;
     ImageView image;
     TextView logo, slogan;
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private MFPPush push; // Push client
+    private MFPPushNotificationListener notificationListener; // Notification listener to handle a push sent to the phone
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_splash);
 
@@ -61,6 +59,25 @@ public class MainActivity extends AppCompatActivity
             }
         }, SPLASH_SCREEN);
 
+        createNotificationChannel();
+    }
+
+    private void createNotificationChannel() {
+        String channelId = getString(R.string.notification_channel_id);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                                                                  "Channel human readable title",
+                                                                  NotificationManager.IMPORTANCE_HIGH);
+            channel.enableVibration(true);
+            channel.enableLights(true);
+            channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 //        discover = findViewById(R.id.discover);
 //        discover.setOnClickListener(new View.OnClickListener()
 //        {
@@ -193,5 +210,21 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (push != null) {
+            push.listen(notificationListener);
+        }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (push != null) {
+            push.hold();
+        }
+    }
+
 }

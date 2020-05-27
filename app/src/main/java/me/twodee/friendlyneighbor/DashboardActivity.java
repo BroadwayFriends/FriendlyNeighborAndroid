@@ -6,27 +6,26 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
+import com.squareup.picasso.Picasso;
+import me.twodee.friendlyneighbor.service.VolleyUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,18 +39,19 @@ public class DashboardActivity extends AppCompatActivity {
     TextView nameTV, emailTV;
     LinearLayout editProfileButton;
 
-    MaterialCardView RequestPage,DiscoverPage,KarmaPage, RespondToPosts;
+    MaterialCardView RequestPage, DiscoverPage, KarmaPage, RespondToPosts;
     CardView myProfile;
     String personName, personEmail;
     ImageView displayImage;
 
     SharedPreferences preferences;
+    private static final String TAG = DashboardActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_dashboard);
         sign_out = findViewById(R.id.sign_out_button);
@@ -69,6 +69,8 @@ public class DashboardActivity extends AppCompatActivity {
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
         fetchData();
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(this::updateNotificationToken);
+
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(getBaseContext(), EditProfileActivity.class);
             intent.putExtra("visitReason", "edit");
@@ -82,7 +84,6 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
 
         });
-
 
 
         KarmaPage.setOnClickListener(v -> {
@@ -133,22 +134,55 @@ public class DashboardActivity extends AppCompatActivity {
 //        }
 
 
-
         sign_out.setOnClickListener(view -> signOut());
+    }
+
+    private void updateNotificationToken(Task<InstanceIdResult> task) {
+        if (!task.isSuccessful()) {
+            Log.w(TAG, "getInstanceId failed", task.getException());
+            return;
+        }
+
+        String token = task.getResult().getToken();
+
+        String userId = preferences.getString("_id", null);
+
+        if (preferences.getBoolean(getString(R.string.sp_fcm_token_updated), false)) {
+            Map<Object, Object> data = new HashMap<>();
+            data.put("userId", userId);
+            data.put("token", token);
+            VolleyUtils.post(getApplicationContext(), getString(R.string.base_url) + "/api/notifications/register",
+                             data,
+                             DashboardActivity::listenToResponse,
+                             DashboardActivity::listenToError
+            );
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(getString(R.string.sp_fcm_token_updated), false);
+            editor.commit();
+        }
+    }
+
+    private static void listenToError(VolleyError volleyError) {
+        Log.i(TAG, volleyError.toString());
+
+    }
+
+    private static void listenToResponse(JSONObject jsonObject) {
+        Log.d(TAG, "Successful POST!");
+        Log.i(TAG, jsonObject.toString());
     }
 
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, task -> {
-                    Toast.makeText(DashboardActivity.this,"Successfully Signed Out !!!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DashboardActivity.this, "Successfully Signed Out !!!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(DashboardActivity.this, MainActivity.class));
                     finish();
                 });
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
 //        startActivity(new Intent(DashboardActivity.this, MainActivity.class));
         moveTaskToBack(true);
@@ -169,20 +203,24 @@ public class DashboardActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String baseUrl = getResources().getString(R.string.base_url)+ "/api/users/" + userId;
+        String baseUrl = getResources().getString(R.string.base_url) + "/api/users/" + userId;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, object,
-                response -> {
-                    Log.w("ServerResponse", response.toString());
+                                                                    response -> {
+                                                                        Log.w("ServerResponse", response.toString());
 
-                    try {
-                        JSONObject respObj = new JSONObject(response.getString("user"));
+                                                                        try {
+                                                                            JSONObject respObj = new JSONObject(
+                                                                                    response.getString("user"));
 
 
 //                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
-                        nameTV.setText(respObj.getString("name"));
+                                                                            nameTV.setText(respObj.getString("name"));
 //                        emailTV.setText(respObj.getString("email"));
-                        String profilePictureUrl = respObj.getString("profilePicture");
-                        Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
+                                                                            String profilePictureUrl = respObj.getString(
+                                                                                    "profilePicture");
+                                                                            Picasso.get().load(
+                                                                                    profilePictureUrl).fit().centerInside().into(
+                                                                                    displayImage);
 
 //                            editTextUsername.setText(response.getString("name"));
 //                            editTextEmail.setText(response.getString("email"));
@@ -190,16 +228,18 @@ public class DashboardActivity extends AppCompatActivity {
 //                            editTextLocation.setText(response.getString("changedLocation"));
 //                            editTextRadius.setText(response.getString("changedRadius"));
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                                                                        } catch (JSONException e) {
+                                                                            e.printStackTrace();
+                                                                        }
 
 
-                }, error -> {
-                    Log.w("ServerError", error);
+                                                                    }, error -> {
+            Log.w("ServerError", error);
 
-                }){
-            /** Passing some request headers* */
+        }) {
+            /**
+             * Passing some request headers*
+             */
             @Override
             public Map getHeaders() throws AuthFailureError {
                 HashMap headers = new HashMap();
