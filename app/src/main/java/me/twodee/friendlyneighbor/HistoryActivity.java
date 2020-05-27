@@ -31,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -295,13 +296,16 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
 
         if(selectedHistoryDetails.getChoicePageCompleted()) {
-            Toast.makeText(HistoryActivity.this, "Status: Completed with " + selectedHistoryDetails.getChoicePageAcceptedUser(), Toast.LENGTH_LONG).show();
+            Snackbar snackbar = Snackbar.make(recyclerView, "Already Accepted", Snackbar.LENGTH_LONG);
+            snackbar.show();
         } else {
             Intent intent = new Intent(this, HistoryPostDetailsActivity.class);
             String selectedJsonString = selectedHistoryDetails.getJsonUsersArray();
             intent.putExtra("jsonString", selectedJsonString);
             intent.putExtra("title", selectedHistoryDetails.getChoicePageTitle());
             intent.putExtra("type", selectedHistoryDetails.getChoicePageType());
+            intent.putExtra("completed", selectedHistoryDetails.getChoicePageCompleted());
+
             startActivityForResult(intent, 1);
         }
 

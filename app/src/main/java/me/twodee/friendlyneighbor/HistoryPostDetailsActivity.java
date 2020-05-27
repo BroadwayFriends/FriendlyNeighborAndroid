@@ -53,6 +53,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 
         String title = getIntent().getStringExtra("title");
         String type = getIntent().getStringExtra("type");
+        boolean accepted = getIntent().getBooleanExtra("completed", false);
 
         selectedTitleTV = (TextView) findViewById(R.id.history_post_item_title);
         selectedTypeTV = (TextView) findViewById(R.id.history_post_item_type);
@@ -65,6 +66,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
         String name = null;
         String profilePicture = null;
         String contactNumber = null;
+
 
         //Parsing JSON Data
         try {
@@ -81,7 +83,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
                 contactNumber = item.getString("contactNumber");
                 profilePicture = item.getString("profilePicture");
 
-                HistoryRespondedUserDetails hruUserDetails = new HistoryRespondedUserDetails(name, contactNumber, profilePicture);
+                HistoryRespondedUserDetails hruUserDetails = new HistoryRespondedUserDetails(name, contactNumber, profilePicture,accepted);
                 data.add(hruUserDetails);
 
             }
@@ -105,46 +107,48 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 //        itemAdapter.notifyDataSetChanged();
 //        itemsContainerRV.setAdapter(itemAdapter);
 
-        SwipeHelper swipeHelper = new SwipeHelper(this) {
-            @Override
-            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
 
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Decline",
-                        0,
-                        Color.parseColor("#f44336"),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(final int pos) {
+            SwipeHelper swipeHelper = new SwipeHelper(this) {
+                @Override
+                public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+
+                    underlayButtons.add(new SwipeHelper.UnderlayButton(
+                            "Decline",
+                            0,
+                            Color.parseColor("#f44336"),
+                            new SwipeHelper.UnderlayButtonClickListener() {
+                                @Override
+                                public void onClick(final int pos) {
 //                                final String item = itemAdapter.getData().get(pos);
 //                                itemAdapter.removeItem(pos);
 
-                                Snackbar snackbar = Snackbar.make(itemsContainerRV, "Declined", Snackbar.LENGTH_LONG);
-                                snackbar.setAction("UNDO", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
+                                    Snackbar snackbar = Snackbar.make(itemsContainerRV, "Declined", Snackbar.LENGTH_LONG);
+                                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
 //                                        itemAdapter.restoreItem(item, pos);
 //                                        itemsContainerRV.scrollToPosition(pos);
-                                    }
-                                });
+                                        }
+                                    });
 
-                                snackbar.setActionTextColor(Color.YELLOW);
-                                snackbar.show();
+                                    snackbar.setActionTextColor(Color.YELLOW);
+                                    snackbar.show();
+                                }
                             }
-                        }
-                ));
+                    ));
 
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Accept",
-                        0,
-                        Color.parseColor("#4CAF50"),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                Toast.makeText(getApplicationContext(), "Item accpeted " + pos, Toast.LENGTH_LONG).show();
+                    underlayButtons.add(new SwipeHelper.UnderlayButton(
+                            "Accept",
+                            0,
+                            Color.parseColor("#4CAF50"),
+                            new SwipeHelper.UnderlayButtonClickListener() {
+                                @Override
+                                public void onClick(int pos) {
+                                    Toast.makeText(getApplicationContext(), "Item accpeted " + pos, Toast.LENGTH_LONG).show();
+
+                                }
                             }
-                        }
-                ));
+                    ));
 
 //                underlayButtons.add(new SwipeHelper.UnderlayButton(
 //                        "Share",
@@ -157,10 +161,11 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 //                            }
 //                        }
 //                ));
-            }
-        };
-        swipeHelper.attachToRecyclerView(itemsContainerRV);
-    }
+                }
+            };
+            swipeHelper.attachToRecyclerView(itemsContainerRV);
+        }
+
 
     @Override
     public void onBackPressed() {
