@@ -228,7 +228,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 
 
 //        String url = getResources().getString(R.string.base_url) + "/api/requests/" + requestId + "/respond/" + id;
-        String url = getResources().getString(R.string.base_url) + requestId + "/respond/" + userId;
+        String url = getResources().getString(R.string.base_url) + "/api/requests/" + requestId + "/respond/" + userId;
 
         Log.w("REQUEST ID", requestId);
         Log.w("_ID", userId);

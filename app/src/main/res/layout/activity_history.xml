@@ -27,7 +27,9 @@
         android:layout_gravity="center"
         android:layout_marginLeft="0dp"
         android:background="@drawable/bg_view1"
-        android:layout_height="6dp"></View>
+        android:layout_height="6dp">
+
+    </View>
     <!-- New Requests Title -->
     <LinearLayout
         android:layout_width="match_parent"
