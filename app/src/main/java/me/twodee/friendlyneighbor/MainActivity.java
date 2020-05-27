@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
                                                                   "Channel human readable title",
-                                                                  NotificationManager.IMPORTANCE_MAX);
+                                                                  NotificationManager.IMPORTANCE_HIGH);
             channel.enableVibration(true);
             channel.enableLights(true);
             channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
