@@ -27,7 +27,8 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import me.twodee.friendlyneighbor.MainActivity;
+import me.twodee.friendlyneighbor.DiscoverActivity;
+import me.twodee.friendlyneighbor.HistoryActivity;
 import me.twodee.friendlyneighbor.R;
 
 /**
@@ -90,7 +91,14 @@ public class NotificationService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
-        sendNotification(remoteMessage.getNotification().getBody());
+        Intent intent;
+        if (remoteMessage.getData().get("type").equals("response")) {
+            intent = new Intent(this, HistoryActivity.class);
+        }
+        else {
+            intent = new Intent(this, DiscoverActivity.class);
+        }
+        sendNotification(remoteMessage.getNotification().getBody(), intent);
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -141,8 +149,7 @@ public class NotificationService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void sendNotification(String messageBody, Intent intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                                                                 PendingIntent.FLAG_ONE_SHOT);
