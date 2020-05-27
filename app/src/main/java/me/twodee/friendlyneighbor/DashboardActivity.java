@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
 import com.squareup.picasso.Picasso;
 import me.twodee.friendlyneighbor.service.VolleyUtils;
 import org.json.JSONException;
@@ -101,7 +102,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         RespondToPosts.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, RespondToRequestActivity.class);
+            Intent intent = new Intent(DashboardActivity.this, HistoryActivity.class);
             startActivity(intent);
         });
 

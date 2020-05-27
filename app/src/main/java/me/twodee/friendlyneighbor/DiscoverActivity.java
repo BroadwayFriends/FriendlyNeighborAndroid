@@ -216,7 +216,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         String userId = preferences.getString("uid", null);
 
 
-        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
+        String url = getResources().getString(R.string.base_url) + "/api/requests/" + id;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
