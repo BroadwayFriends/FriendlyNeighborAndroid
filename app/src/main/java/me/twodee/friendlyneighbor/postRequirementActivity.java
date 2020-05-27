@@ -122,7 +122,7 @@ public class postRequirementActivity extends AppCompatActivity {
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-        awesomeValidation.addValidation(this, R.id.editTextTitle, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.errorInTitle);
+//        awesomeValidation.addValidation(this, R.id.editTextTitle, "(\\b[^\\s]+\\b){1,250}   ", R.string.errorInTitle);
         awesomeValidation.addValidation(this, R.id.editTextDescription, "^(?!\\s*$).+", R.string.errorInDescription);
         awesomeValidation.addValidation(this, R.id.editTextPhone, "^[0-9]{10}$", R.string.errorInPhone);
 //        awesomeValidation.addValidation(this, R.id.editTextDistance, Range.closed(1, 20), R.string.errorInDistance);
@@ -322,6 +322,14 @@ public class postRequirementActivity extends AppCompatActivity {
                         JSONObject respObj = new JSONObject(response.getString("user"));
                         editTextPhone.setText(respObj.getString("contactNumber"));
                         editTextDistance.setText(respObj.getString("defaultSearchRadius"));
+                        String defaultLocation =  respObj.getString("defaultLocation");
+                        radius = respObj.getString("defaultSearchRadius");
+                        JSONObject locObj = new JSONObject(defaultLocation);
+
+                        double latitude = Double.parseDouble(locObj.getString("latitude"));
+                        double longitude = Double.parseDouble(locObj.getString("longitude"));
+                        finalPosition = new LatLng(latitude,longitude);
+                        Log.v(TAG, finalPosition.toString() );
 
 
 
@@ -485,11 +493,15 @@ public class postRequirementActivity extends AppCompatActivity {
             i.putExtra("description",description);
             i.putExtra("phoneNumber",phoneNumber);
             i.putExtra("expirationDate",expirationDate);
-            i.putExtra("requestType",expirationDate);
+            i.putExtra("requestType",requestType);
             i.putExtra("radius",radius);
             i.putExtra("lat",String.valueOf( finalPosition.latitude));
             i.putExtra("lng",String.valueOf( finalPosition.longitude));
-            i.putExtra("priceQuote",priceQuote.substring(1));
+            try{
+                i.putExtra("priceQuote",priceQuote.substring(1));}
+            catch (Exception e){
+                i.putExtra("priceQuote","0");
+            }
              if (IMAGE_FLAG){
 //                 String[] imageStringPaths = Arrays.copyOf(new ArrayList[]{imageUriArray}, imageUriArray.size(), String[].class);
                  i.putExtra("imageUriArray",imageUriArray);

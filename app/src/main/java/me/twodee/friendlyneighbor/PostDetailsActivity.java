@@ -266,7 +266,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         value = new JSONObject(strValue);
         value2 = value.getJSONObject("request");
 
-        requestId = value2.getString("reqUID");
+        requestId = value2.getString("_id");
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         final String id = preferences.getString("_id", null);
@@ -274,6 +274,7 @@ public class PostDetailsActivity extends AppCompatActivity {
 
 
         String url = getResources().getString(R.string.base_url) + "/api/requests/" + requestId + "/respond/" + id;
+//        String url = "https://988d618d.ngrok.io" + "/api/requests/" + requestId + "/respond/" + id;
 
         Log.w("REQUEST ID", requestId);
         Log.w("_ID", id);

@@ -16,10 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-      
+        <activity android:name=".HistoryPostDetailsActivity"></activity>
         <activity android:name=".KarmaPointsActivity" />
         <activity android:name=".OnboardingActivity" />
-        <activity android:name=".RespondToRequestActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".PostDetailsActivity" />
         <activity
@@ -43,7 +42,8 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".SendLocationActivity" />
         <activity android:name=".App" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
