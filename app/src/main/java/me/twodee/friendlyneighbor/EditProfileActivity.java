@@ -75,7 +75,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private LatLng finalPosition;
     private List<Address> addresses;
     private String changedEmail, changedPhone, changedLocation, changedUsername, changedRadius;
-    private  String baseUrl ;
+    private  String baseUrl,visitReason ;
     private Uri mCropImageUri;
 
     String locatedAddressLine1, locatedCity, locatedState, locatedCountry, locatedPostalCode;
@@ -87,7 +87,12 @@ public class EditProfileActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_edit_profile);
-        String visitReason = getIntent().getStringExtra("visitReason");
+        if (getIntent().hasExtra("visitReason")) {
+            visitReason = getIntent().getStringExtra("visitReason");
+        } else {
+            visitReason = "view";
+        }
+
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         baseUrl = getResources().getString(R.string.base_url) ;
         displayImage = findViewById(R.id.displayImage);
@@ -245,6 +250,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+    private void refreshActivity() {
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(new Intent(EditProfileActivity.this, EditProfileActivity.class));
+        overridePendingTransition(0, 0);
+
+    }
 
     private void startCropImageActivity(Uri imageUri) {
 
@@ -531,10 +543,8 @@ public class EditProfileActivity extends AppCompatActivity {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, baseUrl, object,
                     response -> {
                         Log.w(TAG, response.toString());
+                        refreshActivity();
 
-                        if(response.has("uid")) {
-                            startActivity(new Intent(EditProfileActivity.this, DashboardActivity.class));
-                        }
                     }, error -> {
                 Log.w("ServerError", error);
             }){
@@ -551,7 +561,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         }
 
-        startActivity(new Intent(EditProfileActivity.this, DashboardActivity.class));
+        refreshActivity();
 
     }
 

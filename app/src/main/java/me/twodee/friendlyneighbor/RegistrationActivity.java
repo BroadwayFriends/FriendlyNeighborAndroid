@@ -163,10 +163,8 @@ public class RegistrationActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 response -> {
                     Log.w("ServerResponse", response.toString());
+                    startActivity(new Intent(RegistrationActivity.this, OnboardingActivity.class));
 
-                    if(response.has("uid")) {
-                        startActivity(new Intent(RegistrationActivity.this, OnboardingActivity.class));
-                    }
                 }, error -> {
                     Log.w("ServerError", error);
                     ;
