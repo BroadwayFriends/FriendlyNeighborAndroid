@@ -66,6 +66,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
         String name = null;
         String profilePicture = null;
         String contactNumber = null;
+        String id = null;
 
 
         //Parsing JSON Data
@@ -82,8 +83,9 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
                 name = item.getString("name");
                 contactNumber = item.getString("contactNumber");
                 profilePicture = item.getString("profilePicture");
+                id = item.getString("_id");
 
-                HistoryRespondedUserDetails hruUserDetails = new HistoryRespondedUserDetails(name, contactNumber, profilePicture,accepted);
+                HistoryRespondedUserDetails hruUserDetails = new HistoryRespondedUserDetails(name, contactNumber, profilePicture, id, accepted);
                 data.add(hruUserDetails);
 
             }
@@ -122,7 +124,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 //                                final String item = itemAdapter.getData().get(pos);
 //                                itemAdapter.removeItem(pos);
 
-                                    Snackbar snackbar = Snackbar.make(itemsContainerRV, "Declined", Snackbar.LENGTH_LONG);
+                                    Snackbar snackbar = Snackbar.make(itemsContainerRV, "Declined " + data.get(pos).getRU_id(), Snackbar.LENGTH_LONG);
                                     snackbar.setAction("UNDO", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
@@ -144,7 +146,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
                             new SwipeHelper.UnderlayButtonClickListener() {
                                 @Override
                                 public void onClick(int pos) {
-                                    Toast.makeText(getApplicationContext(), "Item accpeted " + pos, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Item accpeted " +  data.get(pos).getRU_id(), Toast.LENGTH_LONG).show();
 
                                 }
                             }
