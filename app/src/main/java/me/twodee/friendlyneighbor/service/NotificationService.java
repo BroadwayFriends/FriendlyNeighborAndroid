@@ -31,6 +31,8 @@ import me.twodee.friendlyneighbor.DiscoverActivity;
 import me.twodee.friendlyneighbor.HistoryActivity;
 import me.twodee.friendlyneighbor.R;
 
+import java.util.Map;
+
 /**
  * NOTE: There can only be one service in each app that receives FCM messages. If multiple
  * are declared in the Manifest then the first one will be chosen.
@@ -73,6 +75,7 @@ public class NotificationService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
+
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
@@ -92,13 +95,14 @@ public class NotificationService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
         Intent intent;
+        Log.i(TAG, "HERE TYPE:" + remoteMessage.getData().toString());
         if (remoteMessage.getData().get("type").equals("response")) {
             intent = new Intent(this, HistoryActivity.class);
         }
         else {
             intent = new Intent(this, DiscoverActivity.class);
         }
-        sendNotification(remoteMessage.getNotification().getBody(), intent);
+        sendNotification(remoteMessage.getData(), intent);
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -146,10 +150,8 @@ public class NotificationService extends FirebaseMessagingService {
 
     /**
      * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody, Intent intent) {
+    private void sendNotification(Map<String, String> data, Intent intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                                                                 PendingIntent.FLAG_ONE_SHOT);
@@ -159,8 +161,9 @@ public class NotificationService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.gift)
-                        .setContentTitle("FriendlyNeighbor")
-                        .setContentText(messageBody)
+                        .setContentTitle(data.get("title"))
+                        .setContentText(data.get("content"))
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setAutoCancel(true)
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
                         .setSound(defaultSoundUri)
