@@ -118,7 +118,11 @@ public class SignInActivity extends AppCompatActivity {
 
                         try {
 
+
+                            editor.putString("uid", response.getJSONObject("user").getString("_id"));
+
 //                            editor.putString("uid", response.getJSONObject("user").getString("uid"));
+
                             editor.putString("_id", response.getJSONObject("user").getString("_id"));
                             editor.putString("email", response.getJSONObject("user").getString("email"));
                             editor.putString("name", response.getJSONObject("user").getString("name"));

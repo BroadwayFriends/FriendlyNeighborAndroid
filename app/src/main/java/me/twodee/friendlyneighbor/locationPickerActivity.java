@@ -101,9 +101,9 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         seekbar =(SeekBar)findViewById(R.id.seekBar1);
         textViewSeekBar = findViewById(R.id.textViewSeekBar);
-        Toast toast= Toast.makeText(locationPickerActivity.this,"You can change your search distance by seeking",Toast.LENGTH_SHORT) ;
-        toast.setGravity(Gravity.BOTTOM|Gravity.LEFT, 0, 100);
-        toast.show();
+//        Toast toast= Toast.makeText(locationPickerActivity.this,"You can change your search distance by seeking",Toast.LENGTH_SHORT) ;
+//        toast.setGravity(Gravity.BOTTOM|Gravity.LEFT, 0, 100);
+//        toast.show();
 
 
 

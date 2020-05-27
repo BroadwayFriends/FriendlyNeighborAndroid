@@ -3,18 +3,26 @@ package me.twodee.friendlyneighbor
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings.Global.getString
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
+import com.android.volley.AuthFailureError
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import net.gotev.uploadservice.data.UploadInfo
 import net.gotev.uploadservice.exceptions.UploadError
 import net.gotev.uploadservice.exceptions.UserCancelledUploadException
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
+import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.HashMap
@@ -28,8 +36,8 @@ class imageUploadActivity : AppCompatActivity() {
         // Choose the number which is good for you, here I'll use a random one.
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
-//        const val baseUrl = "https://fn.twodee.me/api/requests"
         const val baseUrl = "https://fn.twodee.me/api/requests"
+//        const val baseUrl = "https://988d618d.ngrok.io/api/requests"
         var image1: Uri = Uri.EMPTY
         var image2: Uri = Uri.EMPTY
         var image3: Uri = Uri.EMPTY
@@ -68,12 +76,57 @@ class imageUploadActivity : AppCompatActivity() {
                 upload(context = this, lifecycleOwner = this,reqTitle = reqTitle,description = description,phoneNumber = phoneNumber,radius = radius,lat=lat,lng=lng,expirationDate = expirationDate,priceQuote= priceQuote,imageUriArray = imageUriArray ,requestType =requestType )
                 Log.v(TAG, "title:${reqTitle},description:${description},finalPosition:${(lat)}")
             }
+            else {uploadWithoutImages(reqTitle = reqTitle,description = description,phoneNumber = phoneNumber,radius = radius,lat=lat,lng=lng,expirationDate = expirationDate,priceQuote= priceQuote,requestType =requestType)}
 
         }
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
 
     }
+
+private fun uploadWithoutImages(reqTitle: String, description :String , phoneNumber:String,radius:String,lat:String,lng:String,expirationDate:String,requestType:String, priceQuote:String){
+    val data = HashMap<String, String>()
+    val id = preferences?.getString("_id", null)
+    val uid = id
+    data["title"] = reqTitle
+    data["description"] = description
+    data["contactNumber"] = phoneNumber
+    data["searchRadius"] = radius
+    data["location"] = "{\"latitude\":$lat,\"longitude\":$lng}"
+    data["expiration"] = expirationDate
+    data["cost"] = priceQuote
+    data["requestType"] = requestType
+    data["image1"] = ""
+    data["requestedBy"] = id.toString()
+
+
+
+    val newRequestQueue = Volley.newRequestQueue(applicationContext)
+    Log.v(TAG, "Works")
+    val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, baseUrl, JSONObject(data as Map<*, *>),
+            Response.Listener { response: JSONObject ->
+                Log.v(TAG, response.toString())
+                startActivity(Intent(this@imageUploadActivity, DashboardActivity::class.java))
+
+            }, Response.ErrorListener { error: VolleyError? -> Log.w(TAG, error.toString()) }) {
+
+        @Throws(AuthFailureError::class)
+        override fun getHeaders(): HashMap<String, String>? {
+            val headers:  HashMap<String, String> =  HashMap()
+            headers["_id"] = id.toString()
+            return headers
+        }
+    }
+
+    newRequestQueue.add(jsonObjectRequest)
+
+
+
+
+
+}
+
+
 
 
 
@@ -200,8 +253,9 @@ class imageUploadActivity : AppCompatActivity() {
 
 
     }
-
-
 }
+
+
+
 
 
