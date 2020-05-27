@@ -138,7 +138,7 @@ private fun uploadWithoutImages(reqTitle: String, description :String , phoneNum
         val data = HashMap<String, String>()
         val location = HashMap<String,String>()
         val id = preferences?.getString("_id", null)
-        val uid = preferences?.getString("uid", null)
+//        val uid = preferences?.getString("uid", null)
 //        val id = "5ec7e77bb6bad31464e5ae9b"
 //        data.put("requestedBy","5ebc27d7e6fe7a77013ecd2a")
 //        data.put("title",reqTitle)
@@ -167,7 +167,7 @@ private fun uploadWithoutImages(reqTitle: String, description :String , phoneNum
         val reqObj = MultipartUploadRequest(this, baseUrl)
                 .setMethod("POST")
                 .addParameter("data", JSONObject(data as Map<*, *>).toString())
-                .addParameter("uid", uid.toString())
+                .addParameter("uid", id.toString())
                 .addHeader("_id", id.toString())
 
 

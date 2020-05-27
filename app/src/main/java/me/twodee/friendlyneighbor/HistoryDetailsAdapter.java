@@ -1,9 +1,10 @@
 //package me.twodee.friendlyneighbor;
 //
-//public class RespondToRequestAdapter {
+//public class HistoryDetailsAdapter {
 //}
 package me.twodee.friendlyneighbor;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequestAdapter.ChoicePageDetailsViewHolder> implements Filterable {
+public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsAdapter.ChoicePageDetailsViewHolder> implements Filterable {
 
     private Context mCtx;
-    private List<RespondToRequestDetails> choicePageDetailsList;
-    private List<RespondToRequestDetails> choicePageDetailsListFull;
+    private List<HistoryDetails> choicePageDetailsList;
+    private List<HistoryDetails> choicePageDetailsListFull;
 
     private OnChoicePageDetailsClickListener onChoicePageDetailsClickListener;
 
-    public RespondToRequestAdapter(Context mCtx, List<RespondToRequestDetails> choicePageDetailsList, OnChoicePageDetailsClickListener onChoicePageDetailsClickListener) {
+    public HistoryDetailsAdapter(Context mCtx, List<HistoryDetails> choicePageDetailsList, OnChoicePageDetailsClickListener onChoicePageDetailsClickListener) {
         this.mCtx = mCtx;
         this.onChoicePageDetailsClickListener = onChoicePageDetailsClickListener;
         this.choicePageDetailsList = choicePageDetailsList;
@@ -47,11 +48,16 @@ public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequ
     @Override
     public void onBindViewHolder(@NonNull ChoicePageDetailsViewHolder holder, int position) {
 
-        RespondToRequestDetails choicePageDetails = choicePageDetailsList.get(position);
+        HistoryDetails choicePageDetails = choicePageDetailsList.get(position);
         holder.titleTV.setText(choicePageDetails.getChoicePageTitle());
         holder.typeTV.setText(choicePageDetails.getChoicePageType());
-        holder.personTV.setText(choicePageDetails.getChoicePagePerson());
-        holder.distanceTV.setText(String.valueOf(choicePageDetails.getChoicePagePrice()));
+
+        String status = choicePageDetails.getChoicePageCompleted() ? "Completed" : "Pending";
+        holder.statusTV.setText(status);
+
+        if (choicePageDetails.getChoicePageCompleted()) {
+            holder.statusNameTV.setText("with " + choicePageDetails.getChoicePageAcceptedUser());
+        }
         holder.timeTV.setText(choicePageDetails.getChoicePageTime());
 
     }
@@ -69,14 +75,14 @@ public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequ
     private Filter choicePageFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<RespondToRequestDetails> filteredList = new ArrayList<>();
+            List<HistoryDetails> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(choicePageDetailsListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for(RespondToRequestDetails item : choicePageDetailsListFull) {
+                for(HistoryDetails item : choicePageDetailsListFull) {
                     if (item.getChoicePageTitle().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
@@ -101,7 +107,7 @@ public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequ
 
     public class ChoicePageDetailsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView titleTV, typeTV, personTV, distanceTV, timeTV;
+        TextView titleTV, typeTV, statusTV, statusNameTV, timeTV;
         OnChoicePageDetailsClickListener onChoicePageDetailsClickListener;
 
 
@@ -110,10 +116,12 @@ public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequ
 
             titleTV = (TextView) itemView.findViewById(R.id.choicePage_title);
             typeTV = (TextView) itemView.findViewById(R.id.choicePage_type);
-            personTV = (TextView) itemView.findViewById(R.id.choicePage_person);
-            distanceTV = (TextView) itemView.findViewById(R.id.choicePage_price);
+            statusTV = (TextView) itemView.findViewById(R.id.choice_page_status);
+            statusNameTV = (TextView) itemView.findViewById(R.id.choice_page_status_name);
             timeTV = (TextView) itemView.findViewById(R.id.choicePage_time);
             this.onChoicePageDetailsClickListener = onChoicePageDetailsClickListener;
+
+
 
             itemView.setOnClickListener(this);
 
@@ -122,7 +130,6 @@ public class RespondToRequestAdapter extends RecyclerView.Adapter <RespondToRequ
         @Override
         public void onClick(View v) {
             onChoicePageDetailsClickListener.onChoicePageDetailsClick(getAdapterPosition());
-
         }
     }
 
