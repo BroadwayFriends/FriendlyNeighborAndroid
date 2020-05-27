@@ -1,39 +1,28 @@
 package me.twodee.friendlyneighbor;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationListener;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.ibm.mobilefirstplatform.clientsdk.android.core.api.BMSClient;
-import com.ibm.mobilefirstplatform.clientsdk.android.push.api.*;
-import com.kusu.loadingbutton.LoadingButton;
-
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     //Button next, signInPage, dashboard, register, discover, payment, profile, postDetails, historyButton, postReqButton;
 //    LoadingButton loadingButton;
 
-    private static int SPLASH_SCREEN = 5000;
+    private static final int SPLASH_SCREEN = 5000;
 
     Animation bottomAnim;
     ImageView image;
@@ -48,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_splash);
 
@@ -70,64 +59,25 @@ public class MainActivity extends AppCompatActivity
             }
         }, SPLASH_SCREEN);
 
-        // Initialize the SDK
-        BMSClient.getInstance().initialize(this, BMSClient.REGION_SYDNEY);
-        //Initialize client Push SDK
+        createNotificationChannel();
+    }
 
-        MFPPush push = MFPPush.getInstance();
-        push.initialize(getApplicationContext(), getString(R.string.ibm_push_app_guid), getString(R.string.ibm_push_client_secret));
+    private void createNotificationChannel() {
+        String channelId = getString(R.string.notification_channel_id);
 
-
-        push.registerDevice(new MFPPushResponseListener<String>() {
-
-            @Override
-            public void onSuccess(String response) {
-                //handle successful device registration here
-                Log.i(TAG, "Successful registration of device");
-            }
-
-            @Override
-            public void onFailure(MFPPushException ex) {
-                //handle failure in device registration here
-                ex.printStackTrace();
-            }
-        });
-        String userId = "abc123";
-        push.registerDeviceWithUserId(userId, new MFPPushResponseListener<String>() {
-
-            @Override
-            public void onSuccess(String response) {
-                //handle successful device registration here
-                Log.i(TAG, "Successful registration of device with UID: " + userId);
-            }
-
-            @Override
-            public void onFailure(MFPPushException ex) {
-                //handle failure in device registration here
-                ex.printStackTrace();
-            }
-        });
-
-        notificationListener = new MFPPushNotificationListener() {
-            @Override
-            public void onReceive(final MFPSimplePushNotification message) {
-                Log.i(TAG, "Received a Push Notification: " + message.toString());
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        new android.app.AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Received a Push Notification")
-                                .setMessage(message.getAlert())
-                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                    }
-                                })
-                                .show();
-                    }
-                });
-            }
-        };
-        push.listen(notificationListener);
-
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                                                                  "Channel human readable title",
+                                                                  NotificationManager.IMPORTANCE_MAX);
+            channel.enableVibration(true);
+            channel.enableLights(true);
+            channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 //        discover = findViewById(R.id.discover);
 //        discover.setOnClickListener(new View.OnClickListener()
 //        {
@@ -260,12 +210,11 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-    }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        if(push != null) {
+        if (push != null) {
             push.listen(notificationListener);
         }
     }
