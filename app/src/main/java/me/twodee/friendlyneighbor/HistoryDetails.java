@@ -2,16 +2,17 @@
 package me.twodee.friendlyneighbor;
 
 public class HistoryDetails {
-    private String choicePageTitle, choicePageType, choicePageTime, jsonUsersArray, choicePageAcceptedUser;
+    private String choicePageTitle, choicePageType, choicePageTime, jsonUsersArray, choicePageAcceptedUser, choicePageRequestId;
     private boolean choicePageCompleted;
 
-    public HistoryDetails(String choicePageTitle, String choicePageType, String choicePageTime, String jsonUsersArray, boolean choicePageCompleted, String choicePageAcceptedUser) {
+    public HistoryDetails(String choicePageTitle, String choicePageType, String choicePageTime, String jsonUsersArray, boolean choicePageCompleted, String choicePageAcceptedUser, String choicePageRequestId) {
         this.choicePageTitle = choicePageTitle;
         this.choicePageType = choicePageType;
         this.choicePageTime = choicePageTime;
         this.jsonUsersArray = jsonUsersArray;
         this.choicePageCompleted = choicePageCompleted;
         this.choicePageAcceptedUser = choicePageAcceptedUser;
+        this.choicePageRequestId = choicePageRequestId;
     }
 
     public String getChoicePageTitle() {
@@ -34,5 +35,8 @@ public class HistoryDetails {
     }
     public String getChoicePageAcceptedUser() {
         return choicePageAcceptedUser;
+    }
+    public String getChoicePageRequestId() {
+        return choicePageRequestId;
     }
 }

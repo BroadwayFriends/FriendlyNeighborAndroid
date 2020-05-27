@@ -79,6 +79,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
 
+
 //        Adding dummy static data
 //        choicePageDetailsList.add(
 //                new HistoryDetails(
@@ -188,6 +189,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.choicePage_progress_bar);
         final RelativeLayout choicePageLoadingLayout = (RelativeLayout) findViewById(R.id.choicePage_loading_layout);
         choicePageLoadingLayout.setVisibility(View.VISIBLE);
+
+        final TextView noUsersTV = (TextView) findViewById(R.id.history_no_users);
+
         ThreeBounce threeBounce = new ThreeBounce();
         progressBar.setIndeterminateDrawable(threeBounce);
         progressBar.setVisibility(View.VISIBLE);
@@ -198,7 +202,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 
 
 //        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
-        String url = "https://988d618d.ngrok.io" + "/api/requests/history/" + id;
+        String url = getResources().getString(R.string.base_url) + "/api/requests/history/" + id;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -217,6 +221,11 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                         try{
                             // Loop through the array elements
                             JSONArray allItems = choicePage;
+
+                            if (allItems.length() == 0) {
+                                noUsersTV.setVisibility(View.VISIBLE);
+                            }
+
                             for(int i=0; i<allItems.length(); i++){
 
                                 // Get current json object
@@ -235,7 +244,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                                 String createdAt = requestDets.getString("createdAt");
 //                                float cost = (float) requestDets.getInt("cost");
                                 String type = requestDets.getString("requestType");
-//                                float distance = (float) item.getInt("distance");
+
+
+                                String requestId = requestDets.getString("_id");
+
                                 String jsonUsersArr = usersDets.toString();
 
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -244,7 +256,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                                 String time = timeExtract.format(date.getTime());
 
                                 Log.w("ITEMS: ", title);
-//                                Log.w("ITEMS: ", person);
+                                Log.w("ITEMS: ", requestId);
 //                                Log.w("ITEMS: ", createdAt);
 //                                Log.w("ITEMS: ", String.valueOf(cost));
                                 Log.w("ITEMS: ", type);
@@ -252,7 +264,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 //                                Log.w("ITEMS: ", String.valueOf(distance));
 
 
-                                HistoryDetails choicePageDetails = new HistoryDetails(title, type, time, jsonUsersArr, completed, acceptedUser);
+                                HistoryDetails choicePageDetails = new HistoryDetails(title, type, time, jsonUsersArr, completed, acceptedUser, requestId);
                                 choicePageDetailsList.add(choicePageDetails);
                             }
 
@@ -305,6 +317,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
             intent.putExtra("title", selectedHistoryDetails.getChoicePageTitle());
             intent.putExtra("type", selectedHistoryDetails.getChoicePageType());
             intent.putExtra("completed", selectedHistoryDetails.getChoicePageCompleted());
+            intent.putExtra("requestId", selectedHistoryDetails.getChoicePageRequestId());
 
             startActivityForResult(intent, 1);
         }

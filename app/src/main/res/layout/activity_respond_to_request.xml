@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".DiscoverActivity"
     android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#EEEEEE">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,6 +62,16 @@
         </TextView>
 
     </RelativeLayout>
+
+    <TextView
+        android:fontFamily="@font/product_sans_italic"
+        android:id="@+id/history_no_users"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Oops... No Users Nearby !"/>
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/choicePage_search_view"

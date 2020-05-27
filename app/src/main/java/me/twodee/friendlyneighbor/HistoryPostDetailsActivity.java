@@ -13,6 +13,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
@@ -20,7 +28,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HistoryPostDetailsActivity extends AppCompatActivity {
 
@@ -33,6 +43,8 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 
     List<HistoryRespondedUserDetails> data;
 
+    String requestId;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +56,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
         itemsContainerRV.setLayoutManager(new LinearLayoutManager(this));
 
 
-        data =  new ArrayList();
+        data = new ArrayList();
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
@@ -54,6 +66,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("title");
         String type = getIntent().getStringExtra("type");
         boolean accepted = getIntent().getBooleanExtra("completed", false);
+        requestId = getIntent().getStringExtra("requestId");
 
         selectedTitleTV = (TextView) findViewById(R.id.history_post_item_title);
         selectedTypeTV = (TextView) findViewById(R.id.history_post_item_type);
@@ -68,6 +81,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
         String contactNumber = null;
         String id = null;
 
+        final TextView noResponseTV = (TextView) findViewById(R.id.history_post_no_response);
 
         //Parsing JSON Data
         try {
@@ -76,7 +90,11 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 
             Log.w("USER ARRAY", userArray.toString());
 
-            for(int i = 0; i < userArray.length(); i++) {
+            if(userArray.length() == 0) {
+                noResponseTV.setVisibility(View.VISIBLE);
+            }
+
+            for (int i = 0; i < userArray.length(); i++) {
                 // Get current json object
                 JSONObject item = userArray.getJSONObject(i);
 
@@ -110,63 +128,138 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 //        itemsContainerRV.setAdapter(itemAdapter);
 
 
-            SwipeHelper swipeHelper = new SwipeHelper(this) {
-                @Override
-                public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+        SwipeHelper swipeHelper = new SwipeHelper(this) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
 
-                    underlayButtons.add(new SwipeHelper.UnderlayButton(
-                            "Decline",
-                            0,
-                            Color.parseColor("#f44336"),
-                            new SwipeHelper.UnderlayButtonClickListener() {
-                                @Override
-                                public void onClick(final int pos) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Decline",
+                        0,
+                        Color.parseColor("#f44336"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(final int pos) {
 //                                final String item = itemAdapter.getData().get(pos);
 //                                itemAdapter.removeItem(pos);
 
-                                    Snackbar snackbar = Snackbar.make(itemsContainerRV, "Declined " + data.get(pos).getRU_id(), Snackbar.LENGTH_LONG);
-                                    snackbar.setAction("UNDO", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
+                                declineRequest(data.get(pos).getRU_id());
+
+                                Snackbar snackbar = Snackbar.make(itemsContainerRV, "Declined " + data.get(pos).getRU_id(), Snackbar.LENGTH_LONG);
+                                snackbar.setAction("UNDO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
 //                                        itemAdapter.restoreItem(item, pos);
 //                                        itemsContainerRV.scrollToPosition(pos);
-                                        }
-                                    });
+                                    }
+                                });
 
-                                    snackbar.setActionTextColor(Color.YELLOW);
-                                    snackbar.show();
-                                }
+                                snackbar.setActionTextColor(Color.YELLOW);
+                                snackbar.show();
                             }
-                    ));
+                        }
+                ));
 
-                    underlayButtons.add(new SwipeHelper.UnderlayButton(
-                            "Accept",
-                            0,
-                            Color.parseColor("#4CAF50"),
-                            new SwipeHelper.UnderlayButtonClickListener() {
-                                @Override
-                                public void onClick(int pos) {
-                                    Toast.makeText(getApplicationContext(), "Item accpeted " +  data.get(pos).getRU_id(), Toast.LENGTH_LONG).show();
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Accept",
+                        0,
+                        Color.parseColor("#4CAF50"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
 
-                                }
+                                acceptRequest(data.get(pos).getRU_id());
+
+                                Toast.makeText(getApplicationContext(), "Item accpeted " + data.get(pos).getRU_id(), Toast.LENGTH_LONG).show();
+
                             }
-                    ));
+                        }
+                ));
+            }
+        };
+        swipeHelper.attachToRecyclerView(itemsContainerRV);
+    }
 
-//                underlayButtons.add(new SwipeHelper.UnderlayButton(
-//                        "Share",
-//                        0,
-//                        Color.parseColor("#C7C7CB"),
-//                        new SwipeHelper.UnderlayButtonClickListener() {
-//                            @Override
-//                            public void onClick(int pos) {
-//                                Toast.makeText(getApplicationContext(), "You clicked share on item position " + pos, Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                ));
-                }
-            };
-            swipeHelper.attachToRecyclerView(itemsContainerRV);
-        }
+    void declineRequest(String userReqId) {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        final String id = preferences.getString("_id", null);
+
+        String userId = userReqId;
+
+
+//        String url = getResources().getString(R.string.base_url) + "/api/requests/" + requestId + "/respond/" + id;
+        String url = getResources().getString(R.string.base_url) + "/api/requests/" + requestId + "/respond/" + userId;
+
+        Log.w("REQUEST ID", requestId);
+        Log.w("_ID", userId);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE,url,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.w("Respond Response", response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Respond Error", "Error: " + error.getMessage());
+                Log.e("Respond Error", "Site Info Error: " + error.getMessage());
+                Toast.makeText(HistoryPostDetailsActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("_id", id);
+                return headers;
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    void acceptRequest(String userReqId) {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        final String id = preferences.getString("_id", null);
+
+        String userId = userReqId;
+
+
+//        String url = getResources().getString(R.string.base_url) + "/api/requests/" + requestId + "/respond/" + id;
+        String url = getResources().getString(R.string.base_url) + requestId + "/respond/" + userId;
+
+        Log.w("REQUEST ID", requestId);
+        Log.w("_ID", userId);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH,url,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.w("Respond Response", response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Respond Error", "Error: " + error.getMessage());
+                Log.e("Respond Error", "Site Info Error: " + error.getMessage());
+                Toast.makeText(HistoryPostDetailsActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("_id", id);
+                return headers;
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+
+    }
+
 
 
     @Override

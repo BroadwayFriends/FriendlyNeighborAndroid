@@ -53,6 +53,16 @@
 
     </View>
 
+    <TextView
+        android:fontFamily="@font/product_sans_italic"
+        android:id="@+id/history_post_no_response"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No responses !"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itemsContainerRV"
         android:layout_width="match_parent"
