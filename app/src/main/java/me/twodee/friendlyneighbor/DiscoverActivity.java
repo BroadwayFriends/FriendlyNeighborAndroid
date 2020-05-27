@@ -212,8 +212,8 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         progressBar.setVisibility(View.VISIBLE);
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        final String id = preferences.getString("_id", null);
-        String userId = preferences.getString("uid", null);
+        String id = preferences.getString("_id", null);
+//        String userId = preferences.getString("uid", null);
 
 
         String url = getResources().getString(R.string.base_url) + "/api/requests/" + id;
