@@ -51,9 +51,14 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsA
         HistoryDetails choicePageDetails = choicePageDetailsList.get(position);
         holder.titleTV.setText(choicePageDetails.getChoicePageTitle());
         holder.typeTV.setText(choicePageDetails.getChoicePageType());
-//        holder.personTV.setText(choicePageDetails.getChoicePagePerson());
-//        holder.distanceTV.setText(String.valueOf(choicePageDetails.getChoicePagePrice()));
-//        holder.timeTV.setText(choicePageDetails.getChoicePageTime());
+
+        String status = choicePageDetails.getChoicePageCompleted() ? "Completed" : "Pending";
+        holder.statusTV.setText(status);
+
+        if (choicePageDetails.getChoicePageCompleted()) {
+            holder.statusNameTV.setText("with " + choicePageDetails.getChoicePageAcceptedUser());
+        }
+        holder.timeTV.setText(choicePageDetails.getChoicePageTime());
 
     }
 
@@ -102,7 +107,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsA
 
     public class ChoicePageDetailsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView titleTV, typeTV, personTV, distanceTV, timeTV;
+        TextView titleTV, typeTV, statusTV, statusNameTV, timeTV;
         OnChoicePageDetailsClickListener onChoicePageDetailsClickListener;
 
 
@@ -111,8 +116,8 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsA
 
             titleTV = (TextView) itemView.findViewById(R.id.choicePage_title);
             typeTV = (TextView) itemView.findViewById(R.id.choicePage_type);
-            personTV = (TextView) itemView.findViewById(R.id.choicePage_person);
-            distanceTV = (TextView) itemView.findViewById(R.id.choicePage_price);
+            statusTV = (TextView) itemView.findViewById(R.id.choice_page_status);
+            statusNameTV = (TextView) itemView.findViewById(R.id.choice_page_status_name);
             timeTV = (TextView) itemView.findViewById(R.id.choicePage_time);
             this.onChoicePageDetailsClickListener = onChoicePageDetailsClickListener;
 

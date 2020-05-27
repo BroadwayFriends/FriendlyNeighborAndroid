@@ -274,7 +274,7 @@ public class PostDetailsActivity extends AppCompatActivity {
 
 
 //        String url = getResources().getString(R.string.base_url) + "/api/requests/" + requestId + "/respond/" + id;
-        String url = "https://08069bda.ngrok.io" + "/api/requests/" + requestId + "/respond/" + id;
+        String url = "https://988d618d.ngrok.io" + "/api/requests/" + requestId + "/respond/" + id;
 
         Log.w("REQUEST ID", requestId);
         Log.w("_ID", id);

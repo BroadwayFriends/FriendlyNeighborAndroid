@@ -37,7 +37,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -195,7 +197,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 
 
 //        String url = getResources().getString(R.string.base_url) + "/api/requests/" + userId;
-        String url = "https://08069bda.ngrok.io" + "/api/requests/history/" + id;
+        String url = "https://988d618d.ngrok.io" + "/api/requests/history/" + id;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -227,35 +229,36 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 
                                 // Get the current student (json object) data
                                 String title = requestDets.getString("title");
-//                                String person = requestDets.getJSONObject("requestedBy").getString("name");
-//                                String createdAt = requestDets.getString("createdAt");
+                                boolean completed = requestDets.getBoolean("completed");
+                                String acceptedUser = requestDets.getString("acceptedUser");
+                                String createdAt = requestDets.getString("createdAt");
 //                                float cost = (float) requestDets.getInt("cost");
-                                String type = requestDets.getString("type");
+                                String type = requestDets.getString("requestType");
 //                                float distance = (float) item.getInt("distance");
                                 String jsonUsersArr = usersDets.toString();
 
-//                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
-//                                Date date = dateFormat.parse(createdAt);
-//                                String time = timeExtract.format(date.getTime());
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
+                                Date date = dateFormat.parse(createdAt);
+                                String time = timeExtract.format(date.getTime());
 
                                 Log.w("ITEMS: ", title);
 //                                Log.w("ITEMS: ", person);
 //                                Log.w("ITEMS: ", createdAt);
 //                                Log.w("ITEMS: ", String.valueOf(cost));
                                 Log.w("ITEMS: ", type);
-//                                Log.w("ITEMS: ", time);
+                                Log.w("ITEMS: ", time);
 //                                Log.w("ITEMS: ", String.valueOf(distance));
 
 
-                                HistoryDetails choicePageDetails = new HistoryDetails(title, type, jsonUsersArr);
+                                HistoryDetails choicePageDetails = new HistoryDetails(title, type, time, jsonUsersArr, completed, acceptedUser);
                                 choicePageDetailsList.add(choicePageDetails);
                             }
 
                             choicePageDetailsAdapter = new HistoryDetailsAdapter(HistoryActivity.this, choicePageDetailsList, HistoryActivity.this);
                             recyclerView.setAdapter(choicePageDetailsAdapter);
 
-                        }catch (JSONException e){
+                        }catch (JSONException | ParseException e){
                             e.printStackTrace();
                         }
                     }
@@ -289,13 +292,18 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 
         choicePageDetailsList.get(position);
 
-        Intent intent = new Intent(this, HistoryPostDetailsActivity.class);
         HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
-        String selectedJsonString = selectedHistoryDetails.getJsonUsersArray();
-        intent.putExtra("jsonString", selectedJsonString);
-        intent.putExtra("title", selectedHistoryDetails.getChoicePageTitle());
-        intent.putExtra("type", selectedHistoryDetails.getChoicePageType());
-        startActivityForResult(intent, 1);
+
+        if(selectedHistoryDetails.getChoicePageCompleted()) {
+            Toast.makeText(HistoryActivity.this, "Status: Completed with " + selectedHistoryDetails.getChoicePageAcceptedUser(), Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(this, HistoryPostDetailsActivity.class);
+            String selectedJsonString = selectedHistoryDetails.getJsonUsersArray();
+            intent.putExtra("jsonString", selectedJsonString);
+            intent.putExtra("title", selectedHistoryDetails.getChoicePageTitle());
+            intent.putExtra("type", selectedHistoryDetails.getChoicePageType());
+            startActivityForResult(intent, 1);
+        }
 
 //        openDialog(position);
 
