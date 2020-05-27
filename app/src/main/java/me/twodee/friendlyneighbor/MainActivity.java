@@ -1,12 +1,14 @@
 package me.twodee.friendlyneighbor;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.ibm.mobilefirstplatform.clientsdk.android.core.api.BMSClient;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.*;
 import com.kusu.loadingbutton.LoadingButton;
 
 public class MainActivity extends AppCompatActivity
@@ -34,6 +38,11 @@ public class MainActivity extends AppCompatActivity
     Animation bottomAnim;
     ImageView image;
     TextView logo, slogan;
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private MFPPush push; // Push client
+    private MFPPushNotificationListener notificationListener; // Notification listener to handle a push sent to the phone
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +69,64 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         }, SPLASH_SCREEN);
+
+        // Initialize the SDK
+        BMSClient.getInstance().initialize(this, BMSClient.REGION_SYDNEY);
+        //Initialize client Push SDK
+
+        MFPPush push = MFPPush.getInstance();
+        push.initialize(getApplicationContext(), getString(R.string.ibm_push_app_guid), getString(R.string.ibm_push_client_secret));
+
+
+        push.registerDevice(new MFPPushResponseListener<String>() {
+
+            @Override
+            public void onSuccess(String response) {
+                //handle successful device registration here
+                Log.i(TAG, "Successful registration of device");
+            }
+
+            @Override
+            public void onFailure(MFPPushException ex) {
+                //handle failure in device registration here
+                ex.printStackTrace();
+            }
+        });
+        String userId = "abc123";
+        push.registerDeviceWithUserId(userId, new MFPPushResponseListener<String>() {
+
+            @Override
+            public void onSuccess(String response) {
+                //handle successful device registration here
+                Log.i(TAG, "Successful registration of device with UID: " + userId);
+            }
+
+            @Override
+            public void onFailure(MFPPushException ex) {
+                //handle failure in device registration here
+                ex.printStackTrace();
+            }
+        });
+
+        notificationListener = new MFPPushNotificationListener() {
+            @Override
+            public void onReceive(final MFPSimplePushNotification message) {
+                Log.i(TAG, "Received a Push Notification: " + message.toString());
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        new android.app.AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Received a Push Notification")
+                                .setMessage(message.getAlert())
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                    }
+                                })
+                                .show();
+                    }
+                });
+            }
+        };
+        push.listen(notificationListener);
 
 //        discover = findViewById(R.id.discover);
 //        discover.setOnClickListener(new View.OnClickListener()
@@ -194,4 +261,21 @@ public class MainActivity extends AppCompatActivity
 //        });
 
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(push != null) {
+            push.listen(notificationListener);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (push != null) {
+            push.hold();
+        }
+    }
+
 }
