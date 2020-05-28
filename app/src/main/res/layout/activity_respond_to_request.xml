@@ -64,14 +64,14 @@
     </RelativeLayout>
 
     <TextView
-        android:fontFamily="@font/product_sans_italic"
-        android:id="@+id/history_no_users"
-        android:visibility="gone"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Oops... No Users Nearby !"/>
+            android:fontFamily="@font/product_sans_italic"
+            android:id="@+id/history_no_users"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="The area seems to be deserted. Check back later or try increasing your search radius."/>
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/choicePage_search_view"
