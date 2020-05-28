@@ -23,7 +23,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
 import com.squareup.picasso.Picasso;
 import me.twodee.friendlyneighbor.service.VolleyUtils;
 import org.json.JSONException;
@@ -175,7 +174,7 @@ public class DashboardActivity extends AppCompatActivity {
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, task -> {
-                    Toast.makeText(DashboardActivity.this, "Successfully Signed Out !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DashboardActivity.this, "Sign out successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(DashboardActivity.this, MainActivity.class));
                     finish();
                 });

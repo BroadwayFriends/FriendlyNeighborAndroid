@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical"
-    tools:context=".HistoryPostDetailsActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="16dp"
+              android:orientation="vertical"
+              tools:context=".HistoryPostDetailsActivity">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/history_post_item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Item"
+                android:id="@+id/history_post_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item"
             android:textSize="40sp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/product_sans_bold"
@@ -54,14 +53,14 @@
     </View>
 
     <TextView
-        android:fontFamily="@font/product_sans_italic"
-        android:id="@+id/history_post_no_response"
-        android:visibility="gone"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="No responses !"/>
+            android:fontFamily="@font/product_sans_italic"
+            android:id="@+id/history_post_no_response"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No responses yet"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itemsContainerRV"

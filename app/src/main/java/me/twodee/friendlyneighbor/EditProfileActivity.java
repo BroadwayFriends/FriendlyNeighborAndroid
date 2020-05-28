@@ -18,45 +18,28 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.common.io.LineReader;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
 import net.gotev.uploadservice.data.UploadInfo;
 import net.gotev.uploadservice.network.ServerResponse;
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate;
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -66,7 +49,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText editTextEmail, editTextPhone, editTextUsername, editTextRadius, editTextLocation;
     private ImageView editPictureButton,displayImage;
     private SharedPreferences preferences;
-    private String TAG = "editProfilePage";
+    private final String TAG = "editProfilePage";
     String changedUri = "";
     private Boolean CHANGED_PICTURE_FLAG = Boolean.FALSE;
     private Geocoder geocoder;
@@ -397,7 +380,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         editTextRadius.setText(respObj.getString("defaultSearchRadius"));
                         boolean canChangeName  = response.getBoolean("canChangeName");
 
-                        Log.w(TAG, "canChangeName"+Boolean.toString(canChangeName));
+                        Log.w(TAG, "canChangeName" + canChangeName);
 
                         editTextUsername.setFocusable(canChangeName);
                         editTextUsername.setFocusableInTouchMode(canChangeName);
@@ -418,7 +401,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                         } catch (Throwable t) {
-                            Log.e(TAG, "Could not parse malformed JSON"+address.toString());
+                            Log.e(TAG, "Could not parse malformed JSON" + address);
                         }
 
 
@@ -507,7 +490,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(@NotNull Context context, @NotNull UploadInfo uploadInfo, @NotNull ServerResponse serverResponse) {
                     Log.i(TAG, "Success:" + serverResponse.getBodyString());
-                    Toast.makeText(EditProfileActivity.this, "Successfully Updated !!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, "Update successful", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

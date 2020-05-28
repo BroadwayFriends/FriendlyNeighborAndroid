@@ -3,10 +3,8 @@ package me.twodee.friendlyneighbor
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings.Global.getString
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +20,6 @@ import net.gotev.uploadservice.exceptions.UserCancelledUploadException
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
-import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.HashMap
@@ -200,7 +197,7 @@ private fun uploadWithoutImages(reqTitle: String, description :String , phoneNum
                  }
             reqObj.subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object : RequestObserverDelegate {
                             override fun onProgress(context: Context, uploadInfo: UploadInfo) {
-                                Toast.makeText(applicationContext,"Uploading !!",Toast.LENGTH_SHORT)
+                                Toast.makeText(applicationContext, "Uploading...", Toast.LENGTH_SHORT)
                             }
 
                             override fun onSuccess(
@@ -209,7 +206,7 @@ private fun uploadWithoutImages(reqTitle: String, description :String , phoneNum
                                     serverResponse: ServerResponse
                             ) {
                                 // do your thing
-                                Toast.makeText(this@imageUploadActivity,"${serverResponse.bodyString}",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this@imageUploadActivity, "${serverResponse.bodyString}", Toast.LENGTH_SHORT).show()
                                 Log.i(TAG, "Success: ${serverResponse.bodyString}")
 
 
@@ -233,7 +230,7 @@ private fun uploadWithoutImages(reqTitle: String, description :String , phoneNum
                             }
 
                             override fun onCompleted(context: Context, uploadInfo: UploadInfo) {
-                                Toast.makeText(this@imageUploadActivity,"Successfully posted your request!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this@imageUploadActivity, "Your request has been posted", Toast.LENGTH_SHORT).show()
 
 
                             }
