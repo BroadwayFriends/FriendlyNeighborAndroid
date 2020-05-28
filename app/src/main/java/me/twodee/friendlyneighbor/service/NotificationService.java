@@ -25,6 +25,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import me.twodee.friendlyneighbor.DiscoverActivity;
@@ -160,7 +161,8 @@ public class NotificationService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.gift)
+                        .setSmallIcon(R.drawable.gift_white)
+                        .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
                         .setContentTitle(data.get("title"))
                         .setContentText(data.get("content"))
                         .setPriority(NotificationCompat.PRIORITY_MAX)
