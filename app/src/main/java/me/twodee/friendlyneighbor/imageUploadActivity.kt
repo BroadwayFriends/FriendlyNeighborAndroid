@@ -28,7 +28,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
-class imageUploadActivity : AppCompatActivity() {
+class   imageUploadActivity : AppCompatActivity() {
     private var imageEncoded: String? = null
     var preferences: SharedPreferences? = null
     companion object {
@@ -37,7 +37,8 @@ class imageUploadActivity : AppCompatActivity() {
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
         const val baseUrl = "https://fn.twodee.me/api/requests"
-//        const val baseUrl = "https://988d618d.ngrok.io/api/requests"
+//        const val baseUrl = "https://b657c8e0.ngrok.io/api/requests"
+//
         var image1: Uri = Uri.EMPTY
         var image2: Uri = Uri.EMPTY
         var image3: Uri = Uri.EMPTY
@@ -96,7 +97,7 @@ private fun uploadWithoutImages(reqTitle: String, description :String , phoneNum
     data["expiration"] = expirationDate
     data["cost"] = priceQuote
     data["requestType"] = requestType
-    data["image1"] = ""
+    data["uid"] = id.toString()
     data["requestedBy"] = id.toString()
 
 
