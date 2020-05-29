@@ -175,7 +175,7 @@ public class DashboardActivity extends AppCompatActivity {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, task -> {
                     Toast.makeText(DashboardActivity.this, "Sign out successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(DashboardActivity.this, MainActivity.class));
+                    startActivity(new Intent(DashboardActivity.this, SignInActivity.class));
                     finish();
                 });
     }
