@@ -251,7 +251,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                                 String jsonUsersArr = usersDets.toString();
 
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
+                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd MMM" + ", " + "HH:mm a");
                                 Date date = dateFormat.parse(createdAt);
                                 String time = timeExtract.format(date.getTime());
 
