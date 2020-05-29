@@ -265,7 +265,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 String person = requestDets.getJSONObject("requestedBy").getString("name");
                                 String createdAt = requestDets.getString("createdAt");
                                 float cost = (float) requestDets.getInt("cost");
-                                String type = (cost != 0.0f) ? "Request" : "Giveaway";
+                                String type = requestDets.getString("requestType");
 
                                 DecimalFormat df = new DecimalFormat("0.00");
                                 float dist = (float) item.getDouble("distance");
