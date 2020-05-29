@@ -32,7 +32,7 @@
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="550dp"
+            android:layout_height="700dp"
             android:paddingBottom="20dp"
             android:layout_above="@id/seekBarLayout"
 
@@ -69,7 +69,7 @@
                     android:id="@+id/textViewSeekBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="190dp"
+                    android:layout_marginLeft="175dp"
                     android:textColor="#000"
                     android:fontFamily="@font/product_sans_regular"/>
             </LinearLayout>

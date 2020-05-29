@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Request"
+                android:text="New Post"
                 android:textSize="40dp"
                 android:fontFamily="@font/product_sans_bold"
                 android:textColor="@android:color/black"/>
@@ -155,6 +155,7 @@
                     android:id="@+id/switchPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:showText="true"
                     android:textOff="No"
                     android:textOn="Yes"/>
                 <!-- Enter Price -->
