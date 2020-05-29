@@ -4,20 +4,28 @@ package me.twodee.friendlyneighbor;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
-import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +55,7 @@ import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryDetailsAdapter.OnChoicePageDetailsClickListener {
 
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
     RecyclerView recyclerView;
     HistoryDetailsAdapter choicePageDetailsAdapter;
 
@@ -57,6 +66,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
     Dialog selectedDialog;
 
     SharedPreferences preferences;
+
+    JSONObject requestDets;
+    JSONArray usersDets;
 
 
 
@@ -232,8 +244,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                                 JSONObject item = choicePage.getJSONObject(i);
                                 String jsonObjectString = item.toString();
 
-                                JSONObject requestDets = item.getJSONObject("request");
-                                JSONArray usersDets = item.getJSONArray("users");
+                                requestDets = item.getJSONObject("request");
+                                usersDets = item.getJSONArray("users");
 
                                 Log.w("REQDETS", requestDets.toString());
 
@@ -308,8 +320,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
 
         if(selectedHistoryDetails.getChoicePageCompleted()) {
-            Snackbar snackbar = Snackbar.make(recyclerView, "Already Accepted", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            openDialog(position);
         } else {
             Intent intent = new Intent(this, HistoryPostDetailsActivity.class);
             String selectedJsonString = selectedHistoryDetails.getJsonUsersArray();
@@ -346,25 +357,56 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         selectedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-        TextView dialog_name = (TextView)selectedDialog.findViewById(R.id.dialog_history_name);
-        TextView dialog_info = (TextView)selectedDialog.findViewById(R.id.dialog_history_info);
-        Button dialogAcceptButton = (Button) selectedDialog.findViewById(R.id.dialog_history_accept_btn);
-        Button dialogDeclineButton = (Button) selectedDialog.findViewById(R.id.dialog_history_decline_btn);
+        TextView dialogName = (TextView)selectedDialog.findViewById(R.id.dialog_history_name);
+        TextView dialogContact = (TextView)selectedDialog.findViewById(R.id.dialog_history_info);
+        ImageButton dialogCallButton = (ImageButton) selectedDialog.findViewById(R.id.dialog_history_accept_call);
+        ImageButton dialogMessageButton = (ImageButton) selectedDialog.findViewById(R.id.dialog_history_accept_message);
+        ImageView dialogProfilePicture = (ImageView) selectedDialog.findViewById(R.id.dialog_history_profile_picture);
 
-//        dialog_name.setText(choicePageDetailsList.get(position).getChoicePagePerson());
-        dialog_info.setText(choicePageDetailsList.get(position).getChoicePageTitle());
+        String accUser = choicePageDetailsList.get(position).getChoicePageAcceptedUser();
+        String name = null, contactNumber = null, profilePicture = null;
 
-        dialogAcceptButton.setOnClickListener(new View.OnClickListener() {
+        try {
+            for (int i = 0; i < usersDets.length(); i++) {
+                JSONObject accItem = usersDets.getJSONObject(i);
+
+                if (accUser.equals(accItem.getString("_id"))) {
+                    name = accItem.getString("name");
+                    contactNumber = accItem.getString("contactNumber");
+                    profilePicture = accItem.getString("profilePicture");
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        dialogName.setText(name);
+        dialogContact.setText(contactNumber);
+        Picasso.get().load(profilePicture).fit().centerInside().into(dialogProfilePicture);
+
+        String finalContactNumber = contactNumber;
+        dialogCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HistoryActivity.this, "Accepted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HistoryActivity.this, "Calling", Toast.LENGTH_SHORT).show();
+                String dial = "tel:" + finalContactNumber;
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
             }
         });
 
-        dialogDeclineButton.setOnClickListener(new View.OnClickListener() {
+        dialogMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HistoryActivity.this, "Declined", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HistoryActivity.this, "Messaging", Toast.LENGTH_SHORT).show();
+                String dial = "sms:" + finalContactNumber;
+                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+                smsIntent.setData(Uri.parse(dial));
+                if (smsIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(smsIntent);
+                } else {
+                    Toast.makeText(HistoryActivity.this, "No application found", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

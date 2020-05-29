@@ -1,6 +1,7 @@
 package me.twodee.friendlyneighbor;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -110,6 +111,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 
             itemAdapter = new HistoryPostDetailsAdapter(HistoryPostDetailsActivity.this, data);
             itemsContainerRV.setAdapter(itemAdapter);
+            itemsContainerRV.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
 
         } catch (JSONException | NullPointerException e) {
             e.printStackTrace();

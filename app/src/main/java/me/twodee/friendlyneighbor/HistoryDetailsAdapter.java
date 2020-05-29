@@ -56,7 +56,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsA
         holder.statusTV.setText(status);
 
         if (choicePageDetails.getChoicePageCompleted()) {
-            holder.statusNameTV.setText("with " + choicePageDetails.getChoicePageAcceptedUser());
+//            holder.statusNameTV.setText("with " + choicePageDetails.getChoicePageAcceptedUser());
         }
         holder.timeTV.setText(choicePageDetails.getChoicePageTime());
 
@@ -117,7 +117,7 @@ public class HistoryDetailsAdapter extends RecyclerView.Adapter <HistoryDetailsA
             titleTV = (TextView) itemView.findViewById(R.id.choicePage_title);
             typeTV = (TextView) itemView.findViewById(R.id.choicePage_type);
             statusTV = (TextView) itemView.findViewById(R.id.choice_page_status);
-            statusNameTV = (TextView) itemView.findViewById(R.id.choice_page_status_name);
+//            statusNameTV = (TextView) itemView.findViewById(R.id.choice_page_status_name);
             timeTV = (TextView) itemView.findViewById(R.id.choicePage_time);
             this.onChoicePageDetailsClickListener = onChoicePageDetailsClickListener;
 

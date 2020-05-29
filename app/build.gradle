@@ -71,6 +71,7 @@ dependencies {
 
     //Image
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     //TimeAgo
     implementation 'com.github.shamalka:Pretty-TimeAgo-android-library:1.0.0'
