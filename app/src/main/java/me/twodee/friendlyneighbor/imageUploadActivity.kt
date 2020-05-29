@@ -159,7 +159,7 @@ private fun uploadWithoutImages(reqTitle: String, description :String , phoneNum
 //        data["requestedBy"] = "5ec7e77bb6bad31464e5ae9b"
         data["requestedBy"] = id.toString()
         val imageCount = imageUriArray.size
-        Log.v(TAG, "Size$imageCount")
+        Log.v(TAG, "Data:${data}")
 
 
         val reqObj = MultipartUploadRequest(this, baseUrl)

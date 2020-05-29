@@ -12,19 +12,14 @@ import androidx.cardview.widget.CardView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
-import me.twodee.friendlyneighbor.service.VolleyUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,7 +63,6 @@ public class DashboardActivity extends AppCompatActivity {
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
         fetchData();
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(this::updateNotificationToken);
 
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(getBaseContext(), EditProfileActivity.class);
@@ -136,40 +130,7 @@ public class DashboardActivity extends AppCompatActivity {
         sign_out.setOnClickListener(view -> signOut());
     }
 
-    private void updateNotificationToken(Task<InstanceIdResult> task) {
-        if (!task.isSuccessful()) {
-            Log.w(TAG, "getInstanceId failed", task.getException());
-            return;
-        }
 
-        String token = task.getResult().getToken();
-
-        String userId = preferences.getString("_id", null);
-
-        if (preferences.getBoolean(getString(R.string.sp_fcm_token_updated), false)) {
-            Map<Object, Object> data = new HashMap<>();
-            data.put("userId", userId);
-            data.put("token", token);
-            VolleyUtils.post(getApplicationContext(), getString(R.string.base_url) + "/api/notifications/register",
-                             data,
-                             DashboardActivity::listenToResponse,
-                             DashboardActivity::listenToError
-            );
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(getString(R.string.sp_fcm_token_updated), false);
-            editor.commit();
-        }
-    }
-
-    private static void listenToError(VolleyError volleyError) {
-        Log.i(TAG, volleyError.toString());
-
-    }
-
-    private static void listenToResponse(JSONObject jsonObject) {
-        Log.d(TAG, "Successful POST!");
-        Log.i(TAG, jsonObject.toString());
-    }
 
     private void signOut() {
         mGoogleSignInClient.signOut()
