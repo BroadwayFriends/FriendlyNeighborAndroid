@@ -6,11 +6,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +29,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,11 +47,18 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
     RecyclerView itemsContainerRV;
     HistoryPostDetailsAdapter itemAdapter;
 
+    Dialog selectedDialog;
+
     SharedPreferences preferences;
 
     List<HistoryRespondedUserDetails> data;
 
     String requestId;
+
+    String name = null;
+    String profilePicture = null;
+    String contactNumber = null;
+    String id = null;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -77,10 +91,6 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 
         JSONArray userArray = null;
 
-        String name = null;
-        String profilePicture = null;
-        String contactNumber = null;
-        String id = null;
 
         final TextView noResponseTV = (TextView) findViewById(R.id.history_post_no_response);
 
@@ -242,6 +252,8 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.w("Respond Response", response.toString());
 
+                openDialog();
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -260,6 +272,51 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
         };
         requestQueue.add(jsonObjectRequest);
 
+    }
+
+    void openDialog() {
+
+        selectedDialog = new Dialog(this);
+        selectedDialog.setContentView(R.layout.dialog_selected_history);
+        selectedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        TextView dialogName = (TextView)selectedDialog.findViewById(R.id.dialog_history_name);
+        TextView dialogContact = (TextView)selectedDialog.findViewById(R.id.dialog_history_info);
+        ImageButton dialogCallButton = (ImageButton) selectedDialog.findViewById(R.id.dialog_history_accept_call);
+        ImageButton dialogMessageButton = (ImageButton) selectedDialog.findViewById(R.id.dialog_history_accept_message);
+        ImageView dialogProfilePicture = (ImageView) selectedDialog.findViewById(R.id.dialog_history_profile_picture);
+
+        dialogName.setText(name);
+        dialogContact.setText(contactNumber);
+        Picasso.get().load(profilePicture).fit().centerInside().into(dialogProfilePicture);
+
+        String finalContactNumber = contactNumber;
+        dialogCallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HistoryPostDetailsActivity.this, "Calling", Toast.LENGTH_SHORT).show();
+                String dial = "tel:" + finalContactNumber;
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+            }
+        });
+
+        dialogMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HistoryPostDetailsActivity.this, "Messaging", Toast.LENGTH_SHORT).show();
+                String dial = "sms:" + finalContactNumber;
+                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+                smsIntent.setData(Uri.parse(dial));
+                if (smsIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(smsIntent);
+                } else {
+                    Toast.makeText(HistoryPostDetailsActivity.this, "No application found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        selectedDialog.show();
     }
 
 

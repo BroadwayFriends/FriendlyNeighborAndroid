@@ -56,6 +56,8 @@ public class PostDetailsActivity extends AppCompatActivity {
     TextView selectedTitle, selectedDescription, selectedPostedBy, selectedCost, selectedTimeAgo;
     ImageView profilePictureView;
 
+    LinearLayout goBack;
+
     TextView bottomSheetName;
     ImageView bottonSheetProfilePicture;
 
@@ -134,6 +136,15 @@ public class PostDetailsActivity extends AppCompatActivity {
         } catch (JSONException | ParseException | NullPointerException e) {
             Log.w("JSON_ERROR", e);
         }
+
+        goBack = (LinearLayout) findViewById(R.id.postDetails_goBack);
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
 
         selectedTitle = (TextView) findViewById(R.id.selected_title);
         selectedDescription = (TextView) findViewById(R.id.selected_description);
@@ -342,4 +353,5 @@ public class PostDetailsActivity extends AppCompatActivity {
         setResult(RESULT_OK);
         super.onBackPressed();
     }
+
 }
