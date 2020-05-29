@@ -104,17 +104,6 @@
                                 android:text=" kms away"/>
 
                         </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="60dp">
-                            <ImageView
-                                android:layout_marginLeft="235dp"
-                                android:layout_marginRight="0dp"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:layout_gravity="right"
-                                android:src="@drawable/discover"/>
-                        </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
