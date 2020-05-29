@@ -258,7 +258,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 String createdAt = requestDets.getString("createdAt");
                                 float cost = (float) requestDets.getInt("cost");
                                 String type = (cost != 0.0f) ? "Request" : "Giveaway";
-                                float distance = (float) item.getInt("distance");
+                                float distance = (float) item.getDouble("distance");
 
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                 SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
