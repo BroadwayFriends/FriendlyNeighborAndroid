@@ -45,8 +45,8 @@ public class OnboardingActivity extends AppCompatActivity {
         // Check if it is the first time
 
         if (restorePrefData()) {
-            Intent mainActivity = new Intent(getApplicationContext(),MainActivity.class );
-            startActivity(mainActivity);
+            Intent i = new Intent(getApplicationContext(),DashboardActivity.class );
+            startActivity(i);
             finish();
         }
         setContentView(R.layout.activity_onboarding);

@@ -3,6 +3,7 @@ package me.twodee.friendlyneighbor;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.icu.text.DecimalFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -250,7 +252,9 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
                                 JSONObject requestDets = item.getJSONObject("request");
 
-                                Log.w("REQDETS", requestDets.toString());
+                                Log.v("Discover", requestDets.toString());
+//                                Log.v("Discover", requestDets.getString("distance"));
+
 
                                 // Get the current student (json object) data
                                 String title = requestDets.getString("title");
@@ -275,6 +279,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 Log.w("ITEMS: ", type);
                                 Log.w("ITEMS: ", time);
                                 Log.w("ITEMS: ", String.valueOf(distance));
+
 
                                 DiscoverDetails discoverDetails = new DiscoverDetails(title, type, person, time, distance, jsonObjectString);
                                 discoverDetailsList.add(discoverDetails);
