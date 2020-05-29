@@ -214,8 +214,8 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
         progressBar.setVisibility(View.VISIBLE);
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        final String id = preferences.getString("_id", null);
-        String userId = preferences.getString("uid", null);
+        String id = preferences.getString("_id", null);
+//        String userId = preferences.getString("uid", null);
 
 
         String url = getResources().getString(R.string.base_url) + "/api/requests/" + id;
@@ -250,6 +250,10 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 JSONObject item = response.getJSONObject(i);
                                 String jsonObjectString = item.toString();
 
+                                if (item.isNull("request")) {
+                                    continue;
+                                }
+
                                 JSONObject requestDets = item.getJSONObject("request");
 
                                 Log.v("Discover", requestDets.toString());
@@ -263,11 +267,12 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 float cost = (float) requestDets.getInt("cost");
                                 String type = (cost != 0.0f) ? "Request" : "Giveaway";
 
-                                float distance = (float) (Math.round(item.getDouble("distance") * 10d) / 10d);
-
+                                DecimalFormat df = new DecimalFormat("0.00");
+                                float dist = (float) item.getDouble("distance");
+                                float distance = Float.parseFloat(df.format(dist));
 
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd/MM/yyyy" + ", " + "HH:mm a");
+                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd MMM" + ", " + "HH:mm a");
 
                             //  Changed Time to IST
                                 Date date = dateFormat.parse(createdAt);
