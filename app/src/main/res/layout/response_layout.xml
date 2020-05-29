@@ -51,30 +51,46 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/choice_page_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/product_sans_italic"
-                        android:text="pending/ completed"/>
                     <LinearLayout
-                        android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/choice_page_status_name"
+                            android:id="@+id/choice_page_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12dp"
-                            android:fontFamily="@font/product_sans_regular"/>
+                            android:fontFamily="@font/product_sans_italic"
+                            android:text="pending/ completed"/>
+
                         <TextView
                             android:id="@+id/choicePage_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAlignment="viewEnd"
                             android:text="09:00 AM"/>
+
                     </LinearLayout>
+
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content">-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/choice_page_status_name"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textSize="12dp"-->
+<!--                            android:fontFamily="@font/product_sans_regular"/>-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/choicePage_time"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textAlignment="viewEnd"-->
+<!--                            android:text="09:00 AM"/>-->
+<!--                    </LinearLayout>-->
 
                 </LinearLayout>
 

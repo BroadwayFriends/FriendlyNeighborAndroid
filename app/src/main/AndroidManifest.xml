@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".App"
@@ -19,7 +20,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HistoryPostDetailsActivity"></activity>
         <activity android:name=".KarmaPointsActivity" />
         <activity android:name=".OnboardingActivity" />
         <activity android:name=".HistoryActivity" />
@@ -38,6 +38,7 @@
             android:label="@string/title_activity_pick_location" />
         <activity android:name=".postRequirementActivity" /> <!-- <activity android:name=".SignInUserDetails" /> -->
         <activity android:name=".DiscoverActivity" />
+        <activity android:name=".HistoryPostDetailsActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".RegistrationActivity" />

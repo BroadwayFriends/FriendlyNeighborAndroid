@@ -5,7 +5,8 @@
               android:layout_height="match_parent"
               android:padding="16dp"
               android:orientation="vertical"
-              tools:context=".HistoryPostDetailsActivity">
+              tools:context=".HistoryPostDetailsActivity"
+              android:background="#EEEEEE">
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +34,6 @@
                 android:textSize="24sp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/product_sans_regular"
-                android:textColor="@android:color/black"
                 android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
@@ -63,6 +63,8 @@
             android:text="No responses yet"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        tools:listitem="@layout/history_post_item"
+        tools:itemCount="5"
         android:id="@+id/itemsContainerRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

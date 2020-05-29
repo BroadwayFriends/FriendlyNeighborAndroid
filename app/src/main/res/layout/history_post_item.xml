@@ -8,23 +8,21 @@
     tools:context=".HistoryPostDetailsActivity">
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        app:cardCornerRadius="8dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/history_post_profile_picture"
                 android:layout_margin="4dp"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ppchange"/>
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ppchange"
+                android:scaleType="centerCrop"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,10 +33,8 @@
                     android:id="@+id/history_post_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
+                    android:textSize="18sp"
                     android:fontFamily="@font/product_sans_regular"
-                    android:textColor="#000000"
                     android:padding="4dp"
                     android:text="Item"/>
 
@@ -46,9 +42,8 @@
                     android:id="@+id/history_post_contact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:fontFamily="@font/product_sans_regular"
-                    android:textColor="#000000"
                     android:padding="4dp"
                     android:text="9090909090"/>
 
@@ -56,7 +51,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

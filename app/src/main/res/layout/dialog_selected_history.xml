@@ -40,39 +40,44 @@
             android:weightSum="100"
             android:layout_margin="4dp">
 
-            <Button
-                android:id="@+id/dialog_history_accept_btn"
-                android:textAlignment="textStart"
-                android:drawableLeft="@drawable/ic_check_black_24dp"
-                android:drawableTint="@android:color/white"
+            <ImageButton
+                android:gravity="center_horizontal"
+                android:id="@+id/dialog_history_accept_call"
+                android:src="@drawable/ic_call"
+                android:tint="@android:color/white"
                 android:layout_weight="50"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_green_light"
-                android:text="Accept"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"/>
+                android:layout_marginStart="4dp"
+                android:backgroundTint="#232323"/>
 
-            <Button
-                android:id="@+id/dialog_history_decline_btn"
-                android:textAlignment="textStart"
-                android:drawableLeft="@drawable/ic_close_black_24dp"
-                android:drawableTint="@android:color/white"
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/Black"
+                android:layout_margin="4dp"/>
+
+            <ImageButton
+                android:gravity="center_horizontal"
+                android:id="@+id/dialog_history_accept_message"
+                android:src="@drawable/ic_message"
+                android:tint="@android:color/white"
                 android:layout_weight="50"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:text="Decline"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp" />
+                android:layout_marginStart="4dp"
+                android:backgroundTint="#232323"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/dialog_history_profile_picture"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/ppchange"
