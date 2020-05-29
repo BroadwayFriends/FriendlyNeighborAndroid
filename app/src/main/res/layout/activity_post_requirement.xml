@@ -87,8 +87,8 @@
                 <EditText
                     android:id="@+id/editTextDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/dummy_text"
+                    android:layout_height="50dp"
+                    android:hint="Describe your product"
                     android:fontFamily="@font/product_sans_regular"
                     android:layout_marginTop="2dp"
                     android:layout_marginLeft="5dp"
