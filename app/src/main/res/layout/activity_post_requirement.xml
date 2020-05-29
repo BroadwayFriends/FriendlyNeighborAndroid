@@ -22,16 +22,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <!-- Form Title -->
-        <TextView
-            android:id="@+id/textViewTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Request"
-            android:textSize="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="@font/product_sans_bold"
-            android:textColor="@android:color/black"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Request"
+                android:textSize="40dp"
+                android:fontFamily="@font/product_sans_bold"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/bg_view1"
+            android:layout_height="6dp">
+
+        </View>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -143,7 +155,6 @@
                     android:id="@+id/switchPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:showText="true"
                     android:textOff="No"
                     android:textOn="Yes"/>
                 <!-- Enter Price -->
