@@ -250,6 +250,10 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 JSONObject item = response.getJSONObject(i);
                                 String jsonObjectString = item.toString();
 
+                                if (item.isNull("request")) {
+                                    continue;
+                                }
+
                                 JSONObject requestDets = item.getJSONObject("request");
 
                                 Log.v("Discover", requestDets.toString());
