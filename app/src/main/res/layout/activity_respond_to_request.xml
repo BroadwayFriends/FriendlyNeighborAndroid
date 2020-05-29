@@ -15,13 +15,13 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your Requests"
-            android:textSize="40dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/product_sans_bold"
-            android:textColor="@android:color/black"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your History"
+                android:textSize="40dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/product_sans_bold"
+                android:textColor="@android:color/black"/>
     </LinearLayout>
 
     <View
@@ -53,12 +53,12 @@
         </com.github.ybq.android.spinkit.SpinKitView>
 
         <TextView
-            android:layout_below="@id/choicePage_progress_bar"
-            android:textAlignment="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Please Wait"
-            android:fontFamily="@font/product_sans_regular">
+                android:layout_below="@id/choicePage_progress_bar"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please wait..."
+                android:fontFamily="@font/product_sans_regular">
         </TextView>
 
     </RelativeLayout>
@@ -71,7 +71,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="The area seems to be deserted. Check back later or try increasing your search radius."/>
+            android:text="A little lonely around here, your requests and offerings will show up here. Go ahead and make a new one!"/>
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/choicePage_search_view"
