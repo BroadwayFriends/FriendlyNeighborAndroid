@@ -8,9 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,9 +22,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import me.twodee.friendlyneighbor.service.VolleyUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 //import android.support.v7.app.AppCompatActivity;
 
@@ -39,6 +42,7 @@ public class SignInActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    private static final String TAG = SignInActivity.class.getSimpleName();
 
 
     // RequestQueue For Handle Network Request
@@ -48,7 +52,7 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_sign_in);
 
@@ -100,7 +104,7 @@ public class SignInActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
         try {
             //input your API parameters
-            object.put("idToken",idToken);
+            object.put("idToken", idToken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -110,54 +114,116 @@ public class SignInActivity extends AppCompatActivity {
         // Enter the correct url for your api service site
         String url = getResources().getString(R.string.base_url) + "/api/users/login";
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.w("ServerResponse", response.toString());
+        JsonObjectRequest jsonObjectRequest
+                = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.w("ServerResponse",
+                      response.toString());
 
-                        try {
+                try {
 
 
-                            editor.putString("uid", response.getJSONObject("user").getString("_id"));
+                    editor.putString("uid",
+                                     response.getJSONObject(
+                                             "user").getString(
+                                             "_id"));
 
 //                            editor.putString("uid", response.getJSONObject("user").getString("uid"));
 
-                            editor.putString("_id", response.getJSONObject("user").getString("_id"));
-                            editor.putString("email", response.getJSONObject("user").getString("email"));
-                            editor.putString("name", response.getJSONObject("user").getString("name"));
+                    editor.putString("_id",
+                                     response.getJSONObject(
+                                             "user").getString(
+                                             "_id"));
+                    editor.putString("email",
+                                     response.getJSONObject(
+                                             "user").getString(
+                                             "email"));
+                    editor.putString("name",
+                                     response.getJSONObject(
+                                             "user").getString(
+                                             "name"));
 //                            editor.apply();
-                            boolean committed = editor.commit();
-                            boolean userStatus = response.getBoolean("newUser");
+                    boolean committed = editor.commit();
+                    boolean userStatus = response.getBoolean(
+                            "newUser");
 
-                            if (userStatus == true) {
-                                startActivity(new Intent(SignInActivity.this, RegistrationActivity.class));
-                            } else {
-                                startActivity(new Intent(SignInActivity.this, DashboardActivity.class));
-                            }
-
-                            String idReceived = preferences.getString("_id", null);
-                            String uidReceived = preferences.getString("uid", null);
-                            String emailReceived = preferences.getString("email", null);
-                            String nameReceived = preferences.getString("name", null);
-                            Log.w("SP Status", String.valueOf(committed));
-                            Log.w("Shared Preferences Data", idReceived);
-//                            Log.w("Shared Preferences Data", uidReceived);
-                            Log.w("Shared Preferences Data", emailReceived);
-                            Log.w("Shared Preferences Data", nameReceived);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    if (userStatus == true) {
+                        startActivity(new Intent(
+                                SignInActivity.this,
+                                RegistrationActivity.class));
                     }
-                }, new Response.ErrorListener() {
+                    else {
+
+                        startActivity(new Intent(
+                                SignInActivity.this,
+                                DashboardActivity.class));
+                    }
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+                            task -> updateNotificationToken(task));
+
+                    String idReceived = preferences.getString(
+                            "_id", null);
+                    String uidReceived = preferences.getString(
+                            "uid", null);
+                    String emailReceived = preferences.getString(
+                            "email", null);
+                    String nameReceived = preferences.getString(
+                            "name", null);
+                    Log.w("SP Status",
+                          String.valueOf(committed));
+                    Log.w("Shared Preferences Data",
+                          idReceived);
+//                            Log.w("Shared Preferences Data", uidReceived);
+                    Log.w("Shared Preferences Data",
+                          emailReceived);
+                    Log.w("Shared Preferences Data",
+                          nameReceived);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.w("ServerError", error);;
+                Log.w("ServerError", error);
             }
         });
         requestQueue.add(jsonObjectRequest);
 
+    }
+
+    private void updateNotificationToken(Task<InstanceIdResult> task) {
+        if (!task.isSuccessful()) {
+            Log.w(TAG, "getInstanceId failed", task.getException());
+            return;
+        }
+
+        String token = task.getResult().getToken();
+        String userId = preferences.getString("_id", null);
+        Log.d(TAG, "Updating token for user: " + userId);
+
+        Map<Object, Object> data = new HashMap<>();
+        data.put("userId", userId);
+        data.put("token", token);
+        VolleyUtils.post(getApplicationContext(), getString(R.string.base_url) + "/api/notifications/register",
+                         data,
+                         SignInActivity::listenToResponse,
+                         SignInActivity::listenToError
+        );
+
+
+    }
+
+    private static void listenToError(VolleyError volleyError) {
+        Log.i(TAG, volleyError.toString());
+
+    }
+
+    private static void listenToResponse(JSONObject jsonObject) {
+        Log.d(TAG, "Successful POST!");
+        Log.i(TAG, jsonObject.toString());
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -166,7 +232,7 @@ public class SignInActivity extends AppCompatActivity {
             idToken = account.getIdToken();
             Log.w("ID_TOKEN", idToken);
 
-            Log.w("Sign In Data", idToken.toString());
+            Log.w("Sign In Data", idToken);
 
             postData();
 
@@ -186,7 +252,7 @@ public class SignInActivity extends AppCompatActivity {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account != null) {
+        if (account != null) {
 
             idToken = account.getIdToken();
             Log.w("ID_TOKEN", idToken);
