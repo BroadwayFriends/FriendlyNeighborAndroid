@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         bottomAnim = AnimationUtils.loadAnimation(this, R.anim.splash_bottom_animation);
 
         //Hooks
-        image = findViewById(R.id.imageView);
+//        image = findViewById(R.id.imageView);
         logo = findViewById(R.id.textView);
         slogan = findViewById(R.id.textView2);
 

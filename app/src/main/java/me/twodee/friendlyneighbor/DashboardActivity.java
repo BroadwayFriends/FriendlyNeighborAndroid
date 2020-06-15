@@ -19,6 +19,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +29,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity {
+
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser mCurrentUser;
+
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
+
 
     GoogleSignInClient mGoogleSignInClient;
     Button sign_out;
@@ -38,7 +50,6 @@ public class DashboardActivity extends AppCompatActivity {
     String personName, personEmail;
     ImageView displayImage;
 
-    SharedPreferences preferences;
     private static final String TAG = DashboardActivity.class.getSimpleName();
 
     @Override
@@ -48,6 +59,14 @@ public class DashboardActivity extends AppCompatActivity {
                              WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_dashboard);
+
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+
+
+
         sign_out = findViewById(R.id.sign_out_button);
         nameTV = findViewById(R.id.name);
 //        emailTV = findViewById(R.id.email);
@@ -210,5 +229,18 @@ public class DashboardActivity extends AppCompatActivity {
         };
 
         requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(mCurrentUser == null) {
+            Intent signInIntent = new Intent(DashboardActivity.this, SignInActivity.class);
+            signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(signInIntent);
+            finish();
+        }
     }
 }
