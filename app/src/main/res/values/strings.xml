@@ -1,7 +1,7 @@
 <resources>
 
     <string name="base_url">https://fn.twodee.me</string>
-<!--    <string name="base_url">https://4c985337.ngrok.io</string>-->
+    <!--    <string name="base_url">https://4c985337.ngrok.io</string>-->
 
     <string name="app_name">Friendly Neighbor</string>
     <string name="app_tagline">Not all heroes swing about and shoot webs. The neighborhood\'s mightiest heroes unite here.</string>
@@ -41,4 +41,6 @@
     <string name="notification_channel_id">FN_Notification_Base_CH</string>
     <string name="sp_fcm_token">fcm_token</string>
     <string name="sp_fcm_token_updated">is_fcm_token_set</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

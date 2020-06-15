@@ -3,6 +3,7 @@ package me.twodee.friendlyneighbor;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -32,6 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -198,6 +200,20 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
             updateLocationUI();
 
             mMap = googleMap;
+            try {
+                // Customise the styling of the base map using a JSON object defined
+                // in a raw resource file.
+                boolean success = mMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                                this, R.raw.map_style_json));
+
+                if (!success) {
+                    Log.e("MapsActivityRaw", "Style parsing failed.");
+                }
+            } catch (Resources.NotFoundException e) {
+                Log.e("MapsActivityRaw", "Can't find style.", e);
+            }
+
             mMap.getUiSettings().setZoomControlsEnabled(true);
             if (mLocationPermissionGranted) {
                 final Task locationResult = mFusedLocationProviderClient.getLastLocation();
