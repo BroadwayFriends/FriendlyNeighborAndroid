@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chaos.view.PinView;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -75,9 +76,6 @@ public class OtpActivity extends AppCompatActivity {
         mOtpDesc = (TextView) findViewById(R.id.otp_desc);
         mOtpDesc.setText("We have sent you an OTP" + "\nto " + phone );
         sendVerificationCode(phone);
-
-//        mVerifyBtn.setEnabled(true);
-//        mOtpProgress.setVisibility(View.INVISIBLE);
 
         mVerifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,12 +166,19 @@ public class OtpActivity extends AppCompatActivity {
 
             //storing the verification id that is sent to the user
             mAuthVerificationId = s;
+
+            //Enabling the button
+            mVerifyBtn.setEnabled(true);
+            mOtpProgress.setVisibility(View.INVISIBLE);
         }
     };
 
     private void verifyVerificationCode(String otp) {
         //creating the credential
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
+
+        Log.w("AUTH ID", mAuthVerificationId);
+        Log.w("ENTERED OTP", otp);
 
         //signing the user
         signInWithPhoneAuthCredential(credential);
@@ -186,13 +191,17 @@ public class OtpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //verification successful we will start the profile activity
+                            Log.w("TASK ERROR 1", String.valueOf(task.isSuccessful()));
                             sendUserToHome();
                         } else {
+//                            invalidVerificationCode();
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
-                                mOtpFeedback.setVisibility(View.VISIBLE);
-                                mOtpFeedback.setText("There was an error verifying OTP");
-                                mResendOtp.setVisibility(View.VISIBLE);
+//                                invalidVerificationCode();
+                                Log.w("TASK ERROR 2", String.valueOf(task.isSuccessful()));
+                                Log.w("TASK ERROR 2 EXP", task.getException());
+//                                Log.w("TASK ERROR", FirebaseAuthInvalidCredentialsException.class.toString());
+                                Toast.makeText(OtpActivity.this, "Verification Failed, Invalid credentials", Toast.LENGTH_SHORT).show();
                             }
                         }
                         mOtpProgress.setVisibility(View.INVISIBLE);
@@ -201,12 +210,19 @@ public class OtpActivity extends AppCompatActivity {
                 });
     }
 
+    public void invalidVerificationCode() {
+        mOtpFeedback.setVisibility(View.VISIBLE);
+//        mOtpFeedback.setText("There was an error verifying OTP");
+        mOtpFeedback.setText("Error Message");
+        mResendOtp.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
         if(mCurrentUser != null){
-            sendUserToHome();
+//            sendUserToHome();
         }
     }
 

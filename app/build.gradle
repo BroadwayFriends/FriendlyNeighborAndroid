@@ -107,4 +107,7 @@ dependencies {
 
     //OTP Pin View
     implementation 'com.chaos.view:pinview:1.4.3'
+
+    //Country Code Picker
+    implementation 'com.hbb20:ccp:2.4.0'
 }

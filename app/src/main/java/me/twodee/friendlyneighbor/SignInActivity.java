@@ -38,6 +38,8 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.hbb20.CountryCodePicker;
+
 import me.twodee.friendlyneighbor.service.VolleyUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,10 +55,8 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
 
-    private EditText mCountryCode;
+    private CountryCodePicker mCountryCode;
     private EditText mPhoneNumber;
-
-    private TextView mLoginFeedbackText;
 
     private Button mGenerateOTP;
     private ProgressBar mLoginProgress;
@@ -90,22 +90,20 @@ public class SignInActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
 
-        mCountryCode = (EditText) findViewById(R.id.country_code_text);
+        mCountryCode = (CountryCodePicker) findViewById(R.id.country_code_text);
         mPhoneNumber = (EditText) findViewById(R.id.phone_number_text);
-        mLoginFeedbackText = (TextView) findViewById(R.id.login_form_feedback);
         mGenerateOTP = (Button) findViewById(R.id.generate_btn);
         mLoginProgress = (ProgressBar) findViewById(R.id.login_progress_bar);
 
         mGenerateOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String countryCode = mCountryCode.getText().toString();
+                String countryCode = mCountryCode.getSelectedCountryCodeWithPlus();
                 String phoneNumber = mPhoneNumber.getText().toString();
                 completePhoneNumber = countryCode + "" + phoneNumber;
 
-                if(countryCode.isEmpty() || phoneNumber.isEmpty()) {
-                    mLoginFeedbackText.setText("Please fill in the form to continue.");
-                    mLoginFeedbackText.setVisibility(View.VISIBLE);
+                if(phoneNumber.isEmpty() || phoneNumber.length() < 10) {
+                    mPhoneNumber.setError("Invalid number");
                 } else {
                     mLoginProgress.setVisibility(View.VISIBLE);
                     mGenerateOTP.setEnabled(false);
