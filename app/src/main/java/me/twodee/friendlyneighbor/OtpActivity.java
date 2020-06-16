@@ -66,19 +66,18 @@ public class OtpActivity extends AppCompatActivity {
 
         mOtpText = findViewById(R.id.otp_pin_view);
 
-        mOtpDesc = (TextView) findViewById(R.id.otp_desc);
-        mOtpDesc.setText("We have sent you an OTP" + "\nto " + phone );
-
         mVerifyBtn = findViewById(R.id.verify_btn);
 
         mVerifyBtn.setEnabled(false);
-        mOtpProgress.setVisibility(View.INVISIBLE);
+        mOtpProgress.setVisibility(View.VISIBLE);
 
         phone = getIntent().getStringExtra("PhoneNumber");
+        mOtpDesc = (TextView) findViewById(R.id.otp_desc);
+        mOtpDesc.setText("We have sent you an OTP" + "\nto " + phone );
         sendVerificationCode(phone);
 
-        mVerifyBtn.setEnabled(true);
-        mOtpProgress.setVisibility(View.VISIBLE);
+//        mVerifyBtn.setEnabled(true);
+//        mOtpProgress.setVisibility(View.INVISIBLE);
 
         mVerifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +158,7 @@ public class OtpActivity extends AppCompatActivity {
             mResendOtp.setVisibility(View.VISIBLE);
             mOtpFeedback.setVisibility(View.VISIBLE);
             mOtpProgress.setVisibility(View.INVISIBLE);
+            mVerifyBtn.setEnabled(false);
             Log.w("ERROR MSG", e.getMessage());
         }
 
