@@ -89,7 +89,7 @@ dependencies {
     implementation 'com.github.AppIntro:AppIntro:6.0.0'
 
     // Google analytics
-    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
 
     // Push notifs
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
@@ -102,6 +102,7 @@ dependencies {
     implementation 'com.ibm.mobilefirstplatform.clientsdk.android:core:3.1.7'
     //Bottom Nav
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.2.0'
+    implementation "androidx.fragment:fragment:1.2.5"
     // https://mvnrepository.com/artifact/com.ibm.mobile.foundation/ibmmobilefirstplatformfoundationpush
     //implementation group: 'com.ibm.mobile.foundation', name: 'ibmmobilefirstplatformfoundationpush', version: '8.0.2020022806'
 }

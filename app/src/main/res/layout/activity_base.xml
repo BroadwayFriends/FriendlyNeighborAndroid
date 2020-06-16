@@ -39,6 +39,19 @@
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.496"></FrameLayout>
+        app:layout_constraintVertical_bias="0.496"/>
+
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/mainFrame"-->
+<!--        android:layout_width="381dp"-->
+<!--        android:layout_height="594dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.466"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.496"/>-->
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
