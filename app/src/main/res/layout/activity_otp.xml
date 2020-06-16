@@ -91,8 +91,10 @@
 
 
     <TextView
+        android:layout_margin="32dp"
+        android:textAlignment="center"
         android:id="@+id/otp_form_feedback"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/product_sans_regular"
@@ -125,7 +127,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/product_sans_regular"
-            android:textSize="18sp"
             android:text=" on different phone number"
             android:textColor="@android:color/black" />
 

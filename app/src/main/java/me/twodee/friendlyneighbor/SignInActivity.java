@@ -63,6 +63,10 @@ public class SignInActivity extends AppCompatActivity {
 
     String completePhoneNumber;
 
+    String code;
+
+    String authCred;
+
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
 
@@ -105,55 +109,53 @@ public class SignInActivity extends AppCompatActivity {
                 } else {
                     mLoginProgress.setVisibility(View.VISIBLE);
                     mGenerateOTP.setEnabled(false);
-
-                    PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                            completePhoneNumber,
-                            60,
-                            TimeUnit.SECONDS,
-                            SignInActivity.this,
-                            mCallbacks
-                    );
-
+                    sendUserToOtpVerification();
+//                    PhoneAuthProvider.getInstance().verifyPhoneNumber(
+//                            completePhoneNumber,
+//                            60,
+//                            TimeUnit.SECONDS,
+//                            SignInActivity.this,
+//                            mCallbacks
+//                    );
                 }
 
             }
         });
 
-        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                signInWithPhoneAuthCredential(phoneAuthCredential);
-            }
-
-            @Override
-            public void onVerificationFailed(@NonNull FirebaseException e) {
-                Log.w("PHONE VERIF", "Phone number verification failed on " + completePhoneNumber);
-                mLoginFeedbackText.setText("Verification failed. Please try again.");
-                mLoginFeedbackText.setVisibility(View.VISIBLE);
-                mLoginProgress.setVisibility(View.INVISIBLE);
-                mGenerateOTP.setEnabled(true);
-            }
-
-            @Override
-            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                super.onCodeSent(s, forceResendingToken);
-
-                new android.os.Handler().postDelayed(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                mLoginProgress.setVisibility(View.INVISIBLE);
-                                mGenerateOTP.setEnabled(true);
-                                Intent otpIntent = new Intent(SignInActivity.this, OtpActivity.class);
-                                otpIntent.putExtra("AuthCredentials", s);
-                                otpIntent.putExtra("PhoneNumber", completePhoneNumber);
-                                startActivity(otpIntent);
-                                finish();
-                            }
-                        }
-                , 10000);
-            }
-        };
+//        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+//            @Override
+//            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+//
+//                //Getting the code sent by SMS
+//                code = phoneAuthCredential.getSmsCode();
+//                }
+//
+//            @Override
+//            public void onVerificationFailed(@NonNull FirebaseException e) {
+//                Log.w("PHONE VERIF", "Phone number verification failed on " + completePhoneNumber);
+//                mLoginFeedbackText.setText("Verification failed. Please try again.");
+//                mLoginFeedbackText.setVisibility(View.VISIBLE);
+//                mLoginProgress.setVisibility(View.INVISIBLE);
+//                mGenerateOTP.setEnabled(true);
+//                Log.w("ERROR MSG", e.getMessage());
+//            }
+//
+//            @Override
+//            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+//                super.onCodeSent(s, forceResendingToken);
+//
+//                authCred = s;
+//
+//                new android.os.Handler().postDelayed(
+//                        new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                sendUserToOtpVerification();
+//                            }
+//                        }
+//                , 10000);
+//            }
+//        };
 
 
 //        preferences = getApplicationContext().getSharedPreferences("UserDetails", MODE_PRIVATE);
@@ -171,31 +173,44 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            sendUserToHome();
-                        } else {
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                                mLoginFeedbackText.setVisibility(View.VISIBLE);
-                                mLoginFeedbackText.setText("There was an error verifying OTP");
-                            }
-                        }
-                        mLoginProgress.setVisibility(View.INVISIBLE);
-                        mGenerateOTP.setEnabled(true);
-                    }
-                });
-    }
+//    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            //sendUserToHome();
+//                            sendUserToOtpVerification();
+//                        } else {
+//                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+//                                // The verification code entered was invalid
+//                                mLoginFeedbackText.setVisibility(View.VISIBLE);
+//                                mLoginFeedbackText.setText("There was an error verifying OTP");
+//                            }
+//                        }
+//                        mLoginProgress.setVisibility(View.INVISIBLE);
+//                        mGenerateOTP.setEnabled(true);
+//                    }
+//                });
+//    }
 
     public void sendUserToHome() {
         Intent homeIntent = new Intent(SignInActivity.this, OtpVerifiedActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);
+        finish();
+    }
+
+    public void sendUserToOtpVerification() {
+        mLoginProgress.setVisibility(View.INVISIBLE);
+        mGenerateOTP.setEnabled(true);
+        Intent otpIntent = new Intent(SignInActivity.this, OtpActivity.class);
+//        otpIntent.putExtra("AuthCredentials", authCred);
+//        otpIntent.putExtra("Code", code);
+        otpIntent.putExtra("PhoneNumber", completePhoneNumber);
+        Log.w("PHONE: ", completePhoneNumber);
+        startActivity(otpIntent);
         finish();
     }
 
