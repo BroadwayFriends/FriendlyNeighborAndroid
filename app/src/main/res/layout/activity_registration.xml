@@ -80,15 +80,15 @@
         android:layout_marginTop="5dp">
         <com.google.android.material.textfield.TextInputLayout
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:hint="Name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+            />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -101,15 +101,15 @@
         android:layout_marginTop="5dp">
         <com.google.android.material.textfield.TextInputLayout
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="City">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:hint="Username(min length of 3)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+            />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -119,15 +119,15 @@
         android:layout_marginTop="5dp">
         <com.google.android.material.textfield.TextInputLayout
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="State">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:hint="Email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+            />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Request;
@@ -39,6 +40,7 @@ public class SignInActivity extends AppCompatActivity {
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
     String idToken;
+    Button registerBtn;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -62,7 +64,7 @@ public class SignInActivity extends AppCompatActivity {
 
         //Initializing Views
         signInButton = findViewById(R.id.sign_in_button);
-
+        registerBtn = findViewById(R.id.registerBtn);
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -79,6 +81,10 @@ public class SignInActivity extends AppCompatActivity {
                 signIn();
             }
         });
+    }
+
+    public void registerBtnClick(View v) {
+        startActivity(new Intent(getApplicationContext(),RegistrationActivity.class));
     }
 
     private void signIn() {

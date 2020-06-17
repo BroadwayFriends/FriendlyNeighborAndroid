@@ -19,8 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -38,7 +36,7 @@ import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    EditText address1, searchRadius, city, state, country, pincode, contactNumber;
+    EditText address1, searchRadius, username, email, country, pincode, name;
     Button submitButton,autoFillAddress;
 
     AwesomeValidation awesomeValidation;
@@ -63,23 +61,17 @@ public class RegistrationActivity extends AppCompatActivity {
 
         address1 = findViewById(R.id.addressLine1);
         searchRadius = findViewById(R.id.searchRadius);
-        city = findViewById(R.id.city);
-        state = findViewById(R.id.state);
+        username = findViewById(R.id.username);
+        email = findViewById(R.id.email);
         country = findViewById(R.id.country);
         pincode = findViewById(R.id.pincode);
-        contactNumber = findViewById(R.id.contact);
+        name = findViewById(R.id.name);
         submitButton = findViewById(R.id.submitButton);
 //        autoFillAddress = findViewById(R.id.autoFillAddress);
-        city.setVisibility(View.GONE);
-        state.setVisibility(View.GONE);
         country.setVisibility(View.GONE);
         pincode.setVisibility(View.GONE);
         address1.setFocusable(false);
         address1.setCursorVisible(false);
-        city.setFocusable(false);
-        city.setCursorVisible(false);
-        state.setFocusable(false);
-        state.setCursorVisible(false);
         country.setFocusable(false);
         country.setCursorVisible(false);
         pincode.setFocusable(false);
@@ -95,11 +87,11 @@ public class RegistrationActivity extends AppCompatActivity {
         //Validations
 //        awesomeValidation.addValidation(this, R.id.addressLine1, RegexTemplate.NOT_EMPTY, R.string.invalid_address_1);
 //        awesomeValidation.addValidation(this, R.id.addressLine2, RegexTemplate.NOT_EMPTY, R.string.invalid_address_2);
-        awesomeValidation.addValidation(this, R.id.city, RegexTemplate.NOT_EMPTY, R.string.invalid_city);
-        awesomeValidation.addValidation(this, R.id.state, RegexTemplate.NOT_EMPTY, R.string.invalid_state);
+        awesomeValidation.addValidation(this, R.id.username, "^[a-zA-Z0-9._-]{3,}$", R.string.invalid_username);
+        awesomeValidation.addValidation(this, R.id.email, "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$", R.string.invalid_email);
         awesomeValidation.addValidation(this, R.id.country, RegexTemplate.NOT_EMPTY, R.string.invalid_country);
         awesomeValidation.addValidation(this, R.id.pincode, "[1-9][0-9]{5}$", R.string.invalid_pincode);
-        awesomeValidation.addValidation(this, R.id.contact, "(0/91)?[7-9][0-9]{9}", R.string.invalid_contact_number);
+        awesomeValidation.addValidation(this, R.id.name, "^[\\p{L} .'-]+$", R.string.invalid_name);
 
 
 
@@ -114,11 +106,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 addr1 = address1.getText().toString();
                 addr2 = searchRadius.getText().toString();
-                cty = city.getText().toString();
-                st = state.getText().toString();
                 cntry = country.getText().toString();
                 pc = Integer.parseInt(pincode.getText().toString());
-                cno = contactNumber.getText().toString();
+
 
                 sendRegistrationData();
 
@@ -216,8 +206,6 @@ public class RegistrationActivity extends AppCompatActivity {
 //                    String knownName = addresses.get(0).getFeatureName();
                     Log.v(TAG,"Addr,"+locatedAddressLine1+"City,"+locatedState+"state,"+locatedState+"country,"+locatedCountry+"postalCode,"+locatedPostalCode);
                     address1.setText(locatedAddressLine1);
-                    city.setText(locatedCity);
-                    state.setText(locatedState);
                     country.setText(locatedCountry);
                     pincode.setText(locatedPostalCode);
 

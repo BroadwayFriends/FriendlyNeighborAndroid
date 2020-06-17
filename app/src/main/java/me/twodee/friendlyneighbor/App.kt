@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import net.gotev.uploadservice.BuildConfig
 import net.gotev.uploadservice.UploadServiceConfig
 
 class App : Application() {
