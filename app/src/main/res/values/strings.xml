@@ -26,7 +26,8 @@
     <string name="invalid_email">Please enter a valid email</string>
     <string name="invalid_country">Please enter valid country</string>
     <string name="invalid_pincode">Please enter valid pincode</string>
-    <string name="invalid_name">Double the casing of your name(ex: John Doe)</string>
+    <string name="invalid_fname">First Name cannot be left blank</string>
+    <string name="invalid_lname">Last Name cannot be left blank</string>
     <string name="invalid_address_2">Please enter valid address line 2</string>
     <string name="dummy_text">Out of stock, giving away extra packs etc.
     </string>
