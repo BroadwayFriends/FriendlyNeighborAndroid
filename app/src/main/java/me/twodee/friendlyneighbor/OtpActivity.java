@@ -14,6 +14,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.chaos.view.PinView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,11 +31,18 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
 public class OtpActivity extends AppCompatActivity {
 
+    private static final String TAG = SignInActivity.class.getSimpleName();
+    ;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
 
@@ -60,7 +74,6 @@ public class OtpActivity extends AppCompatActivity {
 //        mAuthVerificationId = getIntent().getStringExtra("AuthCredentials");
 
 
-
         mOtpFeedback = findViewById(R.id.otp_form_feedback);
         mOtpProgress = findViewById(R.id.otp_progress_bar);
 
@@ -74,7 +87,7 @@ public class OtpActivity extends AppCompatActivity {
 
         phone = getIntent().getStringExtra("PhoneNumber");
         mOtpDesc = (TextView) findViewById(R.id.otp_desc);
-        mOtpDesc.setText("We have sent you an OTP" + "\nto " + phone );
+        mOtpDesc.setText("We have sent you an OTP" + "\nto " + phone);
         sendVerificationCode(phone);
 
         mVerifyBtn.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +97,7 @@ public class OtpActivity extends AppCompatActivity {
                 String otp = mOtpText.getText().toString();
                 Log.w("OTP Entered", otp);
 
-                if(otp.isEmpty()){
+                if (otp.isEmpty()) {
 
                     mOtpFeedback.setVisibility(View.VISIBLE);
                     mOtpFeedback.setText("Please fill in the form and try again.");
@@ -191,15 +204,15 @@ public class OtpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //verification successful we will start the profile activity
-                            Log.w("TASK ERROR 1", String.valueOf(task.isSuccessful()));
-                            sendUserToHome();
+                            Log.w("TASK DEBUG ERROR 1", String.valueOf(task.isSuccessful()));
+                            postData();
                         } else {
 //                            invalidVerificationCode();
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
 //                                invalidVerificationCode();
-                                Log.w("TASK ERROR 2", String.valueOf(task.isSuccessful()));
-                                Log.w("TASK ERROR 2 EXP", task.getException());
+                                Log.w("TASK DEBUG ERROR 2", String.valueOf(task.isSuccessful()));
+                                Log.w("TASK DEBUG ERROR 2 EXP", task.getException());
 //                                Log.w("TASK ERROR", FirebaseAuthInvalidCredentialsException.class.toString());
                                 Toast.makeText(OtpActivity.this, "Verification Failed, Invalid credentials", Toast.LENGTH_SHORT).show();
                             }
@@ -218,19 +231,100 @@ public class OtpActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(mCurrentUser != null){
-//            sendUserToHome();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (mCurrentUser != null) {
+////            sendUserToHome();
+//
+//        }
+//    }
 
     public void sendUserToHome() {
-        Intent homeIntent = new Intent(OtpActivity.this, OtpVerifiedActivity.class);
+
+        Log.w("INTENT STATUS", "Sending user to dashboard");
+
+        Intent homeIntent = new Intent(OtpActivity.this, DashboardActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);
         finish();
+    }
+
+    public void sendUserToRegistration() {
+
+        Log.w("INTENT STATUS", "Sending user to registration");
+
+        Intent homeIntent = new Intent(OtpActivity.this, RegistrationActivity.class);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(homeIntent);
+        finish();
+    }
+
+    public void postData() {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JSONObject object = new JSONObject();
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        try {
+            //input your API parameters
+            object.put("_id", currentUserId);
+            object.put("contactNumber", phone);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.w("Sign In Data", object.toString());
+
+        // Enter the correct url for your api service site
+        String url = getResources().getString(R.string.base_url) + "/api/users/login";
+
+        JsonObjectRequest jsonObjectRequest
+                = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.w("ServerResponse",
+                        response.toString());
+
+                try {
+
+                    boolean userStatus = response.getBoolean(
+                            "newUser");
+
+                    if (userStatus == true) {
+                        sendUserToRegistration();
+                    } else {
+                        sendUserToHome();
+                    }
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+                            task -> updateNotificationToken(task));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.w("ServerError", error);
+            }
+        });
+
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void updateNotificationToken(Task<InstanceIdResult> task) {
+        if (!task.isSuccessful()) {
+            Log.w(TAG, "getInstanceId failed", task.getException());
+            return;
+        }
     }
 }

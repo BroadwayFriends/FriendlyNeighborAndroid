@@ -193,6 +193,9 @@ public class SignInActivity extends AppCompatActivity {
 //    }
 
     public void sendUserToHome() {
+
+        Log.w("INTENT STATUS", "Sending user to dashboard");
+
         Intent homeIntent = new Intent(SignInActivity.this, OtpVerifiedActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -201,6 +204,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void sendUserToOtpVerification() {
+
         mLoginProgress.setVisibility(View.INVISIBLE);
         mGenerateOTP.setEnabled(true);
         Intent otpIntent = new Intent(SignInActivity.this, OtpActivity.class);

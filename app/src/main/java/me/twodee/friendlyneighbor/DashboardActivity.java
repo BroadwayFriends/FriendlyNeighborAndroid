@@ -40,7 +40,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-    GoogleSignInClient mGoogleSignInClient;
+//    GoogleSignInClient mGoogleSignInClient;
     Button sign_out;
     TextView nameTV, emailTV;
     LinearLayout editProfileButton;
@@ -120,15 +120,15 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
-                .requestEmail()
-                .build();
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.server_client_id))
+//                .requestEmail()
+//                .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(DashboardActivity.this);
+//        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(DashboardActivity.this);
 //        if (acct != null) {
 //            personName = acct.getDisplayName();
 //            String personGivenName = acct.getGivenName();
@@ -152,12 +152,8 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, task -> {
-                    Toast.makeText(DashboardActivity.this, "Sign out successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(DashboardActivity.this, SignInActivity.class));
-                    finish();
-                });
+        mAuth.signOut();
+        sendUserToLogin();
     }
 
     @Override
@@ -234,13 +230,16 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         if(mCurrentUser == null) {
-            Intent signInIntent = new Intent(DashboardActivity.this, SignInActivity.class);
-            signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(signInIntent);
-            finish();
+            sendUserToLogin();
         }
+    }
+
+    private void sendUserToLogin() {
+        Intent loginIntent = new Intent(DashboardActivity.this, SignInActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+        finish();
     }
 }
