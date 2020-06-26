@@ -82,7 +82,8 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="First Name">
+                android:hint="First Name"
+                android:inputType="textCapSentences">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name"
@@ -103,9 +104,11 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Last Name">
+                android:hint="Last Name"
+                android:inputType="textCapSentences">
 
-            <com.google.android.material.textfield.TextInputEditText
+
+        <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
