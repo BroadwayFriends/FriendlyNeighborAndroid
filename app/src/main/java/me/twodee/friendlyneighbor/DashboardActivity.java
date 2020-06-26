@@ -189,13 +189,16 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 //                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
-                                                                            nameTV.setText(respObj.getString("name"));
+                                                                            nameTV.setText(respObj.getString("firstName"));
 //                        emailTV.setText(respObj.getString("email"));
                                                                             String profilePictureUrl = respObj.getString(
                                                                                     "profilePicture");
-                                                                            Picasso.get().load(
-                                                                                    profilePictureUrl).fit().centerInside().into(
-                                                                                    displayImage);
+
+                                                                                Picasso.get().load(
+                                                                                        profilePictureUrl.isEmpty() ? null : profilePictureUrl).error(R.drawable.ppchange).fit().centerInside().into(
+                                                                                        displayImage);
+
+
 
 //                            editTextUsername.setText(response.getString("name"));
 //                            editTextEmail.setText(response.getString("email"));

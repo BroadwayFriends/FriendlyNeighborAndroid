@@ -54,7 +54,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     AwesomeValidation awesomeValidation;
     private LatLng finalPosition;
-    SharedPreferences preferences;
     int LAUNCH_LOCATION_ACTIVITY = 42;
     Geocoder geocoder;
     List<Address> addresses;
@@ -63,6 +62,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private final String TAG = "regForm";
     private Boolean CHANGED_PICTURE_FLAG = Boolean.FALSE;
     String addr1, addr2, em, uname, fname, lname;
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +118,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 Toast.makeText(RegistrationActivity.this, "Failed", Toast.LENGTH_LONG).show();
             }
         });
+
+        preferences = getApplicationContext().getSharedPreferences("UserDetails", MODE_PRIVATE);
+        editor = preferences.edit();
     }
 
     void sendRegistrationData() {
@@ -123,9 +128,9 @@ public class RegistrationActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
         JSONObject defaultLocation = new JSONObject();
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
-        String userId = preferences.getString("_id", null);
+        String _id = preferences.getString("_id", null);
         try {
-            object.put("id", userId);
+            object.put("_id", _id);
             defaultLocation.put("latitude", finalPosition.latitude);
             defaultLocation.put("longitude", finalPosition.longitude);
             object.put("firstName", fname);
@@ -139,12 +144,65 @@ public class RegistrationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        final String id = preferences.getString("_id", null);
-        String url = "https://5d06b925b30d.ngrok.io" + "/api/users/register";
+//        final String id = preferences.getString("_id", null);
+        String url = getResources().getString(R.string.base_url) + "/api/users/register";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 response -> {
                     Log.w("ServerResponse", response.toString());
+                    try {
+
+                        editor.putString("email",
+                                response.getJSONObject(
+                                        "user").getString(
+                                        "email"));
+                        editor.putString("firstName",
+                                response.getJSONObject(
+                                        "user").getString(
+                                        "firstName"));
+                        editor.putString("lastName",
+                                response.getJSONObject(
+                                        "user").getString(
+                                        "lastName"));
+                        editor.putString("contactNumber",
+                                response.getJSONObject(
+                                        "user").getString(
+                                        "contactNumber"));
+
+                        boolean committed = editor.commit();
+
+                        String idReceived = preferences.getString(
+                                "_id", null);
+                        String emailReceived = preferences.getString(
+                                "email", null);
+                        String firstNameReceived = preferences.getString(
+                                "firstName", null);
+                        String lastNameReceived = preferences.getString(
+                                "lastName", null);
+                        String contactNumberReceived = preferences.getString(
+                                "contactNumber", null);
+
+                        Log.w("SP Status",
+                                String.valueOf(committed));
+                        Log.w("Shared Preferences Data",
+                                idReceived);
+//                            Log.w("Shared Preferences Data", uidReceived);
+                        Log.w("Shared Preferences Data",
+                                emailReceived);
+                        Log.w("Shared Preferences Data",
+                                firstNameReceived);
+                        Log.w("Shared Preferences Data",
+                                lastNameReceived);
+                        Log.w("Shared Preferences Data",
+                                contactNumberReceived);
+
+                        if(response.getBoolean("success")) {
+                            sendUserToHome();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }, error -> {
             Log.w("ServerError", error);
             ;
@@ -156,7 +214,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public Map getHeaders() throws AuthFailureError {
                 HashMap headers = new HashMap();
                 headers.put("Content-Type", "application/json");
-                headers.put("_id", id);
+                headers.put("_id", _id);
                 return headers;
             }
         };
@@ -170,7 +228,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
 
         if (requestCode == LAUNCH_LOCATION_ACTIVITY) {
             try {
@@ -195,5 +252,16 @@ public class RegistrationActivity extends AppCompatActivity {
             }
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public void sendUserToHome() {
+
+        Log.w("INTENT STATUS", "Sending user to dashboard");
+
+        Intent homeIntent = new Intent(RegistrationActivity.this, OnboardingActivity.class);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(homeIntent);
+        finish();
     }
 }

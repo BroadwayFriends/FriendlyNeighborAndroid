@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -62,6 +63,10 @@ public class OtpActivity extends AppCompatActivity {
     private String phone;
 
     private String code;
+
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +137,9 @@ public class OtpActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        preferences = getApplicationContext().getSharedPreferences("UserDetails", MODE_PRIVATE);
+        editor = preferences.edit();
 
     }
 
@@ -298,6 +306,9 @@ public class OtpActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.w("ServerResponse",
                         response.toString());
+
+                editor.putString("_id", currentUserId);
+                editor.commit();
 
                 try {
 

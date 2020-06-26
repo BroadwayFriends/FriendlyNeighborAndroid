@@ -196,7 +196,7 @@ public class SignInActivity extends AppCompatActivity {
 
         Log.w("INTENT STATUS", "Sending user to dashboard");
 
-        Intent homeIntent = new Intent(SignInActivity.this, OtpVerifiedActivity.class);
+        Intent homeIntent = new Intent(SignInActivity.this, DashboardActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);
