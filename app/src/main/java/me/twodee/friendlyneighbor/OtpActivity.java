@@ -109,8 +109,13 @@ public class OtpActivity extends AppCompatActivity {
                     mVerifyBtn.setEnabled(false);
                     verifyVerificationCode(otp);
 
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
-                    signInWithPhoneAuthCredential(credential);
+//                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
+//                    signInWithPhoneAuthCredential(credential);
+
+//                    if(verified)
+//                    {
+//                        postData();
+//                    }
                 }
 
             }
@@ -195,6 +200,11 @@ public class OtpActivity extends AppCompatActivity {
 
         //signing the user
         signInWithPhoneAuthCredential(credential);
+
+//        if(verified)
+//        {
+//            postData();
+//        }
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
