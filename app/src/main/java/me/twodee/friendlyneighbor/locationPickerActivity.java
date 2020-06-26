@@ -4,19 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,7 +55,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
     private Location mLastKnownLocation;
     SeekBar seekbar;
     TextView textViewSeekBar;
-
+    ImageView pin;
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
     private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
@@ -103,6 +101,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         seekbar =(SeekBar)findViewById(R.id.seekBar1);
         textViewSeekBar = findViewById(R.id.textViewSeekBar);
+        pin =  findViewById(R.id.pin);
 //        Toast toast= Toast.makeText(locationPickerActivity.this,"You can change your search distance by seeking",Toast.LENGTH_SHORT) ;
 //        toast.setGravity(Gravity.BOTTOM|Gravity.LEFT, 0, 100);
 //        toast.show();
@@ -263,7 +262,12 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
 
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                if(Integer.toString(progress).equals( "1") || Integer.toString(progress).equals( "0")){
+                                    textViewSeekBar.setText(Integer.toString(progress) + " km");
+                                }
+                                else{
                                 textViewSeekBar.setText(Integer.toString(progress) + " kms");
+                                }
                                 double percent = progress / (double) seekBar.getMax();
                                 int offset = seekBar.getThumbOffset();
                                 int seekWidth = seekBar.getWidth();
@@ -281,6 +285,7 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
                             }
                             @Override
                             public void onStopTrackingTouch(SeekBar seekBar) {
+
                                  circleRadius = 1000 * seekBar.getProgress();
                                 LatLng center = mMap.getCameraPosition().target;
                                 finalPosition = center;
@@ -301,11 +306,22 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
                             @Override
                             public void onCameraMoveStarted(int i) {
                                 mMap.clear();
+                                pin.requestLayout();
+                                pin.getLayoutParams().height = 400;
+                                pin.getLayoutParams().width = 400;
+                                pin.setImageResource(R.drawable.dragpin);
+
+
+
                             }
                         });
                         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                             @Override
                             public void onCameraIdle() {
+                                pin.requestLayout();
+                                pin.getLayoutParams().height = 320;
+                                pin.getLayoutParams().width = 320;
+                                pin.setImageResource(R.drawable.droppin);
                                 LatLng center = mMap.getCameraPosition().target;
                                 Log.d(TAG, "Pinned at" + center);
                                 finalPosition = center;

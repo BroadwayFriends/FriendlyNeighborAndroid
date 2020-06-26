@@ -22,7 +22,7 @@ public class BaseActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
-        TextView textView = findViewById(R.id.textView3);
+
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.pin2, "Discover"))
                 .addItem(new BottomNavigationItem(R.drawable.pin3, "Karma"))
@@ -33,7 +33,8 @@ public class BaseActivity extends AppCompatActivity  {
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         userId = preferences.getString("_id", null);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+
 
 
 
@@ -42,13 +43,13 @@ public class BaseActivity extends AppCompatActivity  {
             public void onTabSelected(int position) {
                 switch (position) {
                     case 0:
-                        textView.setText("First");
+
 
                         break;
 
                     case 1:
-                        textView.setText("Second");
 
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainFrame, new KarmaFragment());
                         ft.addToBackStack(null);
                         ft.commit();
@@ -56,9 +57,11 @@ public class BaseActivity extends AppCompatActivity  {
                         break;
 
                     case 2:
-                        textView.setText("Third");
-                        ft.replace(R.id.mainFrame, new ProfileFragment());
-                        ft.commit();
+
+                        FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
+                        ft1.replace(R.id.mainFrame, new ProfileFragment());
+                        ft1.addToBackStack(null);
+                        ft1.commit();
                         break;
                 }
             }

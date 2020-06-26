@@ -39,12 +39,13 @@
 
             <ImageView
                     android:id="@+id/pin"
-                    android:layout_width="120dp"
-                    android:layout_height="1200dp"
                     android:layout_gravity="center"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:contentDescription="@null"
-                    android:alpha=".70"
-                    android:src="@drawable/pin4"/>
+                    android:alpha="1"/>
+
+<!--                    android:src="@drawable/droppin"/>-->
         </fragment>
         <LinearLayout
             android:layout_width="match_parent"
