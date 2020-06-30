@@ -2,7 +2,7 @@
 
 ![Android CI](https://github.com/BroadwayFriends/FriendlyNeighborAndroid/workflows/Android%20CI/badge.svg)
 
-The Android Application for FriendlyNeighbor. Discoverand ask for help from people in your neighborhood.
+The Android Application for FriendlyNeighbor. Discover and ask for help from people in your neighborhood.
 This is a vanilla Android project written in Java and Kotlin and supports **Android Marshmallow** and above.
 
 Related backend repositories:
