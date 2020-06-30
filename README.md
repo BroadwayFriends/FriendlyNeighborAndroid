@@ -6,8 +6,8 @@ The Android Application for FriendlyNeighbor. Discoverand ask for help from peop
 This is a vanilla Android project written in Java and Kotlin and supports **Android Marshmallow** and above.
 
 Related backend repositories:
-[FriendlyNeighborCore service](https://github.com/2DSharp/FriendlyNeighborCore)
-[FriendlyNeighbor REST Server](https://github.com/agnibha-chatterjee/friendly-neighbor-api)
+- [FriendlyNeighborCore service](https://github.com/2DSharp/FriendlyNeighborCore)
+- [FriendlyNeighbor REST Server](https://github.com/agnibha-chatterjee/friendly-neighbor-api)
 
 ## Installation
 Clone this repository and import into **Android Studio**
