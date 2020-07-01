@@ -45,7 +45,7 @@ public class DashboardActivity extends AppCompatActivity {
     TextView nameTV, emailTV;
     LinearLayout editProfileButton;
 
-    MaterialCardView RequestPage, DiscoverPage, KarmaPage, RespondToPosts;
+    MaterialCardView RequestPage, DiscoverPage, KarmaPage, RespondToPosts,PaymentPage;
     CardView myProfile;
     String personName, personEmail;
     ImageView displayImage;
@@ -72,6 +72,7 @@ public class DashboardActivity extends AppCompatActivity {
 //        emailTV = findViewById(R.id.email);
         editProfileButton = findViewById(R.id.editProfieButton);
         RequestPage = findViewById(R.id.RequestPage);
+        PaymentPage = findViewById(R.id.PaymentPage);
         DiscoverPage = findViewById(R.id.DiscoverPage);
         KarmaPage = findViewById(R.id.KarmaPage);
         myProfile = findViewById(R.id.myProfile);
@@ -105,6 +106,11 @@ public class DashboardActivity extends AppCompatActivity {
 
         RequestPage.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, postRequirementActivity.class);
+            startActivity(intent);
+        });
+
+        PaymentPage.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, BaseActivity.class);
             startActivity(intent);
         });
 
