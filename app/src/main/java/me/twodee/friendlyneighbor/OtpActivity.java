@@ -223,6 +223,7 @@ public class OtpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //verification successful we will start the profile activity
                             Log.w("TASK DEBUG ERROR 1", String.valueOf(task.isSuccessful()));
+//                            sendUserToHome();
                             postData();
                         } else {
 //                            invalidVerificationCode();
