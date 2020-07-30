@@ -1,7 +1,12 @@
 <resources>
 
+
+<!--    <string name="base_url">https://fn.twodee.me</string>-->
+        <string name="base_url">https://8e691779532d.ngrok.io</string>
+
     <string name="base_url">https://fn.twodee.me</string>
     <!--    <string name="base_url">https://4c985337.ngrok.io</string>-->
+
 
     <string name="app_name">Friendly Neighbor</string>
     <string name="app_tagline">Not all heroes swing about and shoot webs. The neighborhood\'s mightiest heroes unite here.</string>
@@ -22,11 +27,12 @@
     <!--    <string name="dateerror">Enter a valid date</string>-->
 
     <string name="invalid_address_1">Please enter valid address line 1</string>
-    <string name="invalid_city">Please enter valid city</string>
-    <string name="invalid_state">Please enter valid state</string>
+    <string name="invalid_username">Please enter a valid username</string>
+    <string name="invalid_email">Please enter a valid email</string>
     <string name="invalid_country">Please enter valid country</string>
     <string name="invalid_pincode">Please enter valid pincode</string>
-    <string name="invalid_contact_number">Please enter valid contact number</string>
+    <string name="invalid_fname">First Name cannot be left blank</string>
+    <string name="invalid_lname">Last Name cannot be left blank</string>
     <string name="invalid_address_2">Please enter valid address line 2</string>
     <string name="dummy_text">Out of stock, giving away extra packs etc.
     </string>

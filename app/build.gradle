@@ -105,4 +105,13 @@ dependencies {
     implementation "androidx.fragment:fragment:1.2.5"
     // https://mvnrepository.com/artifact/com.ibm.mobile.foundation/ibmmobilefirstplatformfoundationpush
     //implementation group: 'com.ibm.mobile.foundation', name: 'ibmmobilefirstplatformfoundationpush', version: '8.0.2020022806'
+
+    //OTP
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
+
+    //OTP Pin View
+    implementation 'com.chaos.view:pinview:1.4.3'
+
+    //Country Code Picker
+    implementation 'com.hbb20:ccp:2.4.0'
 }

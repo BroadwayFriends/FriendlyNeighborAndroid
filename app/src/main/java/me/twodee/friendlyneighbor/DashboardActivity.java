@@ -19,6 +19,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +30,17 @@ import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    GoogleSignInClient mGoogleSignInClient;
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser mCurrentUser;
+
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
+
+
+//    GoogleSignInClient mGoogleSignInClient;
     Button sign_out;
     TextView nameTV, emailTV;
     LinearLayout editProfileButton;
@@ -38,7 +50,6 @@ public class DashboardActivity extends AppCompatActivity {
     String personName, personEmail;
     ImageView displayImage;
 
-    SharedPreferences preferences;
     private static final String TAG = DashboardActivity.class.getSimpleName();
 
     @Override
@@ -48,6 +59,14 @@ public class DashboardActivity extends AppCompatActivity {
                              WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_dashboard);
+
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+
+
+
         sign_out = findViewById(R.id.sign_out_button);
         nameTV = findViewById(R.id.name);
 //        emailTV = findViewById(R.id.email);
@@ -107,15 +126,15 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
-                .requestEmail()
-                .build();
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.server_client_id))
+//                .requestEmail()
+//                .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(DashboardActivity.this);
+//        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(DashboardActivity.this);
 //        if (acct != null) {
 //            personName = acct.getDisplayName();
 //            String personGivenName = acct.getGivenName();
@@ -139,12 +158,8 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, task -> {
-                    Toast.makeText(DashboardActivity.this, "Sign out successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(DashboardActivity.this, SignInActivity.class));
-                    finish();
-                });
+        mAuth.signOut();
+        sendUserToLogin();
     }
 
     @Override
@@ -180,13 +195,16 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 //                        Toast.makeText(DashboardActivity.this, response.getString("name"), Toast.LENGTH_SHORT).show();
-                                                                            nameTV.setText(respObj.getString("name"));
+                                                                            nameTV.setText(respObj.getString("firstName"));
 //                        emailTV.setText(respObj.getString("email"));
                                                                             String profilePictureUrl = respObj.getString(
                                                                                     "profilePicture");
-                                                                            Picasso.get().load(
-                                                                                    profilePictureUrl).fit().centerInside().into(
-                                                                                    displayImage);
+
+                                                                                Picasso.get().load(
+                                                                                        profilePictureUrl.isEmpty() ? null : profilePictureUrl).error(R.drawable.ppchange).fit().centerInside().into(
+                                                                                        displayImage);
+
+
 
 //                            editTextUsername.setText(response.getString("name"));
 //                            editTextEmail.setText(response.getString("email"));
@@ -216,5 +234,21 @@ public class DashboardActivity extends AppCompatActivity {
         };
 
         requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mCurrentUser == null) {
+            sendUserToLogin();
+        }
+    }
+
+    private void sendUserToLogin() {
+        Intent loginIntent = new Intent(DashboardActivity.this, SignInActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+        finish();
     }
 }
