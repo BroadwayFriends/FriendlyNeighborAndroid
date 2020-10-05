@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OtpVerifiedActivity"></activity>
+        <activity android:name=".FragmentTestActivity"></activity>
+        <activity android:name=".OtpVerifiedActivity" />
         <activity android:name=".OtpActivity" />
         <activity android:name=".KarmaPointsActivity" />
         <activity android:name=".OnboardingActivity" />

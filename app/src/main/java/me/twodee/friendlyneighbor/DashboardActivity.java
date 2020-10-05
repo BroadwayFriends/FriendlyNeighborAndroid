@@ -109,7 +109,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         DiscoverPage.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, DiscoverActivity.class);
+            Intent intent = new Intent(DashboardActivity.this, FragmentTestActivity.class);
             startActivity(intent);
         });
 

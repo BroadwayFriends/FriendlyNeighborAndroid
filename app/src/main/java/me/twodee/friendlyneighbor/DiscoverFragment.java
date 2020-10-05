@@ -1,26 +1,27 @@
 package me.twodee.friendlyneighbor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.icu.text.DecimalFormat;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -30,29 +31,60 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
-import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.RoundingMode;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
-public class DiscoverActivity extends AppCompatActivity implements DiscoverDetailsAdapter.OnDiscoverDetailsClickListener {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link DiscoverFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class DiscoverFragment extends Fragment implements DiscoverDetailsAdapter.OnDiscoverDetailsClickListener{
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public DiscoverFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment DiscoverFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static DiscoverFragment newInstance(String param1, String param2) {
+        DiscoverFragment fragment = new DiscoverFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
 
     RecyclerView recyclerView;
     DiscoverDetailsAdapter discoverDetailsAdapter;
@@ -65,35 +97,36 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
-        setContentView(R.layout.activity_discover);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_discover, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+
+        super.onActivityCreated(savedInstanceState);
+        View v = getView();
 
         discoverDetailsList = new ArrayList<>();
 
-        recyclerView = (RecyclerView) findViewById(R.id.discover_recycler_view);
+        recyclerView = (RecyclerView) v.findViewById(R.id.discover_recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        searchView = (SearchView) findViewById(R.id.discover_search_view);
+        searchView = (SearchView) v.findViewById(R.id.discover_search_view);
 
-        preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
-
-//        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
-//        final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
-//        discoverLoadingLayout.setVisibility(View.VISIBLE);
-//
-////        final TextView noUsersTV = (TextView) findViewById(R.id.discover_no_users);
-//
-//        ThreeBounce threeBounce = new ThreeBounce();
-//        progressBar.setIndeterminateDrawable(threeBounce);
-//        progressBar.setVisibility(View.VISIBLE);
-
-
-
+        preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
 
         //Adding dummy static data
         discoverDetailsList.add(
@@ -186,7 +219,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                         700,
                         null));
 
-        discoverDetailsAdapter = new DiscoverDetailsAdapter(this, discoverDetailsList, this);
+        discoverDetailsAdapter = new DiscoverDetailsAdapter(getActivity(), discoverDetailsList, this);
         recyclerView.setAdapter(discoverDetailsAdapter);
 
 
@@ -207,23 +240,25 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                 return false;
             }
         });
+
     }
 
     void loadDiscoverData() {
 
+        View v = getView();
 
         recyclerView.setVisibility(View.GONE);
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.discover_progress_bar);
-        final FrameLayout discoverLoadingLayout  = (FrameLayout) findViewById(R.id.progress_view);
+        final ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.discover_progress_bar);
+        final FrameLayout discoverLoadingLayout  = (FrameLayout) v.findViewById(R.id.progress_view);
         discoverLoadingLayout.setVisibility(View.VISIBLE);
 
-        final TextView noUsersTV = (TextView) findViewById(R.id.discover_no_users);
+        final TextView noUsersTV = (TextView) v.findViewById(R.id.discover_no_users);
 
         ThreeBounce threeBounce = new ThreeBounce();
         progressBar.setIndeterminateDrawable(threeBounce);
         progressBar.setVisibility(View.VISIBLE);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
         String id = preferences.getString("_id", null);
 //        String userId = preferences.getString("uid", null);
 
@@ -284,7 +319,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                 SimpleDateFormat timeExtract = new SimpleDateFormat("dd MMM" + ", " + "HH:mm a");
 
-                            //  Changed Time to IST
+                                //  Changed Time to IST
                                 Date date = dateFormat.parse(createdAt);
 //                                timeExtract.setTimeZone(TimeZone.getTimeZone("IST"));
                                 String time = timeExtract.format(date.getTime());
@@ -302,7 +337,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                                 discoverDetailsList.add(discoverDetails);
                             }
 
-                            discoverDetailsAdapter = new DiscoverDetailsAdapter(DiscoverActivity.this, discoverDetailsList, DiscoverActivity.this);
+                            discoverDetailsAdapter = new DiscoverDetailsAdapter(getActivity().getApplicationContext(), discoverDetailsList, DiscoverFragment.this::onDiscoverDetailsClick);
                             recyclerView.setAdapter(discoverDetailsAdapter);
 //                            recyclerView.setVisibility(View.VISIBLE);
 
@@ -320,7 +355,7 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
                         discoverLoadingLayout.setVisibility(View.GONE);
 
                         Log.w("RESPONSE ERROR", error);
-                        Toast.makeText(DiscoverActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -339,37 +374,18 @@ public class DiscoverActivity extends AppCompatActivity implements DiscoverDetai
     public void onDiscoverDetailsClick(int position) {
 
         discoverDetailsList.get(position);
-        Intent intent = new Intent(this, PostDetailsActivity.class);
+        Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
         DiscoverDetails selectedDiscoverDetails = discoverDetailsList.get(position);
-        
+
         String selectedJsonString = selectedDiscoverDetails.getDiscoverJsonResponse();
-        
+
 //        Boolean responded = null;
 //        responded = "false";
 
         intent.putExtra("jsonString", selectedJsonString);
-        
+
         startActivityForResult(intent, 1);
 
         Log.w("Clicker Checker", String.valueOf(position));
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                discoverDetailsList.clear();
-                loadDiscoverData();
-            }
-        }
-    }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        discoverDetailsList.clear();
-//        loadDiscoverData();
-//    }
 }
