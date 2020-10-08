@@ -10,8 +10,11 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -21,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -152,8 +156,9 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     private void signOut() {
-        mAuth.signOut();
-        sendUserToLogin();
+//        mAuth.signOut();
+        postData();
+//        sendUserToLogin();
     }
 
     @Override
@@ -245,4 +250,73 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(loginIntent);
         finish();
     }
+
+    public void postData() {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JSONObject object = new JSONObject();
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        try {
+            //input your API parameters
+            object.put("_id", currentUserId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.w("Sign Out Data", object.toString());
+
+        // Enter the correct url for your api service site
+        String url = getResources().getString(R.string.base_url) + "/api/users/logout";
+
+        JsonObjectRequest jsonObjectRequest
+                = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.w("ServerResponse",
+                        response.toString());
+
+//                editor.putString("_id", currentUserId);
+//                editor.commit();
+
+                try {
+
+                    boolean success = response.getBoolean("success");
+
+//                    boolean userStatus = response.getBoolean("newUser");
+
+                    if (success == true) {
+                        mAuth.signOut();
+                        sendUserToLogin();
+                        Toast.makeText(getApplicationContext(), "Signed-out successfully", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else {
+                        Toast.makeText(getApplicationContext(), "Problem in signing-out", Toast.LENGTH_SHORT).show();
+                    }
+
+//                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+//                            task -> updateNotificationToken(task));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.w("ServerError", error);
+                Toast.makeText(getApplicationContext(), "Problem in signing-out", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
 }
