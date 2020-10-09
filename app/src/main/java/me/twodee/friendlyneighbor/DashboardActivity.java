@@ -293,6 +293,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
 
                     else {
+                        mAuth.signOut();
                         Toast.makeText(getApplicationContext(), "Problem in signing-out", Toast.LENGTH_SHORT).show();
                     }
 

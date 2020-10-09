@@ -330,6 +330,7 @@ public class OtpActivity extends AppCompatActivity {
                     boolean userStatus = response.getBoolean("newUser");
 
                     if (isAlreadySignedIn == true) {
+                        FirebaseAuth.getInstance().signOut();
                         Toast.makeText(getApplicationContext(), "You are already signed-in in another device.", Toast.LENGTH_SHORT).show();
                     }
 
