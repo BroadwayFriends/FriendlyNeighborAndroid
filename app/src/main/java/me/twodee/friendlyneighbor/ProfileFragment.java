@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment {
     private Boolean UPDATE_FLAG = Boolean.FALSE;
     private LatLng finalPosition;
     private List<Address> addresses;
-    private String changedEmail, changedPhone, changedLocation, changedUsername, changedRadius;
+    private String changedEmail, changedPhone, changedLocation, changedUsername, changedRadius,address;
     private  String baseUrl,visitReason ;
     private Uri mCropImageUri;
 
@@ -465,7 +465,7 @@ public class ProfileFragment extends Fragment {
 
         JSONObject object = new JSONObject();
         JSONObject defaultLocation = new JSONObject();
-        JSONObject address = new JSONObject();
+//        JSONObject address = new JSONObject();
 
         changedUsername = editTextUsername.getText().toString();
         changedEmail = editTextEmail.getText().toString();
@@ -477,11 +477,12 @@ public class ProfileFragment extends Fragment {
 
             defaultLocation.put("latitude", finalPosition.latitude);
             defaultLocation.put("longitude", finalPosition.longitude);
-            address.put("addr",locatedAddressLine1);
-            address.put("state",locatedState);
-            address.put("city",locatedCity);
-            address.put("pincode",locatedPostalCode);
-            address.put("country",locatedCountry);
+            address = locatedAddressLine1;
+//            address.put("addr",locatedAddressLine1);
+//            address.put("state",locatedState);
+//            address.put("city",locatedCity);
+//            address.put("pincode",locatedPostalCode);
+//            address.put("country",locatedCountry);
 
             object.put("id", userId);
             object.put("name", changedUsername);
