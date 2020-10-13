@@ -124,7 +124,7 @@ public class ProfileFragment extends Fragment {
 
 
         HashMap<String,String> userData = ((BaseActivity)getActivity()).passDataToFrags();
-        userId = userData.get("_id");
+        userId = userData.get("userId");
 
 
         if(visitReason.equals("edit")){
@@ -386,7 +386,7 @@ public class ProfileFragment extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JSONObject object = new JSONObject();
 
-//        String userId =  "5ec7e4eddb059c13762d643f" ;
+//        String userId =  "z0qJJu5cdBdJ6UnQe9pO86yuJAJ2" ;
         try {
             object.put("_id", userId);
 
@@ -399,11 +399,12 @@ public class ProfileFragment extends Fragment {
                 response -> {
                     Log.w("FETCH DATA", response.toString());
 
+
                     try {
                         JSONObject respObj = new JSONObject(response.getString("user"));
                         String profilePictureUrl =  respObj.getString("profilePicture");
-                        Picasso.get().load(profilePictureUrl).fit().centerInside().into(displayImage);
-                        editTextUsername.setText(respObj.getString("name"));
+                        Picasso.get().load(profilePictureUrl.isEmpty() ? null : profilePictureUrl).error(R.drawable.ppchange).fit().centerInside().into(displayImage);
+                        editTextUsername.setText(respObj.getString("username"));
                         editTextEmail.setText(respObj.getString("email"));
                         editTextPhone.setText(respObj.getString("contactNumber"));
                         editTextRadius.setText(respObj.getString("defaultSearchRadius"));
@@ -423,8 +424,8 @@ public class ProfileFragment extends Fragment {
                         Log.v(TAG,address);
                         try {
 
-                            JSONObject obj = new JSONObject(address);
-                            String addr = obj.getString("addr");
+//                            JSONObject obj = new JSONObject(address);
+                            String addr = respObj.getString("address");
                             editTextLocation.setText(addr);
 
 
@@ -434,7 +435,7 @@ public class ProfileFragment extends Fragment {
                         }
 
 
-                        textViewName.setText(respObj.getString("name"));
+                        textViewName.setText(respObj.getString("username"));
 //                            editTextLocation.setText(response.getString("defaultLocation"));
 
                     } catch (JSONException e) {
