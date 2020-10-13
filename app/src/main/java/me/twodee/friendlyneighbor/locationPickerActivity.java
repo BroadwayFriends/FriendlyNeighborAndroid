@@ -223,7 +223,9 @@ public class locationPickerActivity extends AppCompatActivity implements OnMapRe
                     {
                         LatLng loc = mDefaultLocation;
 
-                        if (task.isSuccessful() && task.getResult() != null) {
+//                        if (task.isSuccessful() && task.getResult() != null)
+                        if (task.isSuccessful() )
+                        {
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = (Location) task.getResult();
 
