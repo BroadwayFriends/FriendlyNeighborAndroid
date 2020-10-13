@@ -3,6 +3,7 @@ package me.twodee.friendlyneighbor
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -33,8 +34,9 @@ class   imageUploadActivity : AppCompatActivity() {
         // Choose the number which is good for you, here I'll use a random one.
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
-        const val baseUrl = "https://fn.twodee.me/api/requests"
-//        const val baseUrl = "https://b657c8e0.ngrok.io/api/requests"
+//        const val baseUrl = "https://fn.twodee.me/api/requests"
+        const val baseUrl = "https://662985464899.ngrok.io/api/requests"
+//        val baseUrl = Resources.getSystem().getString(R.string.base_url) + "/api/requests"
 //
         var image1: Uri = Uri.EMPTY
         var image2: Uri = Uri.EMPTY
