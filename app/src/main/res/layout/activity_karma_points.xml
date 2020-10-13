@@ -71,5 +71,9 @@
             app:lottie_rawRes="@raw/kpointsanim"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"/>
+
+
     </LinearLayout>
+
+
 </LinearLayout>
