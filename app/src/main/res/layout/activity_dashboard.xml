@@ -219,7 +219,7 @@
                     android:layout_height="80dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@drawable/karma" />
+                    app:srcCompat="@drawable/ic_karma" />
 
             </RelativeLayout>
 
@@ -254,7 +254,7 @@
                     android:layout_height="80dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@drawable/discover" />
+                    android:src="@drawable/ic_discover" />
 
             </RelativeLayout>
 
@@ -300,7 +300,7 @@
                     android:layout_height="80dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@drawable/request" />
+                    android:src="@drawable/ic_request" />
 
             </RelativeLayout>
 
@@ -335,7 +335,7 @@
                     android:layout_height="80dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@drawable/history" />
+                    android:src="@drawable/ic_history" />
 
             </RelativeLayout>
 
@@ -382,7 +382,7 @@
                     android:layout_height="80dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@drawable/payment" />
+                    android:src="@drawable/ic_payment" />
 
             </RelativeLayout>
 
@@ -415,7 +415,7 @@
                     android:layout_height="80dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@drawable/feedback" />
+                    android:src="@drawable/ic_feedback" />
 
             </RelativeLayout>
 
