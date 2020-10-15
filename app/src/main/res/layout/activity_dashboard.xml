@@ -384,6 +384,7 @@
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_payment" />
 
+
             </RelativeLayout>
 
         </com.google.android.material.card.MaterialCardView>
