@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/otpimage" />
+        app:srcCompat="@drawable/ic_otpimage" />
 
     <TextView
         android:id="@+id/otp_title"
