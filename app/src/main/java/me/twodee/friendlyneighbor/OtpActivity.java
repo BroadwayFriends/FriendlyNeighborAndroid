@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,12 +39,13 @@ import com.google.firebase.iid.InstanceIdResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class OtpActivity extends AppCompatActivity {
 
     private static final String TAG = SignInActivity.class.getSimpleName();
-    ;
+//    private static final java.util.UUID UUID = java.util.UUID.randomUUID();
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
 
@@ -64,6 +66,8 @@ public class OtpActivity extends AppCompatActivity {
 
     private String code;
 
+    private String uuid;
+
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -77,6 +81,13 @@ public class OtpActivity extends AppCompatActivity {
         mCurrentUser = mAuth.getCurrentUser();
 
 //        mAuthVerificationId = getIntent().getStringExtra("AuthCredentials");
+
+//        uuid = UUID.toString();
+
+        uuid = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        Log.w("UUID", uuid);
+
 
 
         mOtpFeedback = findViewById(R.id.otp_form_feedback);
@@ -292,6 +303,7 @@ public class OtpActivity extends AppCompatActivity {
             //input your API parameters
             object.put("_id", currentUserId);
             object.put("contactNumber", phone);
+            object.put("uuid", uuid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -313,14 +325,23 @@ public class OtpActivity extends AppCompatActivity {
 
                 try {
 
-                    boolean userStatus = response.getBoolean(
-                            "newUser");
+                    boolean isAlreadySignedIn = response.getBoolean("isAlreadySignedIn");
 
-                    if (userStatus == true) {
-                        sendUserToRegistration();
-                    } else {
-                        sendUserToHome();
+                    boolean userStatus = response.getBoolean("newUser");
+
+                    if (isAlreadySignedIn == true) {
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(getApplicationContext(), "You are already signed-in in another device.", Toast.LENGTH_SHORT).show();
                     }
+
+                    else {
+                        if (userStatus == true) {
+                            sendUserToRegistration();
+                        } else {
+                            sendUserToHome();
+                        }
+                    }
+
                     FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
                             task -> updateNotificationToken(task));
 

@@ -44,6 +44,10 @@ public class BaseActivity extends AppCompatActivity  {
                 switch (position) {
                     case 0:
 
+                        FragmentTransaction ft0 = getSupportFragmentManager().beginTransaction();
+                        ft0.replace(R.id.mainFrame, new DiscoverFragment());
+                        ft0.addToBackStack(null);
+                        ft0.commit();
 
                         break;
 

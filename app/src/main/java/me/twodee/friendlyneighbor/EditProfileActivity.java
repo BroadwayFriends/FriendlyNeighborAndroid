@@ -435,7 +435,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         JSONObject object = new JSONObject();
         JSONObject defaultLocation = new JSONObject();
-        JSONObject address = new JSONObject();
+//        JSONObject address = new JSONObject();
 
         String userId = preferences.getString("_id", null);
         changedUsername = editTextUsername.getText().toString();
@@ -448,12 +448,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
             defaultLocation.put("latitude", finalPosition.latitude);
             defaultLocation.put("longitude", finalPosition.longitude);
-            address.put("addr",locatedAddressLine1);
-            address.put("state",locatedState);
-            address.put("city",locatedCity);
-            address.put("pincode",locatedPostalCode);
-            address.put("country",locatedCountry);
-
+//            address.put("addr",locatedAddressLine1);
+//            address.put("state",locatedState);
+//            address.put("city",locatedCity);
+//            address.put("pincode",locatedPostalCode);
+//            address.put("country",locatedCountry);
+            String address = locatedAddressLine1;
             object.put("id", userId);
             object.put("name", changedUsername);
 //            object.put("email", changedEmail);

@@ -7,9 +7,7 @@
     android:padding="16dp"
     tools:context=".KarmaFragment">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".KarmaPointsActivity"
@@ -51,6 +49,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp">
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Karma" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,6 +64,7 @@
                     android:text="Your Balance"
                     android:fontFamily="@font/product_sans_bold"/>
                 <TextView
+                    android:id = "@+id/currentKarmaValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#ffd600"
