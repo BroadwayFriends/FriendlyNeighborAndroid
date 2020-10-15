@@ -188,7 +188,7 @@
                             android:id="@+id/postDetails_profile_picture"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:src="@drawable/akhil"
+                            android:src="@drawable/ic_ppchange"
                             android:scaleType="centerCrop"/>
                     </com.google.android.material.card.MaterialCardView>
                     <LinearLayout
