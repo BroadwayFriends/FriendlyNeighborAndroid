@@ -84,7 +84,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ppchange" />
+                android:src="@drawable/ic_ppchange" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
