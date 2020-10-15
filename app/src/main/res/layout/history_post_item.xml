@@ -21,7 +21,7 @@
                 android:layout_margin="4dp"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/ppchange"
+                android:src="@drawable/ic_ppchange"
                 android:scaleType="centerCrop"/>
 
             <LinearLayout

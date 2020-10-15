@@ -75,7 +75,7 @@ public class DashboardActivity extends AppCompatActivity {
         PaymentPage = findViewById(R.id.PaymentPage);
         DiscoverPage = findViewById(R.id.DiscoverPage);
         KarmaPage = findViewById(R.id.KarmaPage);
-        myProfile = findViewById(R.id.myProfile);
+        //myProfile = findViewById(R.id.myProfile);
         RespondToPosts = findViewById(R.id.RespondToPosts);
         displayImage = findViewById(R.id.displayImage);
 //        emailTV.setVisibility(View.GONE);
@@ -201,7 +201,7 @@ public class DashboardActivity extends AppCompatActivity {
                                                                                     "profilePicture");
 
                                                                                 Picasso.get().load(
-                                                                                        profilePictureUrl.isEmpty() ? null : profilePictureUrl).error(R.drawable.ppchange).fit().centerInside().into(
+                                                                                        profilePictureUrl.isEmpty() ? null : profilePictureUrl).error(R.drawable.ic_ppchange).fit().centerInside().into(
                                                                                         displayImage);
 
 
