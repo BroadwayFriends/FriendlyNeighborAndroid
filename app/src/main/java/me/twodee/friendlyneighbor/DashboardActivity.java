@@ -46,7 +46,7 @@ public class DashboardActivity extends AppCompatActivity {
     LinearLayout editProfileButton;
 
     MaterialCardView RequestPage, DiscoverPage, KarmaPage, RespondToPosts,PaymentPage;
-    CardView myProfile;
+    LinearLayout myProfile;
     String personName, personEmail;
     ImageView displayImage;
 
@@ -75,7 +75,7 @@ public class DashboardActivity extends AppCompatActivity {
         PaymentPage = findViewById(R.id.PaymentPage);
         DiscoverPage = findViewById(R.id.DiscoverPage);
         KarmaPage = findViewById(R.id.KarmaPage);
-        //myProfile = findViewById(R.id.myProfile);
+        myProfile = findViewById(R.id.linearLayout4);
         RespondToPosts = findViewById(R.id.RespondToPosts);
         displayImage = findViewById(R.id.displayImage);
 //        emailTV.setVisibility(View.GONE);

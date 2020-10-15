@@ -65,7 +65,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:tint="#191919"
-                    android:src="@drawable/round_arrow_back_ios_black_18dp" />
+                    android:src="@drawable/ic_arrow_back" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:tint="#000"
-                    android:src="@drawable/round_edit_black_18dp"
+                    android:src="@drawable/ic_edit"
                     android:layout_marginTop="0dp"/>
 
                 <TextView

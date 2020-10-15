@@ -51,7 +51,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/round_arrow_back_ios_black_18dp"
+            android:src="@drawable/ic_arrow_back"
             android:tint="#191919" />
 
         <TextView
@@ -102,7 +102,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginTop="0dp"
-                android:src="@drawable/round_edit_black_18dp"
+                android:src="@drawable/ic_edit"
                 android:tint="#000" />
 
             <TextView

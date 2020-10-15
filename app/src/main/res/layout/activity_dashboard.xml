@@ -133,7 +133,7 @@
                 <ImageView
                     android:layout_width="12dp"
                     android:layout_height="12dp"
-                    android:src="@drawable/round_edit_black_18dp"
+                    android:src="@drawable/ic_edit"
                     android:tint="#FFFFFF" />
 
                 <TextView
