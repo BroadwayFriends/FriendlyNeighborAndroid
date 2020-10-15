@@ -129,101 +129,101 @@ public class DiscoverFragment extends Fragment implements DiscoverDetailsAdapter
         preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
 
         //Adding dummy static data
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Maggi",
-                        "Request",
-                        "Akhil",
-                        "10:00 PM",
-                        100,
-                        null));
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Maggi",
+//                        "Request",
+//                        "Akhil",
+//                        "10:00 PM",
+//                        100,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Saabun",
+//                        "Giveaway",
+//                        "Agni",
+//                        "09:00 PM",
+//                        270,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Kitaab",
+//                        "Giveaway",
+//                        "Dediyaman",
+//                        "07:00 AM",
+//                        100.5f,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Hathoda",
+//                        "Request",
+//                        "Ritwik",
+//                        "5:30 PM",
+//                        87.8f,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Torch",
+//                        "Giveaway",
+//                        "Priyam",
+//                        "10:10 AM",
+//                        700,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Banyaan",
+//                        "Request",
+//                        "Akhil",
+//                        "10:00 PM",
+//                        100,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Mouse",
+//                        "Giveaway",
+//                        "Agni",
+//                        "09:00 PM",
+//                        270,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Eldoper",
+//                        "Giveaway",
+//                        "Dediyaman",
+//                        "07:00 AM",
+//                        100.5f,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Ande",
+//                        "Request",
+//                        "Ritwik",
+//                        "5:30 PM",
+//                        87.8f,
+//                        null));
+//
+//        discoverDetailsList.add(
+//                new DiscoverDetails(
+//                        "Jumping wire",
+//                        "Giveaway",
+//                        "Priyam",
+//                        "10:10 AM",
+//                        700,
+//                        null));
+//
+//        discoverDetailsAdapter = new DiscoverDetailsAdapter(getActivity(), discoverDetailsList, this);
+//        recyclerView.setAdapter(discoverDetailsAdapter);
 
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Saabun",
-                        "Giveaway",
-                        "Agni",
-                        "09:00 PM",
-                        270,
-                        null));
 
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Kitaab",
-                        "Giveaway",
-                        "Dediyaman",
-                        "07:00 AM",
-                        100.5f,
-                        null));
-
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Hathoda",
-                        "Request",
-                        "Ritwik",
-                        "5:30 PM",
-                        87.8f,
-                        null));
-
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Torch",
-                        "Giveaway",
-                        "Priyam",
-                        "10:10 AM",
-                        700,
-                        null));
-
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Banyaan",
-                        "Request",
-                        "Akhil",
-                        "10:00 PM",
-                        100,
-                        null));
-
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Mouse",
-                        "Giveaway",
-                        "Agni",
-                        "09:00 PM",
-                        270,
-                        null));
-
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Eldoper",
-                        "Giveaway",
-                        "Dediyaman",
-                        "07:00 AM",
-                        100.5f,
-                        null));
-
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Ande",
-                        "Request",
-                        "Ritwik",
-                        "5:30 PM",
-                        87.8f,
-                        null));
-
-        discoverDetailsList.add(
-                new DiscoverDetails(
-                        "Jumping wire",
-                        "Giveaway",
-                        "Priyam",
-                        "10:10 AM",
-                        700,
-                        null));
-
-        discoverDetailsAdapter = new DiscoverDetailsAdapter(getActivity(), discoverDetailsList, this);
-        recyclerView.setAdapter(discoverDetailsAdapter);
-
-
-//        loadDiscoverData();
+        loadDiscoverData();
 
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
