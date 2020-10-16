@@ -373,7 +373,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     try {
                         JSONObject respObj = new JSONObject(response.getString("user"));
                         String profilePictureUrl =  respObj.getString("profilePicture");
-                        Picasso.get().load(profilePictureUrl.isEmpty() ? null : profilePictureUrl).error(R.drawable.ppchange).fit().centerInside().into(displayImage);
+                        Picasso.get().load(profilePictureUrl.isEmpty() ? null : profilePictureUrl).error(R.drawable.ic_ppchange).fit().centerInside().into(displayImage);
                         editTextUsername.setText(respObj.getString("username"));
                         editTextEmail.setText(respObj.getString("email"));
                         editTextPhone.setText(respObj.getString("contactNumber"));

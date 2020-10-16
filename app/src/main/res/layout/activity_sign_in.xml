@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/gift" />
+        app:srcCompat="@drawable/launcher_foreground" />
 
     <TextView
         android:id="@+id/login_title"

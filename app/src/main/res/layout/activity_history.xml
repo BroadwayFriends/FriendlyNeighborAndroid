@@ -90,7 +90,7 @@
                                 <ImageView
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
-                                    android:src="@drawable/akhil"
+                                    android:src="@drawable/ic_ppchange"
                                     android:scaleType="centerCrop"/>
                             </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
@@ -110,7 +110,7 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/star"/>
+                                    android:src="@drawable/ic_star"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -276,7 +276,7 @@
                                 <ImageView
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
-                                    android:src="@drawable/akhil"
+                                    android:src="@drawable/ic_ppchange"
                                     android:scaleType="centerCrop"/>
                             </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
@@ -296,7 +296,7 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/star"/>
+                                    android:src="@drawable/ic_star"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -462,7 +462,7 @@
                                 <ImageView
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
-                                    android:src="@drawable/akhil"
+                                    android:src="@drawable/ic_ppchange"
                                     android:scaleType="centerCrop"/>
                             </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
@@ -482,7 +482,7 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/star"/>
+                                    android:src="@drawable/ic_star"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

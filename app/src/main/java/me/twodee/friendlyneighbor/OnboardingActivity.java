@@ -60,9 +60,9 @@ public class OnboardingActivity extends AppCompatActivity {
         // fill list screen
 
         final List<ScreenItem> mList = new ArrayList<>();
-        mList.add(new ScreenItem("Request","Need a screwdriver and the shops are closed? Bought an extra pack of eggs and want to sell them? Make a new request or an offer and find people in your area who can match your needs!",R.drawable.img2));
-        mList.add(new ScreenItem("Discover","Check out what's going on in one stop. Delivered live right to your discover, you can check out what people are buying and selling in your area.",R.drawable.img1));
-        mList.add(new ScreenItem("Collect","Find out the best response to your offering or request and meet them up at your convenience. We make sure they are close enough to your place so you don't have to hire a delivery agency. Use your legs or your webs to swing by.",R.drawable.img3));
+        mList.add(new ScreenItem("Request","Need a screwdriver and the shops are closed? Bought an extra pack of eggs and want to sell them? Make a new request or an offer and find people in your area who can match your needs!",R.drawable.ic_img2));
+        mList.add(new ScreenItem("Discover","Check out what's going on in one stop. Delivered live right to your discover, you can check out what people are buying and selling in your area.",R.drawable.ic_img1));
+        mList.add(new ScreenItem("Collect","Find out the best response to your offering or request and meet them up at your convenience. We make sure they are close enough to your place so you don't have to hire a delivery agency. Use your legs or your webs to swing by.",R.drawable.ic_img3));
 
         // setup viewpager
         screenPager =findViewById(R.id.screen_viewpager);
