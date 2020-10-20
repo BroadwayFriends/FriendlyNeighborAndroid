@@ -115,6 +115,7 @@ public class postRequirementActivity extends AppCompatActivity {
         editTextAddress.setVisibility(View.GONE);
         editTextDistance.setVisibility(View.GONE);
         editTextDate.setCursorVisible(false);
+        editTextDate.setShowSoftInputOnFocus(false);
         editTextPhone.setFocusable(false);
         editTextPhone.setCursorVisible(false);
         buttonSubmit = findViewById(R.id.buttonSubmit);
