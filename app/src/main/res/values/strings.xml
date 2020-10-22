@@ -1,7 +1,7 @@
 <resources>
 
 <!--        <string name="base_url">https://fn.twodee.me</string>-->
-    <string name="base_url">https://fbb679ac761f.ngrok.io</string>
+    <string name="base_url">https://7ca4c2765246.ngrok.io</string>
 
 
     <string name="app_name">Friendly Neighbor</string>
