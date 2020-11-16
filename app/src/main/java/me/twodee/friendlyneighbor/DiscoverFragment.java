@@ -307,7 +307,7 @@ public class DiscoverFragment extends Fragment implements DiscoverDetailsAdapter
 
                                 // Get the current student (json object) data
                                 String title = requestDets.getString("title");
-                                String person = requestDets.getJSONObject("requestedBy").getString("name");
+                                String person = requestDets.getJSONObject("requestedBy").getString("firstName");
                                 String createdAt = requestDets.getString("createdAt");
                                 float cost = (float) requestDets.getInt("cost");
                                 String type = requestDets.getString("requestType");

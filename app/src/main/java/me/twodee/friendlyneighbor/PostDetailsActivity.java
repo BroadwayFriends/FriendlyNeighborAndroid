@@ -102,8 +102,14 @@ public class PostDetailsActivity extends AppCompatActivity {
 
             title = value2.getString("title");
             description = value2.getString("description");
-            postedBy = value2.getJSONObject("requestedBy").getString("name");
+            postedBy = value2.getJSONObject("requestedBy").getString("firstName");
+
             profilePicture = value2.getJSONObject("requestedBy").getString("profilePicture");
+            if (profilePicture.equals(""))
+            {
+                profilePicture = null;
+            }
+
             imageUrl = value2.getJSONArray("images");
 
             cost = (double) value2.getInt("cost");
@@ -158,7 +164,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         selectedTitle.setText(title);
         selectedDescription.setText(description);
         selectedPostedBy.setText(postedBy);
-        Picasso.get().load(profilePicture).fit().centerInside().into(profilePictureView);
+        Picasso.get().load(profilePicture).error(R.drawable.placeholder_profile_picture).fit().centerInside().into(profilePictureView);
 
         String costDisplay = (cost != 0.0) ? "₹" + String.valueOf(cost) : "Free";
 
