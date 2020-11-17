@@ -248,6 +248,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
                                 usersDets = item.getJSONArray("users");
 
                                 Log.w("REQDETS", requestDets.toString());
+                                Log.w("USRDETS", usersDets.toString());
 
                                 // Get the current student (json object) data
                                 String title = requestDets.getString("title");
@@ -320,7 +321,11 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         HistoryDetails selectedHistoryDetails = choicePageDetailsList.get(position);
 
         if(selectedHistoryDetails.getChoicePageCompleted()) {
-            openDialog(position);
+            try {
+                openDialog(position, selectedHistoryDetails.getJsonUsersArray());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } else {
             Intent intent = new Intent(this, HistoryPostDetailsActivity.class);
             String selectedJsonString = selectedHistoryDetails.getJsonUsersArray();
@@ -336,6 +341,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
 //        openDialog(position);
 
         Log.w("Clicker Checker", String.valueOf(position));
+        Log.w("Clicker Checker USR", usersDets.toString());
     }
 
     @Override
@@ -350,7 +356,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         }
     }
 
-    void openDialog(int position) {
+    void openDialog(int position, String usersSelected) throws JSONException {
+
+        JSONArray usersHere = new JSONArray(usersSelected);
 
         selectedDialog = new Dialog(this);
         selectedDialog.setContentView(R.layout.dialog_selected_history);
@@ -366,20 +374,28 @@ public class HistoryActivity extends AppCompatActivity implements HistoryDetails
         String accUser = choicePageDetailsList.get(position).getChoicePageAcceptedUser();
         String name = null, contactNumber = null, profilePicture = null;
 
+        Log.w("CHK_DIALOG_FOR_B", usersHere.toString());
+
         try {
-            for (int i = 0; i < usersDets.length(); i++) {
-                JSONObject accItem = usersDets.getJSONObject(i);
+            for (int i = 0; i < usersHere.length(); i++) {
+                JSONObject accItem = usersHere.getJSONObject(i);
+
+                Log.w("CHK_DIALOG_FOR_A", accItem.toString());
 
                 if (accUser.equals(accItem.getString("_id"))) {
-                    name = accItem.getString("name");
+                    name = accItem.getString("firstName");
                     contactNumber = accItem.getString("contactNumber");
                     profilePicture = accItem.getString("profilePicture");
+
                 }
             }
 
         } catch (JSONException e) {
+            Log.w("CHK_DIALOG", "Some error");
             e.printStackTrace();
         }
+
+        Log.w("CHK_DIALOG", name + " " + contactNumber + " " + profilePicture);
 
         dialogName.setText(name);
         dialogContact.setText(contactNumber);
