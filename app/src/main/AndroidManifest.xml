@@ -31,7 +31,8 @@
         <activity android:name=".KarmaPointsActivity" />
         <activity android:name=".OnboardingActivity" />
         <activity android:name=".HistoryActivity" />
-        <activity android:name=".PostDetailsActivity" />
+        <activity android:name=".PostDetailsActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

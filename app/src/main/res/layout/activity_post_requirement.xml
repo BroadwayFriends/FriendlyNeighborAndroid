@@ -10,13 +10,13 @@
 
 
     <!--    <EditText-->
-<!--        android:id="@+id/editTextDate"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="100dp"-->
-<!--        android:layout_marginTop="150dp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Select an expiration date for the request."  />-->
+    <!--        android:id="@+id/editTextDate"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginLeft="100dp"-->
+    <!--        android:layout_marginTop="150dp"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="Select an expiration date for the request."  />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,182 +47,187 @@
             android:layout_height="6dp">
 
         </View>
-        <androidx.cardview.widget.CardView
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="14dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="2dp">
+            android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text= "Select the type of post you are making"
-                    android:fontFamily="@font/product_sans_bold"
-                    android:layout_margin="5dp"/>
-                    <!--  Request Type Spinner             -->
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/spinnerRequestType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/product_sans_regular"
-                    android:layout_margin="5dp"/>
+                android:layout_height="match_parent">
 
-                <!-- Request Title -->
-                <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Add a title to your request"
-                android:fontFamily="@font/product_sans_bold"
-                android:layout_margin="5dp"/>
-                <EditText
-                android:id="@+id/editTextTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Noodles"
-                android:fontFamily="@font/product_sans_regular"
-                android:layout_marginTop="2dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:inputType="textEmailSubject"
-                android:importantForAutofill="no"/>
-                <!-- Description -->
-                <TextView
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Describe why you need you need this article"
-                    android:fontFamily="@font/product_sans_bold"
-                    android:layout_margin="5dp"/>
-                <EditText
-                    android:id="@+id/editTextDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:hint="Describe your product"
-                    android:fontFamily="@font/product_sans_regular"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:inputType="text"
-                    android:lines="4"
-                    android:scrollbars="vertical"
-                    android:importantForAutofill="no"/>
-                <!-- Phone Number -->
-                <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Enter your phone number"
-                android:fontFamily="@font/product_sans_bold"
-                android:layout_margin="5dp"/>
-                <EditText
-                    android:id="@+id/editTextPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="7995037674"
-                    android:fontFamily="@font/product_sans_regular"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:inputType="text"/>
-                <!-- Date -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Set expiration date for your request"
-                    android:fontFamily="@font/product_sans_bold"
-                    android:focusableInTouchMode="false"
-                    android:layout_margin="5dp"/>
-                <EditText
-                    android:id="@+id/editTextDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/product_sans_regular"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"/>
-                <!-- Price -->
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Do you want to add a price quote to your request?"
-                    android:fontFamily="@font/product_sans_bold"
-                    android:layout_margin="5dp"/>
-                <!-- Switch for Price Quote -->
-                <Switch
-                    android:id="@+id/switchPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textOff="No"
-                    android:textOn="Yes"/>
-                <!-- Enter Price -->
-                <EditText
-                    android:id="@+id/editTextPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter price in INR"
-                    android:fontFamily="@font/product_sans_regular"
-                    android:textSize="14dp"
-                    android:inputType="number"/>
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="14dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text= "Select the type of post you are making"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:layout_margin="5dp"/>
+                        <!--  Request Type Spinner             -->
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinnerRequestType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:layout_margin="5dp"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text= "Set your preferred location"
-                    android:fontFamily="@font/product_sans_bold"
-                    android:layout_margin="5dp"/>
-                <!-- Spinner -->
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/spinnerChooseLocation"
-                    android:layout_width="match_parent"
-                    android:fontFamily="@font/product_sans_regular"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"/>
-                <!-- Change Location -->
-                <EditText
-                    android:id="@+id/editTextAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Click to Change Location "
-                    android:fontFamily="@font/product_sans_regular"
-                    android:textSize="14dp"
-                    android:importantForAutofill="no"
-                    android:inputType="text"/>
-                <!-- Default Distance -->
-                <EditText
-                    android:id="@+id/editTextDistance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Default Distance"
-                    android:fontFamily="@font/product_sans_regular"
-                    android:textSize="14dp"/>
-                <!-- Upload Images Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnUploadImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/upload_image"/>
-                <!-- Submit Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonSubmit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Submit"
-                    android:backgroundTint="@android:color/holo_green_dark"/>
+                        <!-- Request Title -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Add a title to your request"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:layout_margin="5dp"/>
+                        <EditText
+                            android:id="@+id/editTextTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Noodles"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:inputType="textEmailSubject"
+                            android:importantForAutofill="no"/>
+                        <!-- Description -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Describe why you need you need this article"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:layout_margin="5dp"/>
+                        <EditText
+                            android:id="@+id/editTextDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="Describe your product"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:inputType="text"
+                            android:lines="4"
+                            android:scrollbars="vertical"
+                            android:importantForAutofill="no"/>
+                        <!-- Phone Number -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Enter your phone number"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:layout_margin="5dp"/>
+                        <EditText
+                            android:id="@+id/editTextPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="7995037674"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:inputType="text"/>
+                        <!-- Date -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Set expiration date for your request"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:focusableInTouchMode="false"
+                            android:layout_margin="5dp"/>
+                        <EditText
+                            android:id="@+id/editTextDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"/>
+                        <!-- Price -->
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Do you want to add a price quote to your request?"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:layout_margin="5dp"/>
+                        <!-- Switch for Price Quote -->
+                        <Switch
+                            android:id="@+id/switchPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textOff="No"
+                            android:textOn="Yes"/>
+                        <!-- Enter Price -->
+                        <EditText
+                            android:id="@+id/editTextPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter price in INR"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:textSize="14dp"
+                            android:inputType="number"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text= "Set your preferred location"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:layout_margin="5dp"/>
+                        <!-- Spinner -->
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinnerChooseLocation"
+                            android:layout_width="match_parent"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"/>
+                        <!-- Change Location -->
+                        <EditText
+                            android:id="@+id/editTextAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Click to Change Location "
+                            android:fontFamily="@font/product_sans_regular"
+                            android:textSize="14dp"
+                            android:importantForAutofill="no"
+                            android:inputType="text"/>
+                        <!-- Default Distance -->
+                        <EditText
+                            android:id="@+id/editTextDistance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Default Distance"
+                            android:fontFamily="@font/product_sans_regular"
+                            android:textSize="14dp"/>
+                        <!-- Upload Images Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnUploadImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/upload_image"/>
+                        <!-- Submit Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Submit"
+                            android:backgroundTint="@android:color/holo_green_dark"/>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </ScrollView>
 
     </LinearLayout>
-
-
-
-
-
 
 </LinearLayout>
