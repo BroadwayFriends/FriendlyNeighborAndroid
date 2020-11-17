@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#EEEEEE">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,10 +44,10 @@
             app:cardCornerRadius="8dp">
 
             <LinearLayout
+                android:padding="8dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp">
+                android:layout_height="wrap_content" >
 
                 <Button
                     android:id="@+id/button"

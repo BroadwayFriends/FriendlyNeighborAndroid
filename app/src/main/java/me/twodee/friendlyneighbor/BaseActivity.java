@@ -40,7 +40,7 @@ public class BaseActivity extends AppCompatActivity  {
 
         chipNavigationBar = findViewById(R.id.bottom_navigation_menu);
         chipNavigationBar.setItemSelected(R.id.bottom_nav_discover, true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new KarmaFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DiscoverFragment()).commit();
         bottomMenu();
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
