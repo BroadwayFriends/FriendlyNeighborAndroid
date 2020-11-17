@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bottom_nav_discover"
+        android:icon="@drawable/bottom_nav_discover_icon"
+        android:title="Discover"
+        app:cnb_iconColor="@color/colorPrimary"/>
+    <item
+        android:id="@+id/bottom_nav_karma"
+        android:icon="@drawable/bottom_nav_karma_icon"
+        android:title="Karma"
+        app:cnb_iconColor="@color/colorPrimary"/>
+    <item
+        android:id="@+id/bottom_nav_profile"
+        android:icon="@drawable/bottom_nav_profile_icon"
+        android:title="Profile"
+        app:cnb_iconColor="@color/colorPrimary" />
+</menu>
