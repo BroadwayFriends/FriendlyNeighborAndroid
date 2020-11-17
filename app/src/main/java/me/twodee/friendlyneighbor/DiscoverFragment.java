@@ -7,6 +7,7 @@ import android.icu.text.DecimalFormat;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -43,6 +44,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -388,4 +391,23 @@ public class DiscoverFragment extends Fragment implements DiscoverDetailsAdapter
 
         Log.w("Clicker Checker", String.valueOf(position));
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                discoverDetailsList.clear();
+                loadDiscoverData();
+            }
+        }
+    }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        discoverDetailsList.clear();
+//        loadDiscoverData();
+//    }
 }

@@ -109,7 +109,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
                 // Get current json object
                 JSONObject item = userArray.getJSONObject(i);
 
-                name = item.getString("name");
+                name = item.getString("firstName");
                 contactNumber = item.getString("contactNumber");
                 profilePicture = item.getString("profilePicture");
                 id = item.getString("_id");
