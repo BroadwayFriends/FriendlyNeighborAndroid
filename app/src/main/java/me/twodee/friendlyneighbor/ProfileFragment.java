@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment {
 //        }
 
         displayImage = view.findViewById(R.id.displayImage);
-        goBack = view.findViewById(R.id.goBackLayout);
+//        goBack = view.findViewById(R.id.goBackLayout);
         editTextUsername = view.findViewById(R.id.editTextUsername);
         textViewName =  view.findViewById(R.id.textViewName);
         textViewTitle =  view.findViewById(R.id.textViewTitle);
@@ -142,11 +142,11 @@ public class ProfileFragment extends Fragment {
 //        updateProfileButton.setAlpha(.4f);
 
 
-        goBack.setOnClickListener(v -> {
-            Intent i = new Intent(getActivity(), DashboardActivity.class);
-            startActivity(i);
-
-        });
+//        goBack.setOnClickListener(v -> {
+//            Intent i = new Intent(getActivity(), DashboardActivity.class);
+//            startActivity(i);
+//
+//        });
 
         editTextUsername.addTextChangedListener(new TextWatcher() {
 
