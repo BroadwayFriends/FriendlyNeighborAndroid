@@ -89,16 +89,18 @@ public class DashboardActivity extends AppCompatActivity {
         fetchData();
 
         editProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getBaseContext(), EditProfileActivity.class);
-            intent.putExtra("visitReason", "edit");
-            startActivity(intent);
+            Toast.makeText(this, "Go to payment info to see your profile", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(getBaseContext(), EditProfileActivity.class);
+//            intent.putExtra("visitReason", "edit");
+//            startActivity(intent);
 
         });
 
         myProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(getBaseContext(), EditProfileActivity.class);
-            intent.putExtra("visitReason", "view");
-            startActivity(intent);
+            Toast.makeText(this, "Go to payment info to see profile", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(getBaseContext(), EditProfileActivity.class);
+//            intent.putExtra("visitReason", "view");
+//            startActivity(intent);
 
         });
 
@@ -119,8 +121,9 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         DiscoverPage.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, FragmentTestActivity.class);
-            startActivity(intent);
+            Toast.makeText(this, "Go to payment info to see discover", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(DashboardActivity.this, FragmentTestActivity.class);
+//            startActivity(intent);
         });
 
         RespondToPosts.setOnClickListener(v -> {
