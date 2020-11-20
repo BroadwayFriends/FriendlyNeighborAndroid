@@ -39,8 +39,12 @@ import com.google.firebase.iid.InstanceIdResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import me.twodee.friendlyneighbor.service.VolleyUtils;
 
 public class OtpActivity extends AppCompatActivity {
 
@@ -369,5 +373,29 @@ public class OtpActivity extends AppCompatActivity {
             Log.w(TAG, "getInstanceId failed", task.getException());
             return;
         }
+
+        String token = task.getResult().getToken();
+        String userId = preferences.getString("_id", null);
+        Log.d(TAG, "Updating token for user: " + userId);
+
+        Map<Object, Object> data = new HashMap<>();
+        data.put("userId", userId);
+        data.put("token", token);
+        VolleyUtils.post(getApplicationContext(), getString(R.string.base_url) + "/api/notifications/register",
+                data,
+                OtpActivity::listenToResponse,
+                OtpActivity::listenToError
+        );
     }
+
+    private static void listenToError(VolleyError volleyError) {
+        Log.i(TAG, volleyError.toString());
+
+    }
+
+    private static void listenToResponse(JSONObject jsonObject) {
+        Log.d(TAG, "Successful POST!");
+        Log.i(TAG, jsonObject.toString());
+    }
+
 }
