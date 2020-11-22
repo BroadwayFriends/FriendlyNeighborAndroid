@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import me.twodee.friendlyneighbor.DiscoverActivity;
+import me.twodee.friendlyneighbor.DiscoverFragment;
 import me.twodee.friendlyneighbor.HistoryActivity;
 import me.twodee.friendlyneighbor.R;
 
@@ -101,7 +102,7 @@ public class NotificationService extends FirebaseMessagingService {
             intent = new Intent(this, HistoryActivity.class);
         }
         else {
-            intent = new Intent(this, DiscoverActivity.class);
+            intent = new Intent(this, DiscoverFragment.class);
         }
         sendNotification(remoteMessage.getData(), intent);
 
