@@ -184,10 +184,17 @@ public class OtpActivity extends AppCompatActivity {
             //so user has to manually enter the code
             if (otp != null) {
                 Log.w("CODE SENT", otp);
+
+//                //Disabling the button
+//                mVerifyBtn.setEnabled(false);
+//                mOtpProgress.setVisibility(View.VISIBLE);
+
                 mOtpText.setText(otp);
-                //verifying the code
-                verifyVerificationCode(otp);
             }
+
+            //verifying the code
+//            verifyVerificationCode(otp);
+
         }
 
         @Override
@@ -249,20 +256,24 @@ public class OtpActivity extends AppCompatActivity {
                                 Log.w("TASK DEBUG ERROR 2 EXP", task.getException());
 //                                Log.w("TASK ERROR", FirebaseAuthInvalidCredentialsException.class.toString());
                                 Toast.makeText(OtpActivity.this, "Verification Failed, Invalid credentials", Toast.LENGTH_SHORT).show();
+                                mOtpProgress.setVisibility(View.INVISIBLE);
+                                mOtpFeedback.setVisibility(View.VISIBLE);
+                                mOtpFeedback.setText("There was an error verifying OTP");
+                                mResendOtp.setVisibility(View.VISIBLE);
                             }
                         }
-                        mOtpProgress.setVisibility(View.INVISIBLE);
-                        mVerifyBtn.setEnabled(true);
+//                        mOtpProgress.setVisibility(View.INVISIBLE);
+//                        mVerifyBtn.setEnabled(true);
                     }
                 });
     }
 
-    public void invalidVerificationCode() {
-        mOtpFeedback.setVisibility(View.VISIBLE);
-//        mOtpFeedback.setText("There was an error verifying OTP");
-        mOtpFeedback.setText("Error Message");
-        mResendOtp.setVisibility(View.VISIBLE);
-    }
+//    public void invalidVerificationCode() {
+//        mOtpFeedback.setVisibility(View.VISIBLE);
+////        mOtpFeedback.setText("There was an error verifying OTP");
+//        mOtpFeedback.setText("Error Message");
+//        mResendOtp.setVisibility(View.VISIBLE);
+//    }
 
 
 //    @Override
