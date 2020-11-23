@@ -125,7 +125,7 @@ public class SignInActivity extends AppCompatActivity {
 //        };
 
 
-//        preferences = getApplicationContext().getSharedPreferences("UserDetails", MODE_PRIVATE);
+        preferences = getApplicationContext().getSharedPreferences("UserDetails", MODE_PRIVATE);
 //        editor = preferences.edit();
 
 
@@ -137,7 +137,17 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
 
         if(mCurrentUser != null) {
-            sendUserToHome();
+
+            Log.w("PREF_CHK", String.valueOf(preferences.contains("firstName")));
+            Log.w("PREF_CHK", preferences.getString("firstName", ""));
+
+            if (preferences.contains("firstName")) {
+                sendUserToHome();
+            }
+            else {
+                sendUserToRegistration();
+            }
+
         }
     }
 
@@ -167,6 +177,17 @@ public class SignInActivity extends AppCompatActivity {
         Log.w("INTENT STATUS", "Sending user to dashboard");
 
         Intent homeIntent = new Intent(SignInActivity.this, DashboardActivity.class);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(homeIntent);
+        finish();
+    }
+
+    public void sendUserToRegistration() {
+
+        Log.w("INTENT STATUS", "Sending user to registration");
+
+        Intent homeIntent = new Intent(SignInActivity.this, RegistrationActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);

@@ -85,6 +85,7 @@ public class DashboardActivity extends AppCompatActivity {
 //        emailTV.setVisibility(View.GONE);
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        editor = preferences.edit();
 
         fetchData();
 
@@ -299,6 +300,9 @@ public class DashboardActivity extends AppCompatActivity {
                         mAuth.signOut();
                         sendUserToLogin();
                         Toast.makeText(getApplicationContext(), "Signed-out successfully", Toast.LENGTH_SHORT).show();
+                        editor.clear();
+                        editor.apply();
+                        finish();
                     }
 
                     else {

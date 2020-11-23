@@ -343,6 +343,8 @@ public class OtpActivity extends AppCompatActivity {
                     boolean isAlreadySignedIn = response.getBoolean("isAlreadySignedIn");
 
                     boolean userStatus = response.getBoolean("newUser");
+                    String firstName = response.getJSONObject("user").getString("firstName");
+                    String lastName = response.getJSONObject("user").getString("lastName");
 
                     if (isAlreadySignedIn == true) {
                         FirebaseAuth.getInstance().signOut();
@@ -350,7 +352,10 @@ public class OtpActivity extends AppCompatActivity {
                     }
 
                     else {
-                        if (userStatus == true) {
+
+                        Log.w("BEFORE REG", String.valueOf(userStatus) + " " + firstName + " " + lastName);
+
+                        if (userStatus == true && firstName.equals("") && lastName.equals("")) {
                             sendUserToRegistration();
                         } else {
                             sendUserToHome();
