@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.twodee.friendlyneighbor.service.TransactionService;
+
 public class HistoryPostDetailsActivity extends AppCompatActivity {
 
     TextView selectedTitleTV, selectedTypeTV;
@@ -252,6 +254,8 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.w("Respond Response", response.toString());
 
+                startTransactionService();
+
                 openDialog();
 
             }
@@ -272,6 +276,13 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
         };
         requestQueue.add(jsonObjectRequest);
 
+    }
+
+    void startTransactionService() {
+        Intent transactionIntent = new Intent(this, TransactionService.class);
+        transactionIntent.putExtra("name", name);
+
+        startService(transactionIntent);
     }
 
     void openDialog() {

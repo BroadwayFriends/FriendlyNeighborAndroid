@@ -14,19 +14,28 @@ class App : Application() {
         // ID of the notification channel used by upload service. This is needed by Android API 26+
         // but you have to always specify it even if targeting lower versions, because it's handled
         // by AndroidX AppCompat library automatically
-        const val notificationChannelID = "TestChannel"
+        const val CHANNEL_1_ID = "TestChannel"
+        const val CHANNEL_2_ID = "OnGoingTransaction"
+
     }
 
     // Customize the notification channel as you wish. This is only for a bare minimum example
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= 26) {
-            val channel = NotificationChannel(
-                    notificationChannelID,
+            val channel1 = NotificationChannel(
+                    CHANNEL_1_ID,
                     "TestApp Channel",
-                    NotificationManager.IMPORTANCE_LOW
+                    NotificationManager.IMPORTANCE_HIGH
+            )
+
+            val channel2 = NotificationChannel(
+                    CHANNEL_2_ID,
+                    "TestApp Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
             )
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel)
+            manager.createNotificationChannel(channel1)
+            manager.createNotificationChannel(channel2)
         }
     }
 
@@ -37,7 +46,7 @@ class App : Application() {
 
         UploadServiceConfig.initialize(
                 context = this,
-                defaultNotificationChannel = notificationChannelID,
+                defaultNotificationChannel = CHANNEL_1_ID,
                 debug = BuildConfig.DEBUG
         )
     }

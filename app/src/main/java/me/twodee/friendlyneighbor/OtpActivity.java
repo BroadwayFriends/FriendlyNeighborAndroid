@@ -336,6 +336,29 @@ public class OtpActivity extends AppCompatActivity {
                         response.toString());
 
                 editor.putString("_id", currentUserId);
+
+                try {
+                    editor.putString("email",
+                            response.getJSONObject(
+                                    "user").getString(
+                                    "email"));
+                    editor.putString("firstName",
+                            response.getJSONObject(
+                                    "user").getString(
+                                    "firstName"));
+                    editor.putString("lastName",
+                            response.getJSONObject(
+                                    "user").getString(
+                                    "lastName"));
+                    editor.putString("contactNumber",
+                            response.getJSONObject(
+                                    "user").getString(
+                                    "contactNumber"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 editor.commit();
 
                 try {
@@ -355,7 +378,7 @@ public class OtpActivity extends AppCompatActivity {
 
                         Log.w("BEFORE REG", String.valueOf(userStatus) + " " + firstName + " " + lastName);
 
-                        if (userStatus == true && firstName.equals("") && lastName.equals("")) {
+                        if (userStatus == true) {
                             sendUserToRegistration();
                         } else {
                             sendUserToHome();

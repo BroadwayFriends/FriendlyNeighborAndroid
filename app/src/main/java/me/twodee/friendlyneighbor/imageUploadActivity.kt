@@ -35,7 +35,7 @@ class   imageUploadActivity : AppCompatActivity() {
         const val pickFileRequestCode = 69
         private const val TAG = "uploadData"
 //        const val baseUrl = "https://fn.twodee.me/api/requests"
-        const val baseUrl = "https://c4f06092f60a.ngrok.io/api/requests"
+        const val baseUrl = "https://ace127c81a7c.ngrok.io/api/requests"
 //        val baseUrl = Resources.getSystem().getString(R.string.base_url) + "/api/requests"
 //
         var image1: Uri = Uri.EMPTY

@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
@@ -21,18 +22,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".FragmentTestActivity"></activity>
+        <activity android:name=".TransactionOnGoingAcivity"></activity>
+        <activity android:name=".FragmentTestActivity" />
         <activity android:name=".OtpVerifiedActivity" />
-
         <activity android:name=".OtpActivity" />
-      <activity android:name=".BaseActivity"/>
-
+        <activity android:name=".BaseActivity" />
         <activity android:name=".KarmaPointsActivity" />
         <activity android:name=".OnboardingActivity" />
         <activity android:name=".HistoryActivity" />
-        <activity android:name=".PostDetailsActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"/>
+        <activity
+            android:name=".PostDetailsActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
@@ -72,6 +72,8 @@
         <activity
             android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationHandler"
             android:theme="@android:style/Theme.NoDisplay" />
+
+        <service android:name=".service.TransactionService"/>
 
         <service
             android:name=".service.NotificationService"
