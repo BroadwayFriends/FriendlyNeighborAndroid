@@ -107,6 +107,10 @@ public class BaseActivity extends AppCompatActivity  {
                     case R.id.bottom_nav_profile:
                         fragment = new ProfileFragment();
                         break;
+
+                    case R.id.bottom_nav_ongoing:
+                        fragment = new TransactionOnGoingFragment();
+                        break;
                 }
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();

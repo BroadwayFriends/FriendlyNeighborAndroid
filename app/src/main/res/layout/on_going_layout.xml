@@ -57,7 +57,7 @@
                     android:gravity="center">
 
                         <TextView
-                            android:id="@+id/ongoing_title"
+                            android:id="@+id/ongoing_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Item Requested"
@@ -70,22 +70,35 @@
                         android:layout_height="wrap_content"
                         android:text="Time"
                         android:textColor="#232323"
-                        android:textSize="18dp"
+                        android:textSize="14dp"
                         android:fontFamily="@font/product_sans_regular"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:weightSum="100">
 
                     <Button
                         android:id="@+id/ongoing_call_button"
                         android:text="Call"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
                         android:backgroundTint="#61b15a"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"/>
 
                     <Button
-                        android:id="@+id/ongoing_finish"
+                        android:id="@+id/ongoing_finish_button"
                         android:text="Finish"
-                        android:layout_width="match_parent"
-                        android:backgroundTint="#ffd369"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:backgroundTint="#f0a500"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"/>
+
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>

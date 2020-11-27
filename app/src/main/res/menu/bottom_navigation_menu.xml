@@ -15,4 +15,9 @@
         android:icon="@drawable/bottom_nav_profile_icon"
         android:title="Profile"
         app:cnb_iconColor="@color/colorPrimary" />
+    <item
+        android:id="@+id/bottom_nav_ongoing"
+        android:icon="@drawable/bottom_nav_discover_icon"
+        android:title="On Going"
+        app:cnb_iconColor="@color/colorPrimary" />
 </menu>
