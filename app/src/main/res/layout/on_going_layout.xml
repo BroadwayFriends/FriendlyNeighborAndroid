@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#232323"
+                android:orientation="vertical"
+                android:gravity="center">
+                    <!-- Profile Picture -->
+                    <ImageView
+                        android:id="@+id/ongoing_offering_profile_picture"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_ppchange"
+                        android:scaleType="centerCrop"/>
+                    <!-- Username -->
+                    <TextView
+                        android:id="@+id/ongoing_offering_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Akhil Surendran"
+                        android:fontFamily="@font/product_sans_bold"
+                        android:textSize="24dp"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp"
+                    android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/ongoing_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Item Requested"
+                            android:textColor="@color/Black"
+                            android:textSize="24dp"
+                            android:fontFamily="@font/product_sans_regular"/>
+                    <TextView
+                        android:id="@+id/ongoing_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time"
+                        android:textColor="#232323"
+                        android:textSize="18dp"
+                        android:fontFamily="@font/product_sans_regular"/>
+
+                    <Button
+                        android:id="@+id/ongoing_call_button"
+                        android:text="Call"
+                        android:layout_width="match_parent"
+                        android:backgroundTint="#61b15a"
+                        android:layout_height="wrap_content"/>
+
+                    <Button
+                        android:id="@+id/ongoing_finish"
+                        android:text="Finish"
+                        android:layout_width="match_parent"
+                        android:backgroundTint="#ffd369"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
