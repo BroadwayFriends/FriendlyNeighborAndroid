@@ -15,13 +15,13 @@
         android:id="@+id/bottom_navigation_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        app:cnb_menuResource="@menu/bottom_navigation_menu"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        app:cnb_unselectedColor="@color/Black"
+        android:padding="8dp"
+        app:cnb_menuResource="@menu/bottom_navigation_menu"
+        app:cnb_orientationMode="horizontal"
         app:cnb_radius="20dp"
-        app:cnb_orientationMode="horizontal"/>
+        app:cnb_unselectedColor="@color/Black" />
 
 
 <!--    <com.ashokvarma.bottomnavigation.BottomNavigationBar-->
