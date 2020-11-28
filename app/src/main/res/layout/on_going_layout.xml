@@ -22,7 +22,7 @@
                 android:padding="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#232323"
+                android:background="#f9f6f7"
                 android:orientation="vertical"
                 android:gravity="center">
                     <!-- Profile Picture -->
@@ -38,10 +38,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Akhil Surendran"
-                        android:fontFamily="@font/product_sans_bold"
+                        android:fontFamily="@font/product_sans_regular"
                         android:textSize="24dp"
                         android:textAlignment="center"
-                        android:textColor="@android:color/white"/>
+                        android:textColor="@android:color/black"/>
 
             </LinearLayout>
 
@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="14dp"
+                    android:padding="6dp"
                     android:gravity="center">
 
                         <TextView
@@ -62,7 +62,7 @@
                             android:layout_height="wrap_content"
                             android:text="Item Requested"
                             android:textColor="@color/Black"
-                            android:textSize="24dp"
+                            android:textSize="16dp"
                             android:fontFamily="@font/product_sans_regular"/>
                     <TextView
                         android:id="@+id/ongoing_time"
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:text="Time"
                         android:textColor="#232323"
-                        android:textSize="14dp"
+                        android:textSize="10dp"
                         android:fontFamily="@font/product_sans_regular"/>
 
                     <LinearLayout
@@ -85,7 +85,7 @@
                         android:text="Call"
                         android:layout_width="0dp"
                         android:layout_weight="50"
-                        android:backgroundTint="#61b15a"
+                        android:backgroundTint="#58b4ae"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"/>
 
@@ -94,7 +94,7 @@
                         android:text="Finish"
                         android:layout_width="0dp"
                         android:layout_weight="50"
-                        android:backgroundTint="#f0a500"
+                        android:backgroundTint="#fdd365"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"/>
 
