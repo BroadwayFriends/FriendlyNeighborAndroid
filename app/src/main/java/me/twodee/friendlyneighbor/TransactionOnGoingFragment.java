@@ -25,11 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
 
@@ -44,6 +46,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import me.twodee.friendlyneighbor.service.TransactionService;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -207,7 +211,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
         final FrameLayout discoverLoadingLayout  = (FrameLayout) v.findViewById(R.id.progress_view);
         discoverLoadingLayout.setVisibility(View.VISIBLE);
 
-        final TextView noUsersTV = (TextView) v.findViewById(R.id.discover_no_users);
+        final TextView noUsersTV = (TextView) v.findViewById(R.id.ongoing_no_users);
 
         ThreeBounce threeBounce = new ThreeBounce();
         progressBar.setIndeterminateDrawable(threeBounce);
@@ -266,6 +270,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
                                 String createdAt = item.getString("createdAt");
                                 String title = item.getString("title");
                                 String contactNumber = item.getString("contactNumber");
+                                String ongoing_id = item.getString("_id");
 
 
 //                                DecimalFormat df = new DecimalFormat("0.00");
@@ -284,8 +289,9 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
                                 Log.w("ITEMS: ", person);
                                 Log.w("ITEMS: ", createdAt);
                                 Log.w("ITEMS: ", time);
+                                Log.w("ITEMS: ", ongoing_id);
 
-                                OnGoingDetails onGoingDetails = new OnGoingDetails(person, contactNumber, title, time, profilePicture);
+                                OnGoingDetails onGoingDetails = new OnGoingDetails(person, contactNumber, title, time, profilePicture, ongoing_id);
                                 onGoingDetailsList.add(onGoingDetails);
                             }
 
@@ -344,13 +350,87 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
 
     @Override
     public void onFinishButtonClick(int position) {
+
         onGoingDetailsList.get(position);
         OnGoingDetails onGoingDetails = onGoingDetailsList.get(position);
-        onGoingDetailsList.remove(position);
-        onGoingDetailsAdapter.notifyItemRemoved(position);
-        onGoingDetailsAdapter.notifyDataSetChanged();
 
-        Toast.makeText(getActivity(), "Finishing request: " + onGoingDetails.getOngoingPerson(), Toast.LENGTH_SHORT).show();
+        finishRequest(onGoingDetails.getOngoing_id(), position);
+
+//        onGoingDetailsList.remove(position);
+//        onGoingDetailsAdapter.notifyItemRemoved(position);
+//        onGoingDetailsAdapter.notifyDataSetChanged();
+//
+//        Toast.makeText(getActivity(), "Finishing request: " + onGoingDetails.getOngoingPerson(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    void finishRequest(String ongoing_id, int position) {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
+        String id = preferences.getString("_id", null);
+        String url = getResources().getString(R.string.base_url) + "/api/requests/" + ongoing_id;
+
+        JsonObjectRequest jsonObjectRequest
+                = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.w("ServerResponse",
+                        response.toString());
+
+//                editor.putString("_id", currentUserId);
+//                editor.commit();
+
+                try {
+
+                    boolean success = response.getBoolean("success");
+
+//                    boolean userStatus = response.getBoolean("newUser");
+
+                    if (success == true) {
+                        onGoingDetailsList.remove(position);
+                        onGoingDetailsAdapter.notifyItemRemoved(position);
+                        onGoingDetailsAdapter.notifyDataSetChanged();
+
+                        Intent transactionIntent = new Intent(getActivity(), TransactionService.class);
+                        getActivity().stopService(transactionIntent);
+
+                        Toast.makeText(getActivity(), "Transaction finished ", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else {
+//                        mAuth.signOut();
+                        Toast.makeText(getActivity(), "There was problem, Try again later", Toast.LENGTH_SHORT).show();
+                    }
+
+//                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+//                            task -> updateNotificationToken(task));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.w("ServerError", error);
+                Toast.makeText(getActivity(), "There was problem, Try again later", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("_id", id);
+
+                return params;
+            }
+        };;
+
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        requestQueue.add(jsonObjectRequest);
 
     }
 

@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -41,6 +44,9 @@ public class BaseActivity extends AppCompatActivity  {
         chipNavigationBar = findViewById(R.id.bottom_navigation_menu);
         chipNavigationBar.setItemSelected(R.id.bottom_nav_discover, true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DiscoverFragment()).commit();
+
+        onNewIntent(getIntent());
+
         bottomMenu();
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
@@ -89,6 +95,19 @@ public class BaseActivity extends AppCompatActivity  {
 //            }
 //        });
     }
+
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        Fragment fragment = null;
+//        super.onNewIntent(intent);
+//        Bundle extras = intent.getExtras();
+//        if (extras != null) {
+//            if (extras.containsKey("menuFragment")) {
+//                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.bottom_nav_ongoing, fragment).commit();
+//            }
+//        }
+//    }
 
     private void bottomMenu() {
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {

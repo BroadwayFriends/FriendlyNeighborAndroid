@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import me.twodee.friendlyneighbor.App;
+import me.twodee.friendlyneighbor.BaseActivity;
 import me.twodee.friendlyneighbor.R;
 import me.twodee.friendlyneighbor.TransactionOnGoingAcivity;
 
@@ -29,7 +30,8 @@ public class TransactionService extends Service {
         String input = intent.getStringExtra("name");
 
         // Intent to start our activity, when notification is clicked
-        Intent notificationIntent = new Intent(this, TransactionOnGoingAcivity.class);
+        Intent notificationIntent = new Intent(this, BaseActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         // To set this intent in the notification, e have to create a pending intent
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -43,7 +45,7 @@ public class TransactionService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
 
-        startForeground(1, notification);
+        startForeground((int) System.currentTimeMillis(), notification);
 
         return START_NOT_STICKY;
     }
