@@ -3,9 +3,12 @@ package me.twodee.friendlyneighbor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.DecimalFormat;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,10 +18,32 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -103,57 +128,198 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
         preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
 
         //Adding dummy static data
-        onGoingDetailsList.add(
-                new OnGoingDetails(
-                        "Akhil",
-                        "+919999911111",
-                        "Maggi",
-                        "10:00 AM",
-                        null));
+//        onGoingDetailsList.add(
+//                new OnGoingDetails(
+//                        "Akhil",
+//                        "+919999911111",
+//                        "Maggi",
+//                        "10:00 AM",
+//                        null));
+//
+//        onGoingDetailsList.add(
+//                new OnGoingDetails(
+//                        "Agni",
+//                        "+919999911111",
+//                        "Charger",
+//                        "05:00 AM",
+//                        null));
+//
+//        onGoingDetailsList.add(
+//                new OnGoingDetails(
+//                        "Priyam",
+//                        "+919999911111",
+//                        "Table",
+//                        "11:30 PM",
+//                        null));
+//
+//        onGoingDetailsList.add(
+//                new OnGoingDetails(
+//                        "Ritwik",
+//                        "+919999911111",
+//                        "Mouse",
+//                        "07:00 AM",
+//                        null));
+//
+//        onGoingDetailsList.add(
+//                new OnGoingDetails(
+//                        "2D",
+//                        "+919999911111",
+//                        "Eggs",
+//                        "01:00 PM",
+//                        null));
+//
+//        onGoingDetailsList.add(
+//                new OnGoingDetails(
+//                        "Nihar",
+//                        "+919999911111",
+//                        "Cap",
+//                        "03:30 PM",
+//                        null));
+//
+//        onGoingDetailsAdapter = new OnGoingDetailsAdapter(getActivity(), onGoingDetailsList, TransactionOnGoingFragment.this);
+//        recyclerView.setAdapter(onGoingDetailsAdapter);
 
-        onGoingDetailsList.add(
-                new OnGoingDetails(
-                        "Agni",
-                        "+919999911111",
-                        "Charger",
-                        "05:00 AM",
-                        null));
+        loadDiscoverData();
 
-        onGoingDetailsList.add(
-                new OnGoingDetails(
-                        "Priyam",
-                        "+919999911111",
-                        "Table",
-                        "11:30 PM",
-                        null));
+//        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                discoverDetailsAdapter.getFilter().filter(newText);
+//                return false;
+//            }
+//        });
 
-        onGoingDetailsList.add(
-                new OnGoingDetails(
-                        "Ritwik",
-                        "+919999911111",
-                        "Mouse",
-                        "07:00 AM",
-                        null));
+    }
 
-        onGoingDetailsList.add(
-                new OnGoingDetails(
-                        "2D",
-                        "+919999911111",
-                        "Eggs",
-                        "01:00 PM",
-                        null));
+    void loadDiscoverData() {
 
-        onGoingDetailsList.add(
-                new OnGoingDetails(
-                        "Nihar",
-                        "+919999911111",
-                        "Cap",
-                        "03:30 PM",
-                        null));
+        View v = getView();
+
+        recyclerView.setVisibility(View.GONE);
+        final ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.discover_progress_bar);
+        final FrameLayout discoverLoadingLayout  = (FrameLayout) v.findViewById(R.id.progress_view);
+        discoverLoadingLayout.setVisibility(View.VISIBLE);
+
+        final TextView noUsersTV = (TextView) v.findViewById(R.id.discover_no_users);
+
+        ThreeBounce threeBounce = new ThreeBounce();
+        progressBar.setIndeterminateDrawable(threeBounce);
+        progressBar.setVisibility(View.VISIBLE);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
+        String id = preferences.getString("_id", null);
+//        String userId = preferences.getString("uid", null);
+
+
+        String url = getResources().getString(R.string.base_url) + "/api/requests/" + "ongoing/" + id;
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.w("Ongoing Response", response.toString());
+
+                        progressBar.setVisibility(View.GONE);
+                        discoverLoadingLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+
+                        // Do something with response
+                        // Process the JSON
+                        try{
+                            // Loop through the array elements
+                            JSONArray allItems = response;
+
+                            if (allItems.length() == 0) {
+                                noUsersTV.setVisibility(View.VISIBLE);
+                            }
+
+                            for(int i=0; i<allItems.length(); i++){
+
+                                // Get current json object
+                                JSONObject item = response.getJSONObject(i);
+                                String jsonObjectString = item.toString();
+
+//                                if (item.isNull("request")) {
+//                                    continue;
+//                                }
+
+//                                Log.v("Discover", requestDets.toString());
+//                                Log.v("Discover", requestDets.getString("distance"));
+
+
+                                // Get the current student (json object) data
+                                JSONObject ongoingDets = item.getJSONObject("acceptedUser");
+                                String person = ongoingDets.getString("firstName");
+                                String profilePicture = ongoingDets.getString("profilePicture");
+
+                                String createdAt = item.getString("createdAt");
+                                String title = item.getString("title");
+                                String contactNumber = item.getString("contactNumber");
+
+
+//                                DecimalFormat df = new DecimalFormat("0.00");
+//                                float dist = (float) item.getDouble("distance");
+//                                float distance = Float.parseFloat(df.format(dist));
+
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                SimpleDateFormat timeExtract = new SimpleDateFormat("dd MMM" + ", " + "HH:mm a");
+
+                                //  Changed Time to IST
+                                Date date = dateFormat.parse(createdAt);
+//                                timeExtract.setTimeZone(TimeZone.getTimeZone("IST"));
+                                String time = timeExtract.format(date.getTime());
+
+                                Log.w("ITEMS: ", title);
+                                Log.w("ITEMS: ", person);
+                                Log.w("ITEMS: ", createdAt);
+                                Log.w("ITEMS: ", time);
+
+                                OnGoingDetails onGoingDetails = new OnGoingDetails(person, contactNumber, title, time, profilePicture);
+                                onGoingDetailsList.add(onGoingDetails);
+                            }
 
         onGoingDetailsAdapter = new OnGoingDetailsAdapter(getActivity(), onGoingDetailsList, TransactionOnGoingFragment.this);
         recyclerView.setAdapter(onGoingDetailsAdapter);
+//                            recyclerView.setVisibility(View.VISIBLE);
 
+                        }catch (JSONException | ParseException e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+
+//                        progressBar.setVisibility(View.GONE);
+                        discoverLoadingLayout.setVisibility(View.GONE);
+
+                        Log.w("RESPONSE ERROR", error);
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("_id", id);
+
+                return params;
+            }
+        };
+        requestQueue.add(jsonArrayRequest);
+        Log.w("_id", id);
     }
 
     @Override
