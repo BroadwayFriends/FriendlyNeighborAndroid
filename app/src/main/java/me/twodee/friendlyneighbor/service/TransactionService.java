@@ -27,7 +27,7 @@ public class TransactionService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         // catch the input and create the notification
-        String input = intent.getStringExtra("name");
+//        String input = intent.getStringExtra("name");
 
         // Intent to start our activity, when notification is clicked
         Intent notificationIntent = new Intent(this, BaseActivity.class);
@@ -40,7 +40,7 @@ public class TransactionService extends Service {
         // Create notification
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                 .setContentText("Example Service")
-                .setContentText(input)
+                .setContentText("You have ongoing transactions. Please finish them.")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .build();

@@ -56,7 +56,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link TransactionOnGoingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TransactionOnGoingFragment extends Fragment implements OnGoingDetailsAdapter.OnOnGoingDetailsClickListener{
+public class TransactionOnGoingFragment extends Fragment implements OnGoingDetailsAdapter.OnOnGoingDetailsClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -185,6 +185,9 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
 
         loadDiscoverData();
 
+//        int itemCount = recyclerView.getAdapter().getItemCount();
+//        Log.w("ITEM COUNT", String.valueOf(itemCount));
+
 //        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 //
 //        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -208,7 +211,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
 
         recyclerView.setVisibility(View.GONE);
         final ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.discover_progress_bar);
-        final FrameLayout discoverLoadingLayout  = (FrameLayout) v.findViewById(R.id.progress_view);
+        final FrameLayout discoverLoadingLayout = (FrameLayout) v.findViewById(R.id.progress_view);
         discoverLoadingLayout.setVisibility(View.VISIBLE);
 
         final TextView noUsersTV = (TextView) v.findViewById(R.id.ongoing_no_users);
@@ -240,7 +243,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
 
                         // Do something with response
                         // Process the JSON
-                        try{
+                        try {
                             // Loop through the array elements
                             JSONArray allItems = response;
 
@@ -248,7 +251,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
                                 noUsersTV.setVisibility(View.VISIBLE);
                             }
 
-                            for(int i=0; i<allItems.length(); i++){
+                            for (int i = 0; i < allItems.length(); i++) {
 
                                 // Get current json object
                                 JSONObject item = response.getJSONObject(i);
@@ -295,19 +298,31 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
                                 onGoingDetailsList.add(onGoingDetails);
                             }
 
-        onGoingDetailsAdapter = new OnGoingDetailsAdapter(getActivity(), onGoingDetailsList, TransactionOnGoingFragment.this);
-        recyclerView.setAdapter(onGoingDetailsAdapter);
+                            onGoingDetailsAdapter = new OnGoingDetailsAdapter(getActivity(), onGoingDetailsList, TransactionOnGoingFragment.this);
+                            recyclerView.setAdapter(onGoingDetailsAdapter);
+
+                            int itemCount = recyclerView.getAdapter().getItemCount();
+                            Log.w("ITEM COUNT", String.valueOf(itemCount));
+
+                            if (itemCount > 0)
+                            {
+                                Intent transactionIntent = new Intent(getActivity(), TransactionService.class);
+                                //        transactionIntent.putExtra("name", name);
+
+                                getActivity().startService(transactionIntent);
+                            }
+
 //                            recyclerView.setVisibility(View.VISIBLE);
 
-                        }catch (JSONException | ParseException e){
+                        } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
                     }
                 },
-                new Response.ErrorListener(){
+                new Response.ErrorListener() {
 
                     @Override
-                    public void onErrorResponse(VolleyError error){
+                    public void onErrorResponse(VolleyError error) {
 
 //                        progressBar.setVisibility(View.GONE);
                         discoverLoadingLayout.setVisibility(View.GONE);
@@ -345,7 +360,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
         onGoingDetailsList.get(position);
         OnGoingDetails onGoingDetails = onGoingDetailsList.get(position);
 
-        Toast.makeText(getActivity(),"Calling " + onGoingDetails.getOngoingPerson(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Calling " + onGoingDetails.getOngoingPerson(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -366,9 +381,13 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
 
     void finishRequest(String ongoing_id, int position) {
 
+        View v = getView();
+
         RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
         String id = preferences.getString("_id", null);
         String url = getResources().getString(R.string.base_url) + "/api/requests/" + ongoing_id;
+
+        final TextView noUsersTV = (TextView) v.findViewById(R.id.ongoing_no_users);
 
         JsonObjectRequest jsonObjectRequest
                 = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
@@ -391,13 +410,18 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
                         onGoingDetailsAdapter.notifyItemRemoved(position);
                         onGoingDetailsAdapter.notifyDataSetChanged();
 
-                        Intent transactionIntent = new Intent(getActivity(), TransactionService.class);
-                        getActivity().stopService(transactionIntent);
+                        int itemCount = recyclerView.getAdapter().getItemCount();
+                        Log.w("ITEM COUNT", String.valueOf(itemCount));
+
+                        if (itemCount <= 0)
+                        {
+                            Intent transactionIntent = new Intent(getActivity(), TransactionService.class);
+                            getActivity().stopService(transactionIntent);
+                            noUsersTV.setVisibility(View.VISIBLE);
+                        }
 
                         Toast.makeText(getActivity(), "Transaction finished ", Toast.LENGTH_SHORT).show();
-                    }
-
-                    else {
+                    } else {
 //                        mAuth.signOut();
                         Toast.makeText(getActivity(), "There was problem, Try again later", Toast.LENGTH_SHORT).show();
                     }
@@ -415,7 +439,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
                 Log.w("ServerError", error);
                 Toast.makeText(getActivity(), "There was problem, Try again later", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -423,7 +447,8 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
 
                 return params;
             }
-        };;
+        };
+        ;
 
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                 0,
@@ -438,7 +463,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1) {
+        if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 onGoingDetailsList.clear();
 //                loadDiscoverData();

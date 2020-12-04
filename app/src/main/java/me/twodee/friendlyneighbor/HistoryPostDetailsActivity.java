@@ -280,7 +280,7 @@ public class HistoryPostDetailsActivity extends AppCompatActivity {
 
     void startTransactionService() {
         Intent transactionIntent = new Intent(this, TransactionService.class);
-        transactionIntent.putExtra("name", name);
+//        transactionIntent.putExtra("name", name);
 
         startService(transactionIntent);
     }
