@@ -1,5 +1,6 @@
 package me.twodee.friendlyneighbor;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import org.w3c.dom.Text;
 
@@ -26,14 +29,10 @@ public class KarmaFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_karma, parent, false);
         View view = inflater.inflate(R.layout.fragment_karma, parent, false);
 
-        addKarma = view.findViewById(R.id.button);
-        currentKarmaDisplay = view.findViewById(R.id.currentKarmaValue);
-
-
+//        addKarma = view.findViewById(R.id.button);
+        currentKarmaDisplay = view.findViewById(R.id.karma_points_value);
 
         return view;
-
-
     }
 
     // This event is triggered soon after onCreateView().
@@ -42,11 +41,31 @@ public class KarmaFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
-        addKarma.setOnClickListener(v -> {
-            currentKarmaAmount += topUp ;
-//            currentKarmaDisplay.setText(currentKarmaAmount);
-            currentKarmaDisplay.setText(String.valueOf( currentKarmaAmount));
 
+        ValueAnimator animator = ValueAnimator.ofInt(0, topUp);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                currentKarmaDisplay.setText(animation.getAnimatedValue().toString());
+            }
         });
+        animator.setDuration(1500);
+        animator.start();
+
+//        addKarma.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ValueAnimator animator = ValueAnimator.ofInt(0, topUp);
+//                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                    @Override
+//                    public void onAnimationUpdate(ValueAnimator animation) {
+//                        currentKarmaDisplay.setText(animation.getAnimatedValue().toString());
+//                    }
+//                });
+//                animator.start();
+//            }
+//        });
+
     }
+
 }

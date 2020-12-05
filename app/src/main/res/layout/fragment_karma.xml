@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KarmaFragment">
+    tools:context=".KarmaFragment"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:background="#EEEEEE"
         android:orientation="vertical"
-        android:background="#EEEEEE">
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,74 +22,197 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Karma Points"
-                android:textSize="40dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/product_sans_bold"
-                android:textColor="@android:color/black"/>
+                android:text="Karma Points"
+                android:textColor="@android:color/black"
+                android:textSize="40dp" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
+            android:layout_height="6dp"
             android:layout_gravity="center"
             android:layout_marginLeft="0dp"
-            android:background="@drawable/bg_view1"
-            android:layout_height="6dp"
-            android:layout_marginBottom="2dp">
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/bg_view1">
 
         </View>
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="8dp">
 
-            <LinearLayout
-                android:padding="8dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+        <!--        <androidx.cardview.widget.CardView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            app:cardCornerRadius="8dp">-->
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Add Karma" />
+        <!--            <LinearLayout-->
+        <!--                android:padding="8dp"-->
+        <!--                android:orientation="vertical"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content" >-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textSize="12dp"
-                    android:text="Your Balance"
-                    android:fontFamily="@font/product_sans_bold"/>
-                <TextView
-                    android:id = "@+id/currentKarmaValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ffd600"
-                    android:textSize="40dp"
-                    android:text="250"
-                    android:fontFamily="@font/product_sans_bold"/>
+        <!--                <Button-->
+        <!--                    android:id="@+id/button"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="Add Karma" />-->
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <!--                <TextView-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:textColor="#000000"-->
+        <!--                    android:textSize="12dp"-->
+        <!--                    android:text="Your Balance"-->
+        <!--                    android:fontFamily="@font/product_sans_bold"/>-->
+        <!--                <TextView-->
+        <!--                    android:id = "@+id/currentKarmaValue"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:textColor="#ffd600"-->
+        <!--                    android:textSize="40dp"-->
+        <!--                    android:text="250"-->
+        <!--                    android:fontFamily="@font/product_sans_bold"/>-->
+
+        <!--            </LinearLayout>-->
+        <!--        </androidx.cardview.widget.CardView>-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animationView"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:lottie_rawRes="@raw/kpointsanim"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Your Balance"
+                            android:textColor="@color/Black"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/karma_points_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="00"
+                            android:textColor="#fed332"
+                            android:textSize="200sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <LinearLayout
+                    android:layout_marginRight="4dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:padding="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="Requests Made"
+                                android:textColor="@color/Black"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="00"
+                                android:textSize="100sp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:padding="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="Helps Completed"
+                                android:textColor="@color/Black"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="00"
+                                android:textSize="100sp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>
