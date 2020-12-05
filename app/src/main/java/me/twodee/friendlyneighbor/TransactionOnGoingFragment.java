@@ -109,6 +109,8 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -129,7 +131,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
+//        preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
 
         //Adding dummy static data
 //        onGoingDetailsList.add(
@@ -328,7 +330,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
                         discoverLoadingLayout.setVisibility(View.GONE);
 
                         Log.w("RESPONSE ERROR", error);
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(), error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override

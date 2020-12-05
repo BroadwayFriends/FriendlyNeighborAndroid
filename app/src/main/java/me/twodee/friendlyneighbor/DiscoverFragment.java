@@ -106,6 +106,8 @@ public class DiscoverFragment extends Fragment implements DiscoverDetailsAdapter
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -129,7 +131,7 @@ public class DiscoverFragment extends Fragment implements DiscoverDetailsAdapter
 
         searchView = (SearchView) v.findViewById(R.id.discover_search_view);
 
-        preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
+//        preferences = this.getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
 
         //Adding dummy static data
 //        discoverDetailsList.add(
@@ -358,7 +360,7 @@ public class DiscoverFragment extends Fragment implements DiscoverDetailsAdapter
                         discoverLoadingLayout.setVisibility(View.GONE);
 
                         Log.w("RESPONSE ERROR", error);
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(), error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
