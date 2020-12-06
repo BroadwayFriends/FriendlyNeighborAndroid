@@ -185,7 +185,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
 //        onGoingDetailsAdapter = new OnGoingDetailsAdapter(getActivity(), onGoingDetailsList, TransactionOnGoingFragment.this);
 //        recyclerView.setAdapter(onGoingDetailsAdapter);
 
-        loadDiscoverData();
+        loadOngoingTransactionData();
 
 //        int itemCount = recyclerView.getAdapter().getItemCount();
 //        Log.w("ITEM COUNT", String.valueOf(itemCount));
@@ -207,7 +207,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
 
     }
 
-    void loadDiscoverData() {
+    void loadOngoingTransactionData() {
 
         View v = getView();
 
@@ -300,7 +300,7 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
                                 onGoingDetailsList.add(onGoingDetails);
                             }
 
-                            onGoingDetailsAdapter = new OnGoingDetailsAdapter(getActivity(), onGoingDetailsList, TransactionOnGoingFragment.this);
+                            onGoingDetailsAdapter = new OnGoingDetailsAdapter(v.getContext(), onGoingDetailsList, TransactionOnGoingFragment.this);
                             recyclerView.setAdapter(onGoingDetailsAdapter);
 
                             int itemCount = recyclerView.getAdapter().getItemCount();

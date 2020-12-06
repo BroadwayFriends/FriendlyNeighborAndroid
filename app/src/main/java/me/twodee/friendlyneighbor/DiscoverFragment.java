@@ -342,7 +342,7 @@ public class DiscoverFragment extends Fragment implements DiscoverDetailsAdapter
                                 discoverDetailsList.add(discoverDetails);
                             }
 
-                            discoverDetailsAdapter = new DiscoverDetailsAdapter(getActivity().getApplicationContext(), discoverDetailsList, DiscoverFragment.this::onDiscoverDetailsClick);
+                            discoverDetailsAdapter = new DiscoverDetailsAdapter(v.getContext(), discoverDetailsList, DiscoverFragment.this::onDiscoverDetailsClick);
                             recyclerView.setAdapter(discoverDetailsAdapter);
 //                            recyclerView.setVisibility(View.VISIBLE);
 
