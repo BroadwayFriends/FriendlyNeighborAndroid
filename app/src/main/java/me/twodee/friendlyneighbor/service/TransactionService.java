@@ -31,11 +31,13 @@ public class TransactionService extends Service {
 
         // Intent to start our activity, when notification is clicked
         Intent notificationIntent = new Intent(this, BaseActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("transactionFragment", "TransactionOnGoingFragment");
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         // To set this intent in the notification, e have to create a pending intent
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+                0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Create notification
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)

@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -30,8 +31,13 @@ public class BaseActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        onNewIntent(getIntent());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+
+
+
 //        BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
 //
 //        bottomNavigationBar
@@ -47,7 +53,7 @@ public class BaseActivity extends AppCompatActivity  {
         chipNavigationBar.setItemSelected(R.id.bottom_nav_discover, true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DiscoverFragment()).commit();
 
-        onNewIntent(getIntent());
+//        onNewIntent(getIntent());
 
         bottomMenu();
 
@@ -137,6 +143,32 @@ public class BaseActivity extends AppCompatActivity  {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.w("FRAGMENT_NOTIF", "Notif clicked to open fragment");
+
+        if (intent != null) {
+
+            Log.w("FRAGMENT_NOTIF_2", "Notif clicked to open fragment");
+
+            String data = intent.getStringExtra("transactionFragment");
+//            Log.w("FRAGMENT_NOTIF_3", data.toString());
+
+            if (data != null) {
+
+                Log.w("FRAGMENT_NOTIF_3", "Notif clicked to open fragment");
+
+                Fragment fragment = new TransactionOnGoingFragment();
+                chipNavigationBar.setItemSelected(R.id.bottom_nav_discover, true);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+
+
+            }
+        }
     }
 
     public HashMap<String, String> passDataToFrags(){
