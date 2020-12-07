@@ -58,8 +58,8 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     LinearLayout goBack;
 
-    TextView bottomSheetName;
-    ImageView bottonSheetProfilePicture;
+    TextView bottomSheetName, bottomSheetKarmaPoints, bottomSheetRequestsCompleted;
+    ImageView bottomSheetProfilePicture;
 
     LoadingButton respondButton;
 
@@ -83,6 +83,9 @@ public class PostDetailsActivity extends AppCompatActivity {
         String creationtime = null;
         String timeAgo = null;
 
+        int karmaPoints = 0;
+        int requestsCompleted = 0;
+
         List<SliderItem> sliderItems = new ArrayList<>();
 
         preferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
@@ -103,6 +106,8 @@ public class PostDetailsActivity extends AppCompatActivity {
             title = value2.getString("title");
             description = value2.getString("description");
             postedBy = value2.getJSONObject("requestedBy").getString("firstName");
+            karmaPoints = value2.getJSONObject("requestedBy").getInt("karmaPoints");
+            requestsCompleted = value2.getJSONObject("requestedBy").getInt("completedRequests");
 
             profilePicture = value2.getJSONObject("requestedBy").getString("profilePicture");
             if (profilePicture.equals(""))
@@ -207,6 +212,8 @@ public class PostDetailsActivity extends AppCompatActivity {
         CardView authorDetails = (CardView) findViewById(R.id.authorDetails);
         final String finalProfilePicture = profilePicture;
         final String finalPostedBy = postedBy;
+        final int finalKarmaPoints = karmaPoints;
+        final int finalRequestsCompleted = requestsCompleted;
         authorDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,16 +221,23 @@ public class PostDetailsActivity extends AppCompatActivity {
 
                 Log.w("BottomSheet", finalPostedBy);
                 Log.w("BottomSheet", finalProfilePicture);
+                Log.w("BottomSheet", String.valueOf(finalKarmaPoints));
+                Log.w("BottomSheet", String.valueOf(finalRequestsCompleted));
 
                 View bottomSheet = LayoutInflater.from(getApplicationContext()).inflate(R.layout.profile_bottom_sheet, (LinearLayout) findViewById(R.id.bottomSheetContent));
 
                 bottomSheetName = (TextView) bottomSheet.findViewById(R.id.profile_bottom_sheet_name);
-                bottonSheetProfilePicture = (ImageView) bottomSheet.findViewById(R.id.profile_bottom_sheet_profile_picture);
+                bottomSheetProfilePicture = (ImageView) bottomSheet.findViewById(R.id.profile_bottom_sheet_profile_picture);
+                bottomSheetKarmaPoints = (TextView) bottomSheet.findViewById(R.id.profile_bottom_sheet_karma_points);
+                bottomSheetRequestsCompleted = (TextView) bottomSheet.findViewById(R.id.profile_bottom_sheet_requests_completed);
+//                bottomSheetDistance = (TextView) bottomSheet.findViewById(R.id.profile_bottom_sheet_distance);
 
                 bottomSheetDialog.setContentView(bottomSheet);
                 bottomSheetDialog.show();
                 bottomSheetName.setText(finalPostedBy);
-                Picasso.get().load(finalProfilePicture).fit().centerInside().into(bottonSheetProfilePicture);
+                bottomSheetKarmaPoints.setText(String.valueOf(finalKarmaPoints));
+                bottomSheetRequestsCompleted.setText(String.valueOf(finalRequestsCompleted));
+                Picasso.get().load(finalProfilePicture).fit().centerInside().into(bottomSheetProfilePicture);
             }
         });
 
