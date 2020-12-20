@@ -1,8 +1,10 @@
 package me.twodee.friendlyneighbor;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -34,6 +36,7 @@ import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    NetworkUtilsReceiver networkUtilsReceiver = new NetworkUtilsReceiver();
 
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
@@ -251,6 +254,14 @@ public class DashboardActivity extends AppCompatActivity {
         if(mCurrentUser == null) {
             sendUserToLogin();
         }
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkUtilsReceiver, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkUtilsReceiver);
+        super.onStop();
     }
 
     private void sendUserToLogin() {
