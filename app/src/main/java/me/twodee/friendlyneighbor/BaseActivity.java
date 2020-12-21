@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -22,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BaseActivity extends AppCompatActivity  {
+
+    NetworkUtilsReceiver networkUtilsReceiver = new NetworkUtilsReceiver();
 
     private SharedPreferences preferences;
     private String userId;
@@ -177,4 +181,16 @@ public class BaseActivity extends AppCompatActivity  {
         return userData;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkUtilsReceiver, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkUtilsReceiver);
+    }
 }
