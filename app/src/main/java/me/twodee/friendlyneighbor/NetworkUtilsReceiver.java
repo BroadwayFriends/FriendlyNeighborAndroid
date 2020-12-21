@@ -3,6 +3,7 @@ package me.twodee.friendlyneighbor;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +15,8 @@ import android.view.View;
 
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 public class NetworkUtilsReceiver extends BroadcastReceiver {
 
     @Override
@@ -21,28 +24,17 @@ public class NetworkUtilsReceiver extends BroadcastReceiver {
 
         if (!NetworkUtils.isConnectedToInternet(context)) {
 
-            // Internet is not connected
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            View layoutDialog = LayoutInflater.from(context).inflate(R.layout.dialog_check_netork_connectivity, null);
-            builder.setView(layoutDialog);
-
-            AppCompatButton buttonRetry = layoutDialog.findViewById(R.id.dialog_retry_button);
-
-            // Show dialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            dialog.setCancelable(false);
-
-            dialog.getWindow().setGravity(Gravity.CENTER);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-            buttonRetry.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    onReceive(context, intent);
-                }
-            });
+            new MaterialAlertDialogBuilder(context)
+                    .setTitle("Error")
+                    .setMessage("Check your internet connection and try again.")
+                    .setCancelable(false)
+                    .setPositiveButton("TRY AGAIN", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            onReceive(context, intent);
+                        }
+                    })
+        .show();
         }
 
     }
