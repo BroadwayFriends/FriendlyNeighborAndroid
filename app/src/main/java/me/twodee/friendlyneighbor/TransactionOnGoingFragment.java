@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.DecimalFormat;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -363,6 +364,9 @@ public class TransactionOnGoingFragment extends Fragment implements OnGoingDetai
         OnGoingDetails onGoingDetails = onGoingDetailsList.get(position);
 
         Toast.makeText(getActivity(), "Calling " + onGoingDetails.getOngoingPerson(), Toast.LENGTH_SHORT).show();
+
+        String dial = "tel:" + onGoingDetails.getOngoingPhoneNumber();
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
     }
 
     @Override
